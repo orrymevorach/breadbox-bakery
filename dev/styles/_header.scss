@@ -1,0 +1,37 @@
+header {
+    margin-bottom: 40px;
+}
+
+.header-logo img {
+    width: 250px;
+    display: block;
+    margin: 0 auto;
+}
+
+.header-nav ul {
+    list-style: none;
+    color: #3D3C3A;
+    text-transform: uppercase;
+    width: 380px;
+    margin: 0 auto;
+    li {
+        float: left;
+        margin: 0 20px;
+        font-size: 15px;
+        letter-spacing: 1px;
+    }
+}
+
+.header-nav button {
+    float: right;
+    color: #3D3C3A;
+    border: 2px solid $darkPink;
+    border-radius: 2px;
+    padding: 5px 10px;
+    margin: -7px 40px 0 0;
+    background-color: white;
+    &:hover {
+        background-color: $darkPink;
+        color: white;
+    }
+}

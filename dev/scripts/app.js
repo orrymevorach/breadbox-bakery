@@ -1,30 +1,105 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import CreateAccountModal from './CreateAccountModal';
+import LoginModal from './LoginModal';
+import Header from './Header';
+
+// Initialize Firebase
+const config = {
+  apiKey: "AIzaSyB1KLWrQKKfaV77GA5hINfhZFgkPsLTnKM",
+  authDomain: "breadbox-bakery.firebaseapp.com",
+  databaseURL: "https://breadbox-bakery.firebaseio.com",
+  projectId: "breadbox-bakery",
+  storageBucket: "breadbox-bakery.appspot.com",
+  messagingSenderId: "629017584696"
+};
+firebase.initializeApp(config);
 
 class App extends React.Component {
+  constructor() {
+    super();
+
+    this.state = {
+      userLoggedIn: false,
+      // Create Account Inputs
+      email: '',
+      password: '',
+      firstName: '',
+      lastName: '',
+      address: '',
+      apartmentSuite: '',
+      city: '',
+      province: '',
+      postalCode: '',
+      phoneNumber: ''
+    }
+
+    this.handleChange = this.handleChange.bind(this)
+    // this.closeModal = this.closeModal.bind(this)
+  }
+
+  componentDidMount() {
+    // Close Any Modal When Clicking Escape
+    document.addEventListener("keydown", function(e) {
+      if(e.which === 27) {
+        const el = document.getElementsByClassName('modal-container')
+        for(let i = 0; i < el.length; i++) {
+          el[i].style.display = 'none'
+        }
+      }
+    })
+  }
+
+  handleChange(e) {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+  
+  createNewAccount() {
+    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // ...
+    });
+  }
+
+  closeModal(modal) {
+    document.getElementById(modal).style.display = 'none'
+  }
+
+  
+  
   render() {
     return (
       <div>
-        <header>
-          <div className="wrapper">
-            <div className="header-logo">
-              <img src="../../img/logo.png" alt="BreadBox Bakery Logo"/>
-            </div>
-            <nav className="header-nav">
-              <ul>
-                <li>Home</li>
-                <li>About</li>
-                <li>Shop</li>
-                <li>Contact</li>
-              </ul>
-            </nav>
-          </div> {/* Closing Wrapper */}
-        </header>
+        <LoginModal 
+          closeModal={this.closeModal}
+        />
+        <CreateAccountModal 
+          handleChange={this.handleChange}
+          email={this.state.email}
+          password={this.state.password}
+          firstName={this.state.firstName}
+          lastName={this.state.lastName}
+          address={this.state.address}
+          apartmentSuite={this.state.apartmentSuite}
+          city={this.state.city}
+          province={this.state.province}
+          postalCode={this.state.postalCode}
+          phoneNumber={this.state.phoneNumber}
+          closeModal={this.closeModal}
+      />
+
+      <Header />
+
         <section className="section-one">
-            <div className="section-text-container">
-              <p className="section-text">Shop Now</p>
+            <div className="section-wrapper">
+              <div className="section-text-container">
+                <p className="section-text">Shop Now</p>
+              </div>
             </div>
-            <img src="../../img/" alt=""/>
         </section>
         <section className="section-two">
           <div className="left">
