@@ -35,7 +35,9 @@ class App extends React.Component {
     }
 
     this.handleChange = this.handleChange.bind(this)
-    // this.closeModal = this.closeModal.bind(this)
+    this.login = this.login.bind(this)
+    this.logout = this.logout.bind(this)
+    this.createNewAccount = this.createNewAccount.bind(this)
   }
 
   componentDidMount() {
@@ -56,17 +58,58 @@ class App extends React.Component {
     })
   }
   
-  createNewAccount() {
-    firebase.auth().createUserWithEmailAndPassword(email, password).catch(function (error) {
-      // Handle Errors here.
-      var errorCode = error.code;
-      var errorMessage = error.message;
-      // ...
+  createNewAccount(e) {
+    e.preventDefault();
+    const email = e.target[8].value
+    const password = e.target[9].value
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+      console.log("new account created")
+      this.setState({
+        userLoggedIn: true
+      })
+    })
+    .catch(function (error) {
+      alert(`${error.code}: ${error.message}`)
+    });
+  }
+
+  login(e) {
+    e.preventDefault();
+    const email = e.target[0].value
+    const password = e.target[1].value
+
+    firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+      console.log("logged In")
+      this.setState({
+        userLoggedIn: true
+      })
+    }).catch(function (error) {
+      alert(`${error.code}: ${error.message}`)
+    });
+  }
+
+  logout() {
+    firebase.auth().signOut().then(function () {
+      // Sign-out successful.
+    }).then(function() {
+      console.log('signed out')
+      this.setState({
+        userLoggedIn: false
+      })
+    }).catch(function (error) {
+      // An error happened.
     });
   }
 
   closeModal(modal) {
     document.getElementById(modal).style.display = 'none'
+    document.getElementsByTagName('body')[0].removeAttribute('id', 'stop-scroll')
+  }
+
+  showModal(modal) {
+    document.getElementById(modal).style.display = 'block'
+    document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
   }
 
   
@@ -76,6 +119,11 @@ class App extends React.Component {
       <div>
         <LoginModal 
           closeModal={this.closeModal}
+          showModal={this.showModal}
+          handleChange={this.handleChange}
+          email={this.state.email}
+          password={this.state.password}
+          login={this.login}
         />
         <CreateAccountModal 
           handleChange={this.handleChange}
@@ -90,9 +138,14 @@ class App extends React.Component {
           postalCode={this.state.postalCode}
           phoneNumber={this.state.phoneNumber}
           closeModal={this.closeModal}
+          createNewAccount={this.createNewAccount}
       />
 
-      <Header />
+      <Header 
+        userLoggedIn={this.state.userLoggedIn}
+        showModal={this.showModal}
+        logout={this.state.logout}
+      />
 
         <section className="section-one">
             <div className="section-wrapper">

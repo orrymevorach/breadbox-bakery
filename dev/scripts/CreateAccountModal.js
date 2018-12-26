@@ -12,18 +12,19 @@ const CreateAccountModal = (
         province,
         postalCode,
         phoneNumber,
-        closeModal
+        closeModal,
+        createNewAccount
     }) => {
 
     return (
         <div className="modal-container create-account-modal" id="create-account-modal">
             <div className="overlay">
                 <div className="modal">
-                    <div className="close-modal" onClick={() => closeModal('create-acount-modal')}>
+                    <div className="close-modal" onClick={() => closeModal('create-account-modal')}>
                         <i className="fas fa-times"></i>
                     </div>
                     <h1>Please Log In</h1>
-                    <form action="#">
+                    <form action="#" onSubmit={(e) => createNewAccount(e)}>
                         <div className="name row">
                             <div className="first-name column">
                                 <label htmlFor="firstName">First Name</label>
@@ -121,7 +122,7 @@ const CreateAccountModal = (
                                 onChange={handleChange}
                             />
                         </div>
-
+                        <input type="submit" value="Create New Account" />
                     </form>
                 </div>
             </div>

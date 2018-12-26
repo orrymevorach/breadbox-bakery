@@ -1,9 +1,10 @@
 import React from 'react';
 
-const Header = () => {
-    function showLoginModal() {
-        document.getElementById('login-modal').style.display = 'block'
-    }
+const Header = (
+    { userLoggedIn,
+    showModal,
+    logout
+    }) => {
 
     return (
         <header>
@@ -15,13 +16,17 @@ const Header = () => {
 
             {/* Nav */}
             <nav className="header-nav clearfix">
-                <ul className="clearfix">
+                <ul>
                     <li>Home</li>
                     <li>About</li>
                     <li>Shop</li>
                     <li>Contact</li>
                 </ul>
-                <button onClick={showLoginModal}>Log In</button>
+                {userLoggedIn === false ? 
+                    <button onClick={() => showModal('login-modal')}>Log In</button> 
+                : userLoggedIn === true ? 
+                    <button onClick={logout}>Log Out</button> 
+                : null }
             </nav> {/* Closing Nav */}
 
         </header>
