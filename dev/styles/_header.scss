@@ -22,16 +22,22 @@ header {
     }
 }
 
-.header-nav button {
+.nav-right {
     float: right;
-    color: #3D3C3A;
-    border: 2px solid $darkPink;
-    border-radius: 2px;
-    padding: 5px 10px;
-    margin: -7px 40px 0 0;
-    background-color: white;
-    &:hover {
-        background-color: $darkPink;
-        color: white;
+    button {
+        color: #3D3C3A;
+        padding: 5px 10px;
+        margin-top: -7px;
+        background-color: white;
+        border: none;
+    }
+    .login-button {
+        border: 2px solid $darkPink;
+        border-radius: 2px;
+        margin-right: 40px;
+        &:hover {
+            background-color: $darkPink;
+            color: white;
+        }
     }
 }

@@ -17,7 +17,7 @@ const CreateAccountModal = (
     }) => {
 
     return (
-        <div className="modal-container create-account-modal" id="create-account-modal">
+        <div className="modal-container create-account-modal" data-modal="create-account-modal">
             <div className="overlay">
                 <div className="modal">
                     <div className="close-modal" onClick={() => closeModal('create-account-modal')}>

@@ -1,8 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import CreateAccountModal from './CreateAccountModal';
-import LoginModal from './LoginModal';
-import Header from './Header';
+import CreateAccountModal from './Components/CreateAccountModal';
+import LoginModal from './Components/LoginModal';
+import Header from './Components/Header';
+import Home from './Components/Home';
+import Footer from './Components/Footer';
+import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
+import Shop from './Components/Shop';
 
 // Initialize Firebase
 const config = {
@@ -14,6 +18,10 @@ const config = {
   messagingSenderId: "629017584696"
 };
 firebase.initializeApp(config);
+
+const dbRefUsers = firebase.database().ref('users')
+
+
 
 class App extends React.Component {
   constructor() {
@@ -31,16 +39,68 @@ class App extends React.Component {
       city: '',
       province: '',
       postalCode: '',
-      phoneNumber: ''
+      phoneNumber: '',
+      userProfile: {
+        "userID": '',
+        "firstName": '',
+        "lastName": '',
+        "address": '',
+        "apartmentSuite": '',
+        "city": '',
+        "province": '',
+        "postalCode": '',
+        "phoneNumber": '',
+        "email": '',
+        "numberOfWeeklyChallahs": 0,
+        "firstChallahType": '',
+        "secondChallahType": '',
+        "deliveryTime": ''
+      }
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.createNewAccount = this.createNewAccount.bind(this)
+    this.subscriptionInfo = this.subscriptionInfo.bind(this)
   }
 
   componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        dbRefUsers.on('value', snapshot => {
+          const data = snapshot.val()
+          for(let key in data) {
+            const currentUser = data[key]
+            if (currentUser.userID === user.uid) {
+              let userProfile = Object.assign({}, this.state.userProfile)
+              userProfile.userID = currentUser.uid
+              userProfile.firstName = currentUser.firstName || ''
+              userProfile.lastName = currentUser.lastName || ''
+              userProfile.address = currentUser.address || ''
+              userProfile.apartmentSuite = currentUser.apartmentSuite || ''
+              userProfile.city = currentUser.city || ''
+              userProfile.province = currentUser.province || ''
+              userProfile.postalCode = currentUser.postalCode || ''
+              userProfile.phoneNumber = currentUser.phoneNumber || ''
+              userProfile.email = currentUser.email
+              userProfile.numberOfWeeklyChallahs = currentUser.numberOfWeeklyChallahs || 0
+              userProfile.firstChallahType = currentUser.firstChallahType || ''
+              userProfile.secondChallahType = currentUser.secondChallahType || ''
+              userProfile.deliveryTime = currentUser.deliveryTime || ''
+        
+        this.setState({
+          userLoggedIn: true,
+          userProfile: userProfile
+        })
+            }
+          }
+        })
+        console.log('user auto logged in')
+        
+        
+      } 
+    });
     // Close Any Modal When Clicking Escape
     document.addEventListener("keydown", function(e) {
       if(e.which === 27) {
@@ -60,16 +120,55 @@ class App extends React.Component {
   
   createNewAccount(e) {
     e.preventDefault();
-    const email = e.target[8].value
-    const password = e.target[9].value
+    const el = e.target
+    const firstName = el[0].value
+    const lastName = el[1].value
+    const address = el[2].value
+    const apartmentSuite = el[3].value
+    const city = el[4].value
+    const province = el[5].value
+    const postalCode = el[6].value
+    const phoneNumber = el[7].value
+    const email = el[8].value
+    const password = el[9].value
 
-    firebase.auth().createUserWithEmailAndPassword(email, password).then(function() {
+    let userProfile = Object.assign({}, this.state.userProfile)
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+      
       console.log("new account created")
+      
+      const userID = user.user.uid
+      
+      userProfile = {
+        "userID": userID,
+        "firstName": firstName || '',
+        "lastName": lastName || '',
+        "address": address || '',
+        "apartmentSuite": apartmentSuite || '',
+        "city": city || '',
+        "province": province || '',
+        "postalCode": postalCode || '',
+        "phoneNumber": phoneNumber || '',
+        "email": email,
+        "numberOfWeeklyChallahs": 0,
+        "firstChallahType": '',
+        "secondChallahType": '',
+        "deliveryTime": ''
+      }
+
+      dbRefUsers.child(`${lastName}-${firstName}-${userID}`).set(userProfile)
+
+    })
+    .then(() => {
       this.setState({
-        userLoggedIn: true
+        userLoggedIn: true,
+        userProfile: userProfile
       })
+      
     })
     .catch(function (error) {
+      console.log(error)
       alert(`${error.code}: ${error.message}`)
     });
   }
@@ -79,42 +178,110 @@ class App extends React.Component {
     const email = e.target[0].value
     const password = e.target[1].value
 
-    firebase.auth().signInWithEmailAndPassword(email, password).then(function() {
+    let userProfile = Object.assign({}, this.state.userProfile)
+
+    firebase.auth().signInWithEmailAndPassword(email, password).then((res) => {
       console.log("logged In")
-      this.setState({
-        userLoggedIn: true
+      
+      const currentUserID = res.user.uid
+
+      dbRefUsers.on('value', snapshot => {
+        const data = snapshot.val()
+        for(let key in data) {
+          const user = data[key]
+          if (user.userID === currentUserID) {
+            userProfile.userID = user.userID
+            userProfile.firstName = user.firstName || ''
+            userProfile.lastName = user.lastName || ''
+            userProfile.address = user.address || ''
+            userProfile.apartmentSuite = user.apartmentSuite || ''
+            userProfile.city = user.city || ''
+            userProfile.province = user.province || ''
+            userProfile.postalCode = user.postalCode || ''
+            userProfile.phoneNumber = user.phoneNumber || ''
+            userProfile.email = user.email
+            userProfile.numberOfWeeklyChallahs = user.numberOfWeeklyChallahs || 0
+            userProfile.firstChallahType = user.firstChallahType || ''  
+            userProfile.secondChallahType = user.secondChallahType || ''
+            userProfile.deliveryTime = user.deliveryTime || ''
+          }
+        }
       })
-    }).catch(function (error) {
+      
+    })
+    .then(() => {
+      this.setState({
+        userLoggedIn: true,
+        userProfile: userProfile
+      })
+    })
+    .catch(function (error) {
+      console.log(error)
       alert(`${error.code}: ${error.message}`)
     });
   }
 
   logout() {
-    firebase.auth().signOut().then(function () {
-      // Sign-out successful.
-    }).then(function() {
+    firebase.auth().signOut()
+    .then(() => {
       console.log('signed out')
       this.setState({
-        userLoggedIn: false
+        userLoggedIn: false,
+        userProfile: {}
       })
     }).catch(function (error) {
-      // An error happened.
+      console.log(error)
+      alert(`${error.code}: ${error.message}`)
     });
   }
 
   closeModal(modal) {
-    document.getElementById(modal).style.display = 'none'
+    // Modal-container param gets passed when the user logs in
+    if(modal === 'modal-container') {
+      const el = document.getElementsByClassName('modal-container')
+      for(let i = 0; i < el.length; i++) {
+        el[i].style.display = 'none'
+      }
+    }
+    // Data attr param gets passed when user clicks 'x' or escape
+    else {
+      document.querySelector(`[data-modal='${modal}']`).style.display = 'none'
+    }
+    // Stop scroll gets removed no matter what
     document.getElementsByTagName('body')[0].removeAttribute('id', 'stop-scroll')
   }
 
   showModal(modal) {
-    document.getElementById(modal).style.display = 'block'
+    document.querySelector(`[data-modal='${modal}']`).style.display = 'block'
     document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
   }
 
-  
+  subscriptionInfo(numberOfWeeklyChallahs) {
+    const userID = this.state.userProfile.userID
+    const firstName = this.state.userProfile.firstName
+    const lastName = this.state.userProfile.lastName
+    const child = `${lastName}-${firstName}-${userID}`
+    let updatedProfile = Object.assign({}, this.state.userProfile)
+    
+    updatedProfile.numberOfWeeklyChallahs = numberOfWeeklyChallahs || this.state.userProfile.numberOfWeeklyChallahs
+
+    
+    console.log(numberOfWeeklyChallahs)
+
+    dbRefUsers.child(child).child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
+    
+    .then(() => {
+      this.setState({
+        userProfile: updatedProfile
+      })
+    })
+    
+  }
   
   render() {
+    // Close All Modals when user logs in
+    this.state.userLoggedIn === true ? this.closeModal('modal-container') : null
+
     return (
       <div>
         <LoginModal 
@@ -141,83 +308,39 @@ class App extends React.Component {
           createNewAccount={this.createNewAccount}
       />
 
-      <Header 
-        userLoggedIn={this.state.userLoggedIn}
-        showModal={this.showModal}
-        logout={this.state.logout}
-      />
+      <Router>
+        <div>
+          
+          <Route path="/" render={() => {
+            return (
+              <Header 
+                userLoggedIn={this.state.userLoggedIn}
+                showModal={this.showModal}
+                logout={this.logout}
+              />
+            )
+          }}/>
+          
+          <Route path="/" exact render={() => {
+            return (
+              <Home />
+            )
+          }}/>
 
-        <section className="section-one">
-            <div className="section-wrapper">
-              <div className="section-text-container">
-                <p className="section-text">Shop Now</p>
-              </div>
-            </div>
-        </section>
-        <section className="section-two">
-          <div className="left">
-            <h1>Baked with<br></br>
-            Quality
-            <br></br>
-            Ingredients</h1>
-          </div>
-          <div className="right">
-            <p>Our bakery maintains the integrity of bread and bakes each loaf with love. Breadbox Bakery is a local and artisanal bakery. We proude ourselves on all natural ingredients and handmade products. Each loaf of challah is made with quality flour, yeast, organic eggs, and natural vanilla. We make ach loaf in small batches to ensure the quality of your bread is not compromised.</p>
-          </div>
-        </section>
-        <section className="section-three">
-          <div className="box box1"></div>
-          <div className="box box2"></div>
-          <div className="box box3"></div>
-        </section>
-        <section className="section-four">
-          <div className="left">
-            <h1>Delivered to
-              <br></br>
-              your home
-            </h1>
-          </div>
-          <div className="right">
-            <p>Our bakery maintains the integrity of bread and bakes each loaf with love. Breadbox Bakery is a local and artisanal bakery. We proude ourselves on all natural ingredients and handmade products. Each loaf of challah is made with quality flour, yeast, organic eggs, and natural vanilla. We make ach loaf in small batches to ensure the quality of your bread is not compromised.</p>
-          </div>
-        </section>
-        <section className="section-one">
-          <div className="section-text-container">
-            <p className="section-text">Shop Now</p>
-          </div>
-          <img src="../../img/" alt="" />
-        </section>
-        <section className="section-five">
-          <h1>"The best challah this world has ever seen."</h1>
-          <p className="small-text">- Orry Mevorach</p>
-        </section>
-        <section className="section-one">
-          <div className="section-text-container">
-            <p className="section-text">Shop Now</p>
-          </div>
-          <img src="../../img/" alt="" />
-        </section>
-        <section className="section-six">
-          <div className="left">
-            <h1>Challah
-              <br></br>
-              pioneer
-            </h1>
-          </div>
-          <div className="right">
-            <p>Emily Turk is the greatest challah whisperer that Bathurst and Glencair has ever seen. And that is saying a lot, because this neighborhood has seen millions, no, billions of self procalimed challah whisperes since the 1700s when wood burning ovens became a thing.</p>
-          </div>
-        </section>
-        <footer>
-          <nav className="footer-nav">
-            <ul>
-              <li>FAQ</li>
-              <li>Privacy</li>
-              <li>Terms of Use</li>
-              <li>Contact</li>
-            </ul>
-          </nav>
-        </footer>
+          <Route path="/shop" exact render={() => {
+            return (
+              <Shop 
+                userProfile={this.state.userProfile}
+                subscriptionInfo={this.subscriptionInfo}
+              />
+            )
+          }}/>
+        </div>
+
+      </Router>
+      
+      <Footer />
+        
       </div>
     )
   }

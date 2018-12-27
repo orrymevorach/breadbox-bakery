@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const Header = (
     { userLoggedIn,
@@ -17,15 +18,22 @@ const Header = (
             {/* Nav */}
             <nav className="header-nav clearfix">
                 <ul>
-                    <li>Home</li>
+                    <NavLink to="/"><li>Home</li></NavLink>
                     <li>About</li>
-                    <li>Shop</li>
+                    <NavLink to="/shop"><li>Shop</li></NavLink>
+                    
                     <li>Contact</li>
                 </ul>
                 {userLoggedIn === false ? 
-                    <button onClick={() => showModal('login-modal')}>Log In</button> 
+                    <div className="nav-right">
+                        <button className="login-button" onClick={() => showModal('login-modal')}>Log In</button> 
+                    </div>
                 : userLoggedIn === true ? 
-                    <button onClick={logout}>Log Out</button> 
+                    <div className="nav-right">
+                        <button>My Account</button>
+                        <button className="login-button" onClick={logout}>Log Out</button> 
+                    </div>
+                    
                 : null }
             </nav> {/* Closing Nav */}
 

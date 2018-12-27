@@ -15,7 +15,7 @@ const LoginModal = (
     }
 
     return (
-        <div className="login-modal modal-container" id="login-modal">
+        <div className="login-modal modal-container" data-modal="login-modal">
             <div className="overlay">
                 <div className="modal">
                     <div className="close-modal" onClick={() => closeModal('login-modal')}>
