@@ -1,11 +1,18 @@
 import React from 'react';
 
-const FirstChallahType = ({ userProfile, subscriptionInfo, userLoggedIn, userChangingSelection, firstChallahTypeSelectionMade}) => {
+const FirstChallahType = (
+    { userProfile: { orderInformation },
+        subscriptionInfo,
+        userLoggedIn,
+        userChangingSelection }
+) => {
+
+    const { firstChallahType, firstChallahTypeSelectionMade, numberOfWeeklyChallahs } = orderInformation
     
     function makeSelection(e) {
         const el = e.target
-        const firstChallahType = `firstChallahType:${el.dataset.challahtype}`
-        subscriptionInfo(firstChallahType)
+        const challahType = `firstChallahType:${el.dataset.challahtype}`
+        subscriptionInfo(challahType)
     }
 
     const challahTypes = ['Sweet', 'Raisin', 'Plain']
@@ -15,19 +22,19 @@ const FirstChallahType = ({ userProfile, subscriptionInfo, userLoggedIn, userCha
             <div className="text-container">
                 <h2>Our Challahs</h2>
             </div>
-            {userLoggedIn && userProfile.firstChallahType && firstChallahTypeSelectionMade === true ?
+            {userLoggedIn && firstChallahType && firstChallahTypeSelectionMade === true ?
                 <div className="wrapper-small">
                     <h1>Your Selection: <br></br>
-                    {userProfile.firstChallahType} Challah</h1>
+                    {firstChallahType} Challah</h1>
                     <button type="submit" className="change-selection" onClick={() => userChangingSelection('firstChallahTypeSelectionMade')}>Click Here To Change Selection</button>
                 </div>
 
                 : userLoggedIn === false || userLoggedIn === true && firstChallahTypeSelectionMade === false ?
                     <div>
                         <div className="text-container">
-                            {userProfile.numberOfWeeklyChallahs === '1' ? 
+                            {numberOfWeeklyChallahs === '1' ? 
                             <p>What Type Of Challah Would You Like?</p>
-                            : userProfile.numberOfWeeklyChallahs === '2' ?
+                            : numberOfWeeklyChallahs === '2' ?
                             <p>Please Select Your First Challah</p>
                             : null }
                         </div>

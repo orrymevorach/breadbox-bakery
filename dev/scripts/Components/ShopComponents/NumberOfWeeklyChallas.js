@@ -1,11 +1,18 @@
 import React from 'react';
 
-const NumberOfChallahs = ({ userProfile, subscriptionInfo, userLoggedIn, numberOfWeeklyChallahsSelectionMade, userChangingSelection }) => {
+const NumberOfWeeklyChallahs = (
+    { userProfile: { orderInformation }, 
+        subscriptionInfo, 
+        userLoggedIn, 
+        userChangingSelection }
+    ) => {
+
+    const { numberOfWeeklyChallahs, numberOfWeeklyChallahsSelectionMade } = orderInformation
     
     function makeSelection(e) {
         const el = e.target
-        const numberOfWeeklyChallahs = `numberOfWeeklyChallahs:${el.dataset.challahnumber}`
-        subscriptionInfo(numberOfWeeklyChallahs)
+        const numOfWeeklyChallahs = `numberOfWeeklyChallahs:${el.dataset.challahnumber}`
+        subscriptionInfo(numOfWeeklyChallahs)
     }
 
     return (
@@ -13,17 +20,17 @@ const NumberOfChallahs = ({ userProfile, subscriptionInfo, userLoggedIn, numberO
             <div className="text-container">
                 <h2>Our Subscription Plans</h2>
             </div>
-            {userLoggedIn && userProfile.numberOfWeeklyChallahs && numberOfWeeklyChallahsSelectionMade === true ?
+            {userLoggedIn && numberOfWeeklyChallahs && numberOfWeeklyChallahsSelectionMade === true ?
                 <div className="wrapper-small">
                     { // If 1 Challah was Selected
-                        userProfile.numberOfWeeklyChallahs === '1' ?
+                        numberOfWeeklyChallahs === '1' ?
                             <h1>Your Selection: <br></br>
-                                {userProfile.numberOfWeeklyChallahs} Challah will be delivered Weekly</h1>
+                                {numberOfWeeklyChallahs} Challah will be delivered Weekly</h1>
 
                             // If 2 Challahs were selected
-                            : userProfile.numberOfWeeklyChallahs === '2' ?
+                            : numberOfWeeklyChallahs === '2' ?
                                 <h1>Your Selection: <br></br>
-                                    {userProfile.numberOfWeeklyChallahs} Challahs will be delivered Weekly</h1>
+                                    {numberOfWeeklyChallahs} Challahs will be delivered Weekly</h1>
                                 : null}
 
                     <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyChallahsSelectionMade')}>Click Here To Change Selection</button>
@@ -55,4 +62,4 @@ const NumberOfChallahs = ({ userProfile, subscriptionInfo, userLoggedIn, numberO
     )
 }
 
-export default NumberOfChallahs;
+export default NumberOfWeeklyChallahs;

@@ -41,25 +41,29 @@ class App extends React.Component {
       postalCode: '',
       phoneNumber: '',
       userProfile: {
-        "userID": '',
-        "firstName": '',
-        "lastName": '',
-        "address": '',
-        "apartmentSuite": '',
-        "city": '',
-        "province": '',
-        "postalCode": '',
-        "phoneNumber": '',
-        "email": '',
-        "numberOfWeeklyChallahs": 0,
-        "firstChallahType": '',
-        "secondChallahType": '',
-        "deliveryTime": ''
+        "contactInformation": {
+          "userID": '',
+          "firstName": '',
+          "lastName": '',
+          "address": '',
+          "apartmentSuite": '',
+          "city": '',
+          "province": '',
+          "postalCode": '',
+          "phoneNumber": '',
+          "email": '',
+        },
+        "orderInformation": {
+          "numberOfWeeklyChallahs": 0,
+          "firstChallahType": '',
+          "secondChallahType": '',
+          "deliveryTime": '',
+          "numberOfWeeklyChallahsSelectionMade": false,
+          "firstChallahTypeSelectionMade": false,
+          "secondChallahTypeSelectionMade": false,
+          "deliveryTimeSelectionMade": false
+        }
       },
-      numberOfWeeklyChallahsSelectionMade: false,
-      firstChallahTypeSelectionMade: false,
-      secondChallahTypeSelectionMade: false,
-      deliveryTimeSelectionMade: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -73,39 +77,50 @@ class App extends React.Component {
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        let userProfile = Object.assign({}, this.state.userProfile)
         dbRefUsers.on('value', snapshot => {
           const data = snapshot.val()
           for(let key in data) {
-            const currentUser = data[key]
-            if (currentUser.userID === user.uid) {
-              let userProfile = Object.assign({}, this.state.userProfile)
-              userProfile.userID = currentUser.userID
-              userProfile.firstName = currentUser.firstName || ''
-              userProfile.lastName = currentUser.lastName || ''
-              userProfile.address = currentUser.address || ''
-              userProfile.apartmentSuite = currentUser.apartmentSuite || ''
-              userProfile.city = currentUser.city || ''
-              userProfile.province = currentUser.province || ''
-              userProfile.postalCode = currentUser.postalCode || ''
-              userProfile.phoneNumber = currentUser.phoneNumber || ''
-              userProfile.email = currentUser.email
-              userProfile.numberOfWeeklyChallahs = currentUser.numberOfWeeklyChallahs || 0
-              userProfile.firstChallahType = currentUser.firstChallahType || ''
-              userProfile.secondChallahType = currentUser.secondChallahType || ''
-              userProfile.deliveryTime = currentUser.deliveryTime || ''
+            const contactInformation = data[key]
+            const orderInformation = data[key].orderInformation
+            console.log(user.uid)
+            if (user.uid === contactInformation.userID) {
+              console.log(true)
+              userProfile.contactInformation.userID = contactInformation.userID
+              userProfile.contactInformation.firstName = contactInformation.firstName || ''
+              userProfile.contactInformation.lastName = contactInformation.lastName || ''
+              userProfile.contactInformation.address = contactInformation.address || ''
+              userProfile.contactInformation.apartmentSuite = contactInformation.apartmentSuite || ''
+              userProfile.contactInformation.city = contactInformation.city || ''
+              userProfile.contactInformation.province = contactInformation.province || ''
+              userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
+              userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
+              userProfile.contactInformation.email = contactInformation.email
+              userProfile.orderInformation.numberOfWeeklyChallahs = orderInformation.numberOfWeeklyChallahs || 0
+              userProfile.orderInformation.firstChallahType = orderInformation.firstChallahType || ''
+              userProfile.orderInformation.secondChallahType = orderInformation.secondChallahType || ''
+              userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
+              userProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = orderInformation.numberOfWeeklyChallahsSelectionMade || false
+              userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
+              userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
+              userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
         
-        this.setState({
-          userLoggedIn: true,
-          userProfile: userProfile
-        })
             }
           }
+            
         })
-        console.log('user auto logged in')
         
-        
+        // setTimeout(() => {
+          console.log('user auto logged in')
+          this.setState({
+            userLoggedIn: true,
+            userProfile: userProfile
+          })
+        // }, 1000);    
       } 
-    });
+    })
+    
+    
     // Close Any Modal When Clicking Escape
     document.addEventListener("keydown", function(e) {
       if(e.which === 27) {
@@ -146,20 +161,28 @@ class App extends React.Component {
       const userID = user.user.uid
       
       userProfile = {
-        "userID": userID,
-        "firstName": firstName || '',
-        "lastName": lastName || '',
-        "address": address || '',
-        "apartmentSuite": apartmentSuite || '',
-        "city": city || '',
-        "province": province || '',
-        "postalCode": postalCode || '',
-        "phoneNumber": phoneNumber || '',
-        "email": email,
-        "numberOfWeeklyChallahs": 0,
-        "firstChallahType": '',
-        "secondChallahType": '',
-        "deliveryTime": ''
+        "contactInformation": {
+          "userID": userID,
+          "firstName": firstName || '',
+          "lastName": lastName || '',
+          "address": address || '',
+          "apartmentSuite": apartmentSuite || '',
+          "city": city || '',
+          "province": province || '',
+          "postalCode": postalCode || '',
+          "phoneNumber": phoneNumber || '',
+          "email": email
+        },
+        "orderInformation": {
+          "numberOfWeeklyChallahs": 0,
+          "firstChallahType": '',
+          "secondChallahType": '',
+          "deliveryTime": '',
+          "numberOfWeeklyChallahsSelectionMade": false,
+          "firstChallahTypeSelectionMade": false,
+          "secondChallahTypeSelectionMade": false,
+          "deliveryTimeSelectionMade": false
+        }
       }
 
       dbRefUsers.child(`${lastName}-${firstName}-${userID}`).set(userProfile)
@@ -195,30 +218,35 @@ class App extends React.Component {
 
     let userProfile = Object.assign({}, this.state.userProfile)
 
-    firebase.auth().signInWithEmailAndPassword(email, password).then((res) => {
+    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
       console.log("logged In")
       
-      const currentUserID = res.user.uid
+      const currentUserID = user.user.uid
 
       dbRefUsers.on('value', snapshot => {
         const data = snapshot.val()
         for(let key in data) {
-          const user = data[key]
+          const contactInformation = data[key].contactInformation
+          const orderInformation = data[key].orderInformation
           if (user.userID === currentUserID) {
-            userProfile.userID = user.userID
-            userProfile.firstName = user.firstName || ''
-            userProfile.lastName = user.lastName || ''
-            userProfile.address = user.address || ''
-            userProfile.apartmentSuite = user.apartmentSuite || ''
-            userProfile.city = user.city || ''
-            userProfile.province = user.province || ''
-            userProfile.postalCode = user.postalCode || ''
-            userProfile.phoneNumber = user.phoneNumber || ''
-            userProfile.email = user.email
-            userProfile.numberOfWeeklyChallahs = user.numberOfWeeklyChallahs || 0
-            userProfile.firstChallahType = user.firstChallahType || ''  
-            userProfile.secondChallahType = user.secondChallahType || ''
-            userProfile.deliveryTime = user.deliveryTime || ''
+            userProfile.contactInformation.userID = contactInformation.userID
+            userProfile.contactInformation.firstName = contactInformation.firstName || ''
+            userProfile.contactInformation.lastName = contactInformation.lastName || ''
+            userProfile.contactInformation.address = contactInformation.address || ''
+            userProfile.contactInformation.apartmentSuite = contactInformation.apartmentSuite || ''
+            userProfile.contactInformation.city = contactInformation.city || ''
+            userProfile.contactInformation.province = contactInformation.province || ''
+            userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
+            userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
+            userProfile.contactInformation.email = contactInformation.email
+            userProfile.orderInformation.numberOfWeeklyChallahs = orderInformation.numberOfWeeklyChallahs || 0
+            userProfile.orderInformation.firstChallahType = orderInformation.firstChallahType || ''
+            userProfile.orderInformation.secondChallahType = orderInformation.secondChallahType || ''
+            userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
+            userProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = orderInformation.numberOfWeeklyChallahsSelectionMade || false
+            userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
+            userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
+            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
           }
         }
       })
@@ -242,13 +270,10 @@ class App extends React.Component {
     firebase.auth().signOut()
     .then(() => {
       console.log('signed out')
+      let userProfile = Object.assign({}, this.state.userProfile)
       this.setState({
         userLoggedIn: false,
-        userProfile: {},
-        numberOfWeeklyChallahsSelectionMade: false,
-        firstChallahTypeSelectionMade: false,
-        secondChallahTypeSelectionMade: false,
-        deliveryTimeSelectionMade: false
+        userProfile: userProfile,
       })
     }).catch(function (error) {
       console.log(error)
@@ -278,48 +303,52 @@ class App extends React.Component {
   }
 
   subscriptionInfo(challahInfo) {
-    const userID = this.state.userProfile.userID
-    const firstName = this.state.userProfile.firstName
-    const lastName = this.state.userProfile.lastName
-    const child = `${lastName}-${firstName}-${userID}`
-    let updatedProfile = Object.assign({}, this.state.userProfile)
+    // setTimeout(() => {
+      const userID = this.state.userProfile.contactInformation.userID
+      const firstName = this.state.userProfile.contactInformation.firstName
+      const lastName = this.state.userProfile.contactInformation.lastName
+      const child = `${lastName}-${firstName}-${userID}`
+      let updatedProfile = Object.assign({}, this.state.userProfile)
+
+      let numberOfWeeklyChallahs = this.state.userProfile.orderInformation.numberOfWeeklyChallahs
+      let firstChallahType = this.state.userProfile.orderInformation.firstChallahType
+      let secondChallahType = this.state.userProfile.orderInformation.secondChallahType
+
+      console.log(this.state.userProfile)
+
+      // if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
+      //   numberOfWeeklyChallahs = challahInfo.split(':')[1]
+
+      //   updatedProfile.orderInformation.numberOfWeeklyChallahs = numberOfWeeklyChallahs
+      // }
+
+      // else if (challahInfo.split(':')[0] === 'firstChallahType') {
+      //   firstChallahType = challahInfo.split(':')[1]
+
+      //   updatedProfile.orderInformation.firstChallahType = firstChallahType
+      //   updatedProfile.orderInformation.firstChallahTypeSelectionMade = true
+      // }
+
+      // else if (challahInfo.split(':')[0] === 'secondChallahType') {
+      //   secondChallahType = challahInfo.split(':')[1]
+
+      //   updatedProfile.orderInformation.secondChallahType = secondChallahType
+      //   updatedProfile.orderInformation.secondChallahTypeSelectionMade = true
+      // }
+
+      // dbRefUsers.child(child).child('orderInformation').child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
+      // dbRefUsers.child(child).child('orderInformation').child('firstChallahType').set(firstChallahType)
+      // dbRefUsers.child(child).child('orderInformation').child('secondChallahType').set(secondChallahType)
+
+
+      //   .then(() => {
+      //     this.setState({
+      //       userProfile: updatedProfile,
+      //       [selectedKey]: true,
+      //     })
+      //   })
+    // }, 2000)
     
-    let numberOfWeeklyChallahs = this.state.userProfile.numberOfWeeklyChallahs
-    let firstChallahType = this.state.userProfile.firstChallahType
-    let secondChallahType = this.state.userProfile.secondChallahType
-
-    if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
-      numberOfWeeklyChallahs = challahInfo.split(':')[1]
-     
-      updatedProfile.numberOfWeeklyChallahs = numberOfWeeklyChallahs
-      
-    }
-    else if (challahInfo.split(':')[0] === 'firstChallahType') {
-      firstChallahType = challahInfo.split(':')[1]
-
-      updatedProfile.firstChallahType = firstChallahType
-
-    }
-    else if (challahInfo.split(':')[0] === 'secondChallahType') {
-      secondChallahType = challahInfo.split(':')[1]
-
-      updatedProfile.secondChallahType = secondChallahType
-
-    }
-    
-    const selectedKey = `${challahInfo.split(":")[0]}SelectionMade`
-
-    dbRefUsers.child(child).child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
-    dbRefUsers.child(child).child('firstChallahType').set(firstChallahType)
-    dbRefUsers.child(child).child('secondChallahType').set(secondChallahType)
-
-
-    .then(() => {
-      this.setState({
-        userProfile: updatedProfile,
-        [selectedKey]: true,
-      })
-    })
     
   }
 
@@ -385,10 +414,6 @@ class App extends React.Component {
                 subscriptionInfo={this.subscriptionInfo}
                 userLoggedIn={this.state.userLoggedIn}
                 userChangingSelection={this.userChangingSelection}
-                numberOfWeeklyChallahsSelectionMade={this.state.numberOfWeeklyChallahsSelectionMade}
-                firstChallahTypeSelectionMade={this.state.firstChallahTypeSelectionMade}
-                secondChallahTypeSelectionMade={this.state.secondChallahTypeSelectionMade}
-                deliveryTimeSelectionMade={this.state.deliveryTimeSelectionMade}
               />
             )
           }}/>

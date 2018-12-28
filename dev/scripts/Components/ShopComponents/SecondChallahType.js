@@ -1,11 +1,18 @@
 import React from 'react';
 
-const SecondChallahType = ({ userProfile, subscriptionInfo, userLoggedIn, userChangingSelection, secondChallahTypeSelectionMade }) => {
+const SecondChallahType = (
+    { userProfile: { orderInformation },
+        subscriptionInfo,
+        userLoggedIn,
+        userChangingSelection }
+) => {
+
+    const { secondChallahType, secondChallahTypeSelectionMade } = orderInformation
 
     function makeSelection(e) {
         const el = e.target
-        const secondChallahType = `secondChallahType:${el.dataset.challahtype}`
-        subscriptionInfo(secondChallahType)
+        const challahType = `secondChallahType:${el.dataset.challahtype}`
+        subscriptionInfo(challahType)
     }
 
     const challahTypes = ['Sweet', 'Raisin', 'Plain']
@@ -15,10 +22,10 @@ const SecondChallahType = ({ userProfile, subscriptionInfo, userLoggedIn, userCh
             <div className="text-container">
                 <h2>Our Challahs</h2>
             </div>
-            {userLoggedIn && userProfile.secondChallahType && secondChallahTypeSelectionMade === true ?
+            {userLoggedIn && secondChallahType && secondChallahTypeSelectionMade === true ?
                 <div className="wrapper-small">
                     <h1>Your Selection: <br></br>
-                        {userProfile.secondChallahType} Challah</h1>
+                        {secondChallahType} Challah</h1>
                     <button type="submit" className="change-selection" onClick={() => userChangingSelection('secondChallahTypeSelectionMade')}>Click Here To Change Selection</button>
                 </div>
 

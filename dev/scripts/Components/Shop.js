@@ -1,5 +1,5 @@
 import React from 'react';
-import NumberOfChallahs from './ShopComponents/NumberOfChallas';
+import NumberOfWeeklyChallahs from './ShopComponents/NumberOfWeeklyChallas';
 import FirstChallahType from './ShopComponents/FirstChallahType';
 import SecondChallahType from './ShopComponents/SecondChallahType';
 
@@ -14,11 +14,10 @@ const Shop = (
     
     return (
         <div className="shop wrapper-large">
-            <NumberOfChallahs 
+            <NumberOfWeeklyChallahs 
                 userProfile={userProfile}
                 subscriptionInfo={subscriptionInfo}
                 userLoggedIn={userLoggedIn}
-                numberOfWeeklyChallahsSelectionMade={numberOfWeeklyChallahsSelectionMade}
                 userChangingSelection={userChangingSelection}
             />
             <FirstChallahType 
@@ -26,7 +25,6 @@ const Shop = (
                 subscriptionInfo={subscriptionInfo}
                 userLoggedIn={userLoggedIn}
                 userChangingSelection={userChangingSelection}
-                firstChallahTypeSelectionMade={firstChallahTypeSelectionMade}
             />
             {/* If 2 Challahs were selected, show this section */}
             {userProfile.numberOfWeeklyChallahs === '2' ?
@@ -35,7 +33,6 @@ const Shop = (
                 subscriptionInfo={subscriptionInfo}
                 userLoggedIn={userLoggedIn}
                 userChangingSelection={userChangingSelection}
-                secondChallahTypeSelectionMade={firstChallahTypeSelectionMade}
             /> 
             : null }
         </div> /* Closing Shop / Wrapper */
