@@ -8,8 +8,6 @@ const Shop = (
         subscriptionInfo, 
         userLoggedIn, 
         userChangingSelection, 
-        numberOfWeeklyChallahsSelectionMade, 
-        firstChallahTypeSelectionMade,
      }) => {
     
     return (
@@ -27,7 +25,7 @@ const Shop = (
                 userChangingSelection={userChangingSelection}
             />
             {/* If 2 Challahs were selected, show this section */}
-            {userProfile.numberOfWeeklyChallahs === '2' ?
+            {userProfile.orderInformation.numberOfWeeklyChallahs === '2' ?
             <SecondChallahType 
                 userProfile={userProfile}
                 subscriptionInfo={subscriptionInfo}

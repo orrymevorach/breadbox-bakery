@@ -20,7 +20,7 @@ const NumberOfWeeklyChallahs = (
             <div className="text-container">
                 <h2>Our Subscription Plans</h2>
             </div>
-            {userLoggedIn && numberOfWeeklyChallahs && numberOfWeeklyChallahsSelectionMade === true ?
+            {userLoggedIn === true && numberOfWeeklyChallahs !== '0' && numberOfWeeklyChallahsSelectionMade === true ?
                 <div className="wrapper-small">
                     { // If 1 Challah was Selected
                         numberOfWeeklyChallahs === '1' ?

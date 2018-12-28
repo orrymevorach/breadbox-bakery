@@ -81,11 +81,9 @@ class App extends React.Component {
         dbRefUsers.on('value', snapshot => {
           const data = snapshot.val()
           for(let key in data) {
-            const contactInformation = data[key]
+            const contactInformation = data[key].contactInformation
             const orderInformation = data[key].orderInformation
-            console.log(user.uid)
             if (user.uid === contactInformation.userID) {
-              console.log(true)
               userProfile.contactInformation.userID = contactInformation.userID
               userProfile.contactInformation.firstName = contactInformation.firstName || ''
               userProfile.contactInformation.lastName = contactInformation.lastName || ''
@@ -303,59 +301,58 @@ class App extends React.Component {
   }
 
   subscriptionInfo(challahInfo) {
-    // setTimeout(() => {
-      const userID = this.state.userProfile.contactInformation.userID
-      const firstName = this.state.userProfile.contactInformation.firstName
-      const lastName = this.state.userProfile.contactInformation.lastName
-      const child = `${lastName}-${firstName}-${userID}`
-      let updatedProfile = Object.assign({}, this.state.userProfile)
+    const userID = this.state.userProfile.contactInformation.userID
+    const firstName = this.state.userProfile.contactInformation.firstName
+    const lastName = this.state.userProfile.contactInformation.lastName
+    const child = `${lastName}-${firstName}-${userID}`
+    let updatedProfile = Object.assign({}, this.state.userProfile)
 
-      let numberOfWeeklyChallahs = this.state.userProfile.orderInformation.numberOfWeeklyChallahs
-      let firstChallahType = this.state.userProfile.orderInformation.firstChallahType
-      let secondChallahType = this.state.userProfile.orderInformation.secondChallahType
+    let numberOfWeeklyChallahs = this.state.userProfile.orderInformation.numberOfWeeklyChallahs
+    let firstChallahType = this.state.userProfile.orderInformation.firstChallahType
+    let secondChallahType = this.state.userProfile.orderInformation.secondChallahType
 
-      console.log(this.state.userProfile)
+    if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
+      numberOfWeeklyChallahs = challahInfo.split(':')[1]
 
-      // if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
-      //   numberOfWeeklyChallahs = challahInfo.split(':')[1]
+      // In case the user changes their selection from two challahs to once challah, make sure no selection is made for Second Challah
+      if(numberOfWeeklyChallahs === '1') {
+        updatedProfile.orderInformation.secondChallahType = ''
+        updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
+      }
 
-      //   updatedProfile.orderInformation.numberOfWeeklyChallahs = numberOfWeeklyChallahs
-      // }
+      updatedProfile.orderInformation.numberOfWeeklyChallahs = numberOfWeeklyChallahs
+      updatedProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = true
+      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
+    }
 
-      // else if (challahInfo.split(':')[0] === 'firstChallahType') {
-      //   firstChallahType = challahInfo.split(':')[1]
+    else if (challahInfo.split(':')[0] === 'firstChallahType') {
+      firstChallahType = challahInfo.split(':')[1]
 
-      //   updatedProfile.orderInformation.firstChallahType = firstChallahType
-      //   updatedProfile.orderInformation.firstChallahTypeSelectionMade = true
-      // }
+      updatedProfile.orderInformation.firstChallahType = firstChallahType
+      updatedProfile.orderInformation.firstChallahTypeSelectionMade = true
+      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
+    }
 
-      // else if (challahInfo.split(':')[0] === 'secondChallahType') {
-      //   secondChallahType = challahInfo.split(':')[1]
+    else if (challahInfo.split(':')[0] === 'secondChallahType') {
+      secondChallahType = challahInfo.split(':')[1]
 
-      //   updatedProfile.orderInformation.secondChallahType = secondChallahType
-      //   updatedProfile.orderInformation.secondChallahTypeSelectionMade = true
-      // }
-
-      // dbRefUsers.child(child).child('orderInformation').child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
-      // dbRefUsers.child(child).child('orderInformation').child('firstChallahType').set(firstChallahType)
-      // dbRefUsers.child(child).child('orderInformation').child('secondChallahType').set(secondChallahType)
-
-
-      //   .then(() => {
-      //     this.setState({
-      //       userProfile: updatedProfile,
-      //       [selectedKey]: true,
-      //     })
-      //   })
-    // }, 2000)
+      updatedProfile.orderInformation.secondChallahType = secondChallahType
+      updatedProfile.orderInformation.secondChallahTypeSelectionMade = true
+      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
+    }
     
-    
+    this.setState({
+      userProfile: updatedProfile,
+    })
   }
 
   userChangingSelection(itemBeingChanged) {
-    this.setState({
-      [itemBeingChanged]: false
-    })
+    let userProfile = Object.assign({}, this.state.userProfile)
+    
+    userProfile.orderInformation[itemBeingChanged] = false
+      this.setState({
+        userProfile: userProfile
+      })
   }
   
   render() {
