@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TypeOfChallah = ({ userProfile, subscriptionInfo, userLoggedIn, userChangingSelection, firstChallahTypeSelectionMade}) => {
+const FirstChallahType = ({ userProfile, subscriptionInfo, userLoggedIn, userChangingSelection, firstChallahTypeSelectionMade}) => {
     
     function makeSelection(e) {
         const el = e.target
@@ -25,7 +25,11 @@ const TypeOfChallah = ({ userProfile, subscriptionInfo, userLoggedIn, userChangi
                 : userLoggedIn === false || userLoggedIn === true && firstChallahTypeSelectionMade === false ?
                     <div>
                         <div className="text-container">
+                            {userProfile.numberOfWeeklyChallahs === '1' ? 
                             <p>What Type Of Challah Would You Like?</p>
+                            : userProfile.numberOfWeeklyChallahs === '2' ?
+                            <p>Please Select Your First Challah</p>
+                            : null }
                         </div>
                         <div className="challah-row">
                             {challahTypes.map((challah, i) => {
@@ -38,25 +42,6 @@ const TypeOfChallah = ({ userProfile, subscriptionInfo, userLoggedIn, userChangi
                                     </div>        
                                 )
                             })}
-                            {/* <div className="challah-container challah-type">
-                                <h1>Sweet</h1>
-                                {userLoggedIn ?
-                                    <button type="submit" onClick={makeSelection} data-challahtype="Sweet">Select This Challah</button>
-                                    : null}
-                            </div>
-                            <div className="challah-container challah-type">
-                                <h1>Raisin</h1>
-                                {userLoggedIn ?
-                                    <button type="submit" onClick={makeSelection} data-challahtype="Raisin">Select This Challah</button>
-                                    : null}
-                            </div>
-                            <div className="challah-container challah-type">
-                                <h1>Plain</h1>
-                                {userLoggedIn ?
-                                    <button type="submit" onClick={makeSelection} data-challahtype="Plain">Select This Challah</button>
-                                    : null}
-                            </div> */}
-                            
                         </div>
                     </div>
             : null}
@@ -64,4 +49,4 @@ const TypeOfChallah = ({ userProfile, subscriptionInfo, userLoggedIn, userChangi
     )
 }
 
-export default TypeOfChallah;
+export default FirstChallahType;

@@ -56,7 +56,7 @@ class App extends React.Component {
         "secondChallahType": '',
         "deliveryTime": ''
       },
-      numberOfChallahsSelectionMade: false,
+      numberOfWeeklyChallahsSelectionMade: false,
       firstChallahTypeSelectionMade: false,
       secondChallahTypeSelectionMade: false,
       deliveryTimeSelectionMade: false
@@ -79,7 +79,7 @@ class App extends React.Component {
             const currentUser = data[key]
             if (currentUser.userID === user.uid) {
               let userProfile = Object.assign({}, this.state.userProfile)
-              userProfile.userID = currentUser.uid
+              userProfile.userID = currentUser.userID
               userProfile.firstName = currentUser.firstName || ''
               userProfile.lastName = currentUser.lastName || ''
               userProfile.address = currentUser.address || ''
@@ -168,7 +168,17 @@ class App extends React.Component {
     .then(() => {
       this.setState({
         userLoggedIn: true,
-        userProfile: userProfile
+        userProfile: userProfile,
+        email: '',
+        password: '',
+        firstName: '',
+        lastName: '',
+        address: '',
+        apartmentSuite: '',
+        city: '',
+        province: '',
+        postalCode: '',
+        phoneNumber: '',
       })
       
     })
@@ -217,7 +227,9 @@ class App extends React.Component {
     .then(() => {
       this.setState({
         userLoggedIn: true,
-        userProfile: userProfile
+        userProfile: userProfile,
+        email: '',
+        password: '',
       })
     })
     .catch(function (error) {
@@ -232,7 +244,11 @@ class App extends React.Component {
       console.log('signed out')
       this.setState({
         userLoggedIn: false,
-        userProfile: {}
+        userProfile: {},
+        numberOfWeeklyChallahsSelectionMade: false,
+        firstChallahTypeSelectionMade: false,
+        secondChallahTypeSelectionMade: false,
+        deliveryTimeSelectionMade: false
       })
     }).catch(function (error) {
       console.log(error)
@@ -270,8 +286,9 @@ class App extends React.Component {
     
     let numberOfWeeklyChallahs = this.state.userProfile.numberOfWeeklyChallahs
     let firstChallahType = this.state.userProfile.firstChallahType
-    
-    if (challahInfo.split(':')[0] === 'numberOfChallahsSelected') {
+    let secondChallahType = this.state.userProfile.secondChallahType
+
+    if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
       numberOfWeeklyChallahs = challahInfo.split(':')[1]
      
       updatedProfile.numberOfWeeklyChallahs = numberOfWeeklyChallahs
@@ -283,23 +300,30 @@ class App extends React.Component {
       updatedProfile.firstChallahType = firstChallahType
 
     }
+    else if (challahInfo.split(':')[0] === 'secondChallahType') {
+      secondChallahType = challahInfo.split(':')[1]
+
+      updatedProfile.secondChallahType = secondChallahType
+
+    }
     
+    const selectedKey = `${challahInfo.split(":")[0]}SelectionMade`
+
     dbRefUsers.child(child).child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
     dbRefUsers.child(child).child('firstChallahType').set(firstChallahType)
+    dbRefUsers.child(child).child('secondChallahType').set(secondChallahType)
 
-    
+
     .then(() => {
       this.setState({
         userProfile: updatedProfile,
-        numberOfChallahsSelectionMade: true,
-        firstChallahTypeSelectionMade: true
+        [selectedKey]: true,
       })
     })
     
   }
 
   userChangingSelection(itemBeingChanged) {
-    console.log(itemBeingChanged)
     this.setState({
       [itemBeingChanged]: false
     })
@@ -361,7 +385,7 @@ class App extends React.Component {
                 subscriptionInfo={this.subscriptionInfo}
                 userLoggedIn={this.state.userLoggedIn}
                 userChangingSelection={this.userChangingSelection}
-                numberOfChallahsSelectionMade={this.state.numberOfChallahsSelectionMade}
+                numberOfWeeklyChallahsSelectionMade={this.state.numberOfWeeklyChallahsSelectionMade}
                 firstChallahTypeSelectionMade={this.state.firstChallahTypeSelectionMade}
                 secondChallahTypeSelectionMade={this.state.secondChallahTypeSelectionMade}
                 deliveryTimeSelectionMade={this.state.deliveryTimeSelectionMade}

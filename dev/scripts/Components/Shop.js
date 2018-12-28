@@ -1,13 +1,14 @@
 import React from 'react';
 import NumberOfChallahs from './ShopComponents/NumberOfChallas';
-import TypeOfChallah from './ShopComponents/TypeOfChallah';
+import FirstChallahType from './ShopComponents/FirstChallahType';
+import SecondChallahType from './ShopComponents/SecondChallahType';
 
 const Shop = (
     { userProfile, 
         subscriptionInfo, 
         userLoggedIn, 
         userChangingSelection, 
-        numberOfChallahsSelectionMade, 
+        numberOfWeeklyChallahsSelectionMade, 
         firstChallahTypeSelectionMade,
      }) => {
     
@@ -17,16 +18,26 @@ const Shop = (
                 userProfile={userProfile}
                 subscriptionInfo={subscriptionInfo}
                 userLoggedIn={userLoggedIn}
-                numberOfChallahsSelectionMade={numberOfChallahsSelectionMade}
+                numberOfWeeklyChallahsSelectionMade={numberOfWeeklyChallahsSelectionMade}
                 userChangingSelection={userChangingSelection}
             />
-            <TypeOfChallah 
+            <FirstChallahType 
                 userProfile={userProfile}
                 subscriptionInfo={subscriptionInfo}
                 userLoggedIn={userLoggedIn}
                 userChangingSelection={userChangingSelection}
                 firstChallahTypeSelectionMade={firstChallahTypeSelectionMade}
             />
+            {/* If 2 Challahs were selected, show this section */}
+            {userProfile.numberOfWeeklyChallahs === '2' ?
+            <SecondChallahType 
+                userProfile={userProfile}
+                subscriptionInfo={subscriptionInfo}
+                userLoggedIn={userLoggedIn}
+                userChangingSelection={userChangingSelection}
+                secondChallahTypeSelectionMade={firstChallahTypeSelectionMade}
+            /> 
+            : null }
         </div> /* Closing Shop / Wrapper */
     )
 }
