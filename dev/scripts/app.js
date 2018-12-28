@@ -55,7 +55,11 @@ class App extends React.Component {
         "firstChallahType": '',
         "secondChallahType": '',
         "deliveryTime": ''
-      }
+      },
+      numberOfChallahsSelectionMade: false,
+      firstChallahTypeSelectionMade: false,
+      secondChallahTypeSelectionMade: false,
+      deliveryTimeSelectionMade: false
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -63,6 +67,7 @@ class App extends React.Component {
     this.logout = this.logout.bind(this)
     this.createNewAccount = this.createNewAccount.bind(this)
     this.subscriptionInfo = this.subscriptionInfo.bind(this)
+    this.userChangingSelection = this.userChangingSelection.bind(this)
   }
 
   componentDidMount() {
@@ -256,26 +261,48 @@ class App extends React.Component {
     document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
   }
 
-  subscriptionInfo(numberOfWeeklyChallahs) {
+  subscriptionInfo(challahInfo) {
     const userID = this.state.userProfile.userID
     const firstName = this.state.userProfile.firstName
     const lastName = this.state.userProfile.lastName
     const child = `${lastName}-${firstName}-${userID}`
     let updatedProfile = Object.assign({}, this.state.userProfile)
     
-    updatedProfile.numberOfWeeklyChallahs = numberOfWeeklyChallahs || this.state.userProfile.numberOfWeeklyChallahs
-
+    let numberOfWeeklyChallahs = this.state.userProfile.numberOfWeeklyChallahs
+    let firstChallahType = this.state.userProfile.firstChallahType
     
-    console.log(numberOfWeeklyChallahs)
+    if (challahInfo.split(':')[0] === 'numberOfChallahsSelected') {
+      numberOfWeeklyChallahs = challahInfo.split(':')[1]
+     
+      updatedProfile.numberOfWeeklyChallahs = numberOfWeeklyChallahs
+      
+    }
+    else if (challahInfo.split(':')[0] === 'firstChallahType') {
+      firstChallahType = challahInfo.split(':')[1]
 
+      updatedProfile.firstChallahType = firstChallahType
+
+    }
+    
     dbRefUsers.child(child).child('numberOfWeeklyChallahs').set(numberOfWeeklyChallahs)
+    dbRefUsers.child(child).child('firstChallahType').set(firstChallahType)
+
     
     .then(() => {
       this.setState({
-        userProfile: updatedProfile
+        userProfile: updatedProfile,
+        numberOfChallahsSelectionMade: true,
+        firstChallahTypeSelectionMade: true
       })
     })
     
+  }
+
+  userChangingSelection(itemBeingChanged) {
+    console.log(itemBeingChanged)
+    this.setState({
+      [itemBeingChanged]: false
+    })
   }
   
   render() {
@@ -332,6 +359,12 @@ class App extends React.Component {
               <Shop 
                 userProfile={this.state.userProfile}
                 subscriptionInfo={this.subscriptionInfo}
+                userLoggedIn={this.state.userLoggedIn}
+                userChangingSelection={this.userChangingSelection}
+                numberOfChallahsSelectionMade={this.state.numberOfChallahsSelectionMade}
+                firstChallahTypeSelectionMade={this.state.firstChallahTypeSelectionMade}
+                secondChallahTypeSelectionMade={this.state.secondChallahTypeSelectionMade}
+                deliveryTimeSelectionMade={this.state.deliveryTimeSelectionMade}
               />
             )
           }}/>

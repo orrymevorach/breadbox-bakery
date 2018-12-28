@@ -1,9 +1,19 @@
 .shop {
-    .wrapper {
+    .wrapper-large {
         max-width: 1200px;
         margin: 0 auto;
     }
+    .wrapper-small {
+        max-width: 600px;
+        margin: 0 auto;
+        text-align: center;
+        position: relative;
+    }
 
+    h1 {
+        font-size: 40px;
+        margin: 30px 0;
+    }
     .text-container {
         text-align: center;
         h2 {
@@ -17,13 +27,24 @@
         justify-content: center;
     }
 
-    .challah-number {
+    .challah-container {
         height: 350px;
         // padding-top: 300px;
         width: 350px;
         background-color: white;
         box-shadow: 0 4px 15px 0 rgba(0,0,0,0.2);
         position: relative;
+        &:hover {
+            box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
+            & > button {
+                color: $darkPink;
+                background-color: white;
+                transition: 0.1s;
+            }
+        }
+    }
+
+    .challah-number {
         &:first-of-type {
             margin-right: 50px;
         }
@@ -31,12 +52,18 @@
             margin-left: 50px;
         }
         &:hover {
-            // box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
+            box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
             & > button {
                 color: $darkPink;
                 background-color: white;
                 transition: 0.1s;
             }
+        }
+    }
+
+    .challah-type {
+        &:nth-of-type(2) {
+            margin: 0 50px;
         }
     }
 
@@ -67,6 +94,11 @@
 
     .vh {
         height: 100vh;
+    }
+
+    .change-selection {
+        position: relative;
+        bottom: 0;
     }
     
     
