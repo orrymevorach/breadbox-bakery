@@ -19,9 +19,9 @@ const config = {
 };
 firebase.initializeApp(config);
 
+// Firebase Database Variables
 const dbRefUsers = firebase.database().ref('users')
-
-
+const dbRefDeliverySchedule = firebase.database().ref('deliverySchedule')
 
 class App extends React.Component {
   constructor() {
@@ -64,17 +64,32 @@ class App extends React.Component {
           "deliveryTimeSelectionMade": false
         }
       },
+      deliverySchedule: {
+        "10:00AM": '',
+        "10:30AM": '',
+        "11:00AM": '',
+        "11:30AM": '',
+        "12:00PM": '',
+        "12:30PM": '',
+        "1:00PM": '',
+        "1:30PM": '',
+        "2:00PM": '',
+        "2:30PM": '',
+        "3:00PM": '',
+        "3:30PM": ''
+      }
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.createNewAccount = this.createNewAccount.bind(this)
-    this.subscriptionInfo = this.subscriptionInfo.bind(this)
+    this.makeSelection = this.makeSelection.bind(this)
     this.userChangingSelection = this.userChangingSelection.bind(this)
   }
 
   componentDidMount() {
+    // Log In User If They Didn't Log Out After Last Use
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         let userProfile = Object.assign({}, this.state.userProfile)
@@ -118,7 +133,6 @@ class App extends React.Component {
       } 
     })
     
-    
     // Close Any Modal When Clicking Escape
     document.addEventListener("keydown", function(e) {
       if(e.which === 27) {
@@ -127,6 +141,29 @@ class App extends React.Component {
           el[i].style.display = 'none'
         }
       }
+    })
+
+    // Update Delivery Times Available
+    dbRefUsers.on('value', snapshot => {
+      const data = snapshot.val()
+      let deliverySchedule = Object.assign({}, this.state.deliverySchedule)
+      for(let key in data) {
+        const contactInformation = data[key].contactInformation
+        const orderInformation = data[key].orderInformation
+        const userDeliveryTime = data[key].orderInformation.deliveryTime
+        for(let stateKey in deliverySchedule) {
+          if(stateKey === userDeliveryTime) {
+            deliverySchedule[stateKey] = {
+              "contactInformation": contactInformation,
+              "orderInformation": orderInformation
+            }
+          }
+        }
+      }
+      dbRefDeliverySchedule.set(deliverySchedule)
+      this.setState({
+        deliverySchedule: deliverySchedule
+      })
     })
   }
 
@@ -226,7 +263,7 @@ class App extends React.Component {
         for(let key in data) {
           const contactInformation = data[key].contactInformation
           const orderInformation = data[key].orderInformation
-          if (user.userID === currentUserID) {
+          if (currentUserID === contactInformation.userID) {
             userProfile.contactInformation.userID = contactInformation.userID
             userProfile.contactInformation.firstName = contactInformation.firstName || ''
             userProfile.contactInformation.lastName = contactInformation.lastName || ''
@@ -237,6 +274,7 @@ class App extends React.Component {
             userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
             userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
             userProfile.contactInformation.email = contactInformation.email
+            
             userProfile.orderInformation.numberOfWeeklyChallahs = orderInformation.numberOfWeeklyChallahs || 0
             userProfile.orderInformation.firstChallahType = orderInformation.firstChallahType || ''
             userProfile.orderInformation.secondChallahType = orderInformation.secondChallahType || ''
@@ -300,46 +338,56 @@ class App extends React.Component {
     document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
   }
 
-  subscriptionInfo(challahInfo) {
+  makeSelection(newInfo) {
+    // Variables needed to update Firebase
     const userID = this.state.userProfile.contactInformation.userID
     const firstName = this.state.userProfile.contactInformation.firstName
     const lastName = this.state.userProfile.contactInformation.lastName
     const child = `${lastName}-${firstName}-${userID}`
+    
+    // Current User Profile Information
     let updatedProfile = Object.assign({}, this.state.userProfile)
 
-    let numberOfWeeklyChallahs = this.state.userProfile.orderInformation.numberOfWeeklyChallahs
-    let firstChallahType = this.state.userProfile.orderInformation.firstChallahType
-    let secondChallahType = this.state.userProfile.orderInformation.secondChallahType
+    // Breaking up newInfo string to define key / value pairs that are being updated
+    const split = newInfo.split(":")
+    const key = split[0]
+    let value;
+    // Applies to all selections except for deliveryTime selection
+    if(split.length === 2) {
+      value = split[1]
+    }
+    // Only applies to selecting a deliveryTime
+    else if (split.length > 2) {
+      value = `${split[1]}:${split[2]}`
+      const deliverySchedule = Object.assign({}, this.state.deliverySchedule)
+      
+      dbRefDeliverySchedule.on('value', snapshot => {
+        const data = snapshot.val()
+        
+        for(let key in data) {
+          const previousTime = data[key]
+          if( previousTime && previousTime !== value) {
+            console.log(true)
+            console.log(previousTime.orderInformation.deliveryTime, value)
+            // dbRefDeliverySchedule.child(key).set("")
 
-    if (challahInfo.split(':')[0] === 'numberOfWeeklyChallahs') {
-      numberOfWeeklyChallahs = challahInfo.split(':')[1]
+          }
+        }
+      })
+    }
+    
+    const keySelectionMade = `${key}SelectionMade`
 
-      // In case the user changes their selection from two challahs to once challah, make sure no selection is made for Second Challah
-      if(numberOfWeeklyChallahs === '1') {
-        updatedProfile.orderInformation.secondChallahType = ''
-        updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
-      }
+    updatedProfile.orderInformation[key] = value
+    updatedProfile.orderInformation[keySelectionMade] = true
 
-      updatedProfile.orderInformation.numberOfWeeklyChallahs = numberOfWeeklyChallahs
-      updatedProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = true
-      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
+    // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
+    if (updatedProfile.orderInformation.numberOfWeeklyChallahs === '1') {
+      updatedProfile.orderInformation.secondChallahType = ''
+      updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
     }
 
-    else if (challahInfo.split(':')[0] === 'firstChallahType') {
-      firstChallahType = challahInfo.split(':')[1]
-
-      updatedProfile.orderInformation.firstChallahType = firstChallahType
-      updatedProfile.orderInformation.firstChallahTypeSelectionMade = true
-      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
-    }
-
-    else if (challahInfo.split(':')[0] === 'secondChallahType') {
-      secondChallahType = challahInfo.split(':')[1]
-
-      updatedProfile.orderInformation.secondChallahType = secondChallahType
-      updatedProfile.orderInformation.secondChallahTypeSelectionMade = true
-      dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
-    }
+    dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
     
     this.setState({
       userProfile: updatedProfile,
@@ -348,7 +396,7 @@ class App extends React.Component {
 
   userChangingSelection(itemBeingChanged) {
     let userProfile = Object.assign({}, this.state.userProfile)
-    
+
     userProfile.orderInformation[itemBeingChanged] = false
       this.setState({
         userProfile: userProfile
@@ -408,9 +456,10 @@ class App extends React.Component {
             return (
               <Shop 
                 userProfile={this.state.userProfile}
-                subscriptionInfo={this.subscriptionInfo}
+                makeSelection={this.makeSelection}
                 userLoggedIn={this.state.userLoggedIn}
                 userChangingSelection={this.userChangingSelection}
+                deliverySchedule={this.state.deliverySchedule}
               />
             )
           }}/>

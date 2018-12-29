@@ -1,25 +1,21 @@
 .shop {
-    .wrapper-large {
+    text-align: center;
+    &.wrapper-large {
         max-width: 1200px;
         margin: 0 auto;
-    }
-    .wrapper-small {
-        max-width: 600px;
-        margin: 0 auto;
         text-align: center;
-        position: relative;
     }
 
     h1 {
         font-size: 40px;
-        margin: 30px 0;
+        margin: 30px auto;
+    }
+    h2 {
+        font-weight: 400;
+        font-size: 30px;
     }
     .text-container {
         text-align: center;
-        h2 {
-            font-weight: 400;
-            font-size: 30px;
-        }
     }
 
     .challah-row {
@@ -29,7 +25,6 @@
 
     .challah-container {
         height: 350px;
-        // padding-top: 300px;
         width: 350px;
         background-color: white;
         box-shadow: 0 4px 15px 0 rgba(0,0,0,0.2);
@@ -67,13 +62,19 @@
         }
     }
 
+    .delivery-time {
+        width: 100px;
+        height: 100px;
+        margin: 0 10px;
+    }
+
     button {
         position: absolute;
         bottom: 20px;
         left: 50%;
         transform: translateX(-50%);
         background-color: $darkPink;
-        width: 90%;
+        width: 45%;
         display: block;
         padding: 10px 0;
         border: none;
