@@ -29,7 +29,7 @@ const SecondChallahType = (
                                 <div className="challah-container challah-type" key={i}>
                                     <h1>{challah}</h1>
                                     {userLoggedIn ?
-                                        <button type="submit" data-challahtype={challah} onClick={(e) => makeSelection(`secondChallahType:${e.target.dataset.challahtype}`)}>Select This Challah</button>
+                                        <button type="submit" data-challahtype={challah} onClick={(e) => makeSelection(`secondChallahType-${e.target.dataset.challahtype}`)}>Select This Challah</button>
                                     : null}
                                 </div>
                             )

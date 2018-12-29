@@ -35,13 +35,13 @@ const NumberOfWeeklyChallahs = (
                         <div className="challah-container challah-number">
                             <h1>1 Challah</h1>
                                 {userLoggedIn ?
-                                    <button type="submit" data-challahnumber="1" onClick={(e) => makeSelection(`numberOfWeeklyChallahs:${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                                    <button type="submit" data-challahnumber="1" onClick={(e) => makeSelection(`numberOfWeeklyChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
                                 : null}
                         </div>
                         <div className="challah-container challah-number">
                             <h1>2 Challahs</h1>
                                 {userLoggedIn ?
-                                    <button type="submit" data-challahnumber="2" onClick={(e) => makeSelection(`numberOfWeeklyChallahs:${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                                    <button type="submit" data-challahnumber="2" onClick={(e) => makeSelection(`numberOfWeeklyChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
                                 : null}
                         </div>
                     </div>

@@ -39,7 +39,7 @@ const DeliveryTime = (
                                     <div className="challah-container delivery-time" key={i}>
                                         <p>{time}</p>
                                         {userLoggedIn ?
-                                            <button type="submit" data-deliverytime={time} onClick={(e) => makeSelection(`deliveryTime:${e.target.dataset.deliverytime}`)}>Select</button>
+                                            <button type="submit" data-deliverytime={time} onClick={(e) => makeSelection(`deliveryTime-${e.target.dataset.deliverytime}`)}>Select</button>
                                             : null}
                                     </div>
                                 )

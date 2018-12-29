@@ -120,16 +120,12 @@ class App extends React.Component {
         
             }
           }
-            
         })
-        
-        // setTimeout(() => {
-          console.log('user auto logged in')
-          this.setState({
-            userLoggedIn: true,
-            userProfile: userProfile
-          })
-        // }, 1000);    
+        console.log('user auto logged in')
+        this.setState({
+          userLoggedIn: true,
+          userProfile: userProfile
+        })
       } 
     })
     
@@ -152,11 +148,17 @@ class App extends React.Component {
         const orderInformation = data[key].orderInformation
         const userDeliveryTime = data[key].orderInformation.deliveryTime
         for(let stateKey in deliverySchedule) {
+          const currentUserID = this.state.userProfile.contactInformation.userID
+          const previousUser = deliverySchedule[stateKey].contactInformation
           if(stateKey === userDeliveryTime) {
             deliverySchedule[stateKey] = {
               "contactInformation": contactInformation,
               "orderInformation": orderInformation
             }
+          }
+          // If user changes desired deliveryTime, remove the user from past time
+          else if (previousUser && currentUserID === previousUser.userID && stateKey !== userDeliveryTime) {
+            deliverySchedule[stateKey] = ""
           }
         }
       }
@@ -339,6 +341,9 @@ class App extends React.Component {
   }
 
   makeSelection(newInfo) {
+    // ***** This section only updates the User Profile
+    // ***** The deliverySchedule is updated in ComponentDidMount automatically everytime a user adds / changes a deliveryTIme (delivery schedule will only update on refresh).
+
     // Variables needed to update Firebase
     const userID = this.state.userProfile.contactInformation.userID
     const firstName = this.state.userProfile.contactInformation.firstName
@@ -349,33 +354,9 @@ class App extends React.Component {
     let updatedProfile = Object.assign({}, this.state.userProfile)
 
     // Breaking up newInfo string to define key / value pairs that are being updated
-    const split = newInfo.split(":")
+    const split = newInfo.split("-")
     const key = split[0]
-    let value;
-    // Applies to all selections except for deliveryTime selection
-    if(split.length === 2) {
-      value = split[1]
-    }
-    // Only applies to selecting a deliveryTime
-    else if (split.length > 2) {
-      value = `${split[1]}:${split[2]}`
-      const deliverySchedule = Object.assign({}, this.state.deliverySchedule)
-      
-      dbRefDeliverySchedule.on('value', snapshot => {
-        const data = snapshot.val()
-        
-        for(let key in data) {
-          const previousTime = data[key]
-          if( previousTime && previousTime !== value) {
-            console.log(true)
-            console.log(previousTime.orderInformation.deliveryTime, value)
-            // dbRefDeliverySchedule.child(key).set("")
-
-          }
-        }
-      })
-    }
-    
+    const value = split[1]
     const keySelectionMade = `${key}SelectionMade`
 
     updatedProfile.orderInformation[key] = value
@@ -392,15 +373,17 @@ class App extends React.Component {
     this.setState({
       userProfile: updatedProfile,
     })
+
   }
 
   userChangingSelection(itemBeingChanged) {
     let userProfile = Object.assign({}, this.state.userProfile)
 
     userProfile.orderInformation[itemBeingChanged] = false
-      this.setState({
-        userProfile: userProfile
-      })
+
+    this.setState({
+      userProfile: userProfile
+    })
   }
   
   render() {
