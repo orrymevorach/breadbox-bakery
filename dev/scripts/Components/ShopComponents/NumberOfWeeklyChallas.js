@@ -4,13 +4,14 @@ const NumberOfWeeklyChallahs = (
     { userProfile: { orderInformation }, 
         makeSelection, 
         userLoggedIn, 
-        userChangingSelection }
+        userChangingSelection,
+        scrollToNextSection }
     ) => {
 
     const { numberOfWeeklyChallahs, numberOfWeeklyChallahsSelectionMade } = orderInformation
     
     return (
-        <div className="vh">
+        <div className="vh numberOfWeeklyChallahs">
             <h2>Our Subscription Plans</h2>
             {userLoggedIn === true && numberOfWeeklyChallahs !== '0' && numberOfWeeklyChallahsSelectionMade === true ?
                 <div>
@@ -32,11 +33,11 @@ const NumberOfWeeklyChallahs = (
                 <div>
                     <p>Select How Many Challahs You Would Like Delivered To Your Door Each Week</p>
                     <div className="challah-row">
-                        <div className="challah-container challah-number">
-                            <h1>1 Challah</h1>
-                                {userLoggedIn ?
-                                    <button type="submit" data-challahnumber="1" onClick={(e) => makeSelection(`numberOfWeeklyChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
-                                : null}
+                        <div className="challah-container challah-number" onClick={(e) => scrollToNextSection(e)}>
+                        <h1>1 Challah</h1>
+                            {userLoggedIn ?
+                                <button type="submit" data-challahnumber="1" onClick={(e) => makeSelection(`numberOfWeeklyChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                            : null}
                         </div>
                         <div className="challah-container challah-number">
                             <h1>2 Challahs</h1>

@@ -102,6 +102,18 @@
         bottom: 0;
     }
     
+    .begin-now {
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        display: none;
+    }
+    .begin-button {
+        // position: relative;
+        // left: none;
+        // transform: translateX(0);
+    }
     
 
 }

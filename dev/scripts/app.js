@@ -61,7 +61,8 @@ class App extends React.Component {
           "numberOfWeeklyChallahsSelectionMade": false,
           "firstChallahTypeSelectionMade": false,
           "secondChallahTypeSelectionMade": false,
-          "deliveryTimeSelectionMade": false
+          "deliveryTimeSelectionMade": false,
+          "firstTimeCustomer": true
         }
       },
       deliverySchedule: {
@@ -368,6 +369,17 @@ class App extends React.Component {
       updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
     }
 
+    if(value.includes(":")) {
+      const contactInformation = this.state.userProfile.contactInformation
+      const orderInformation = this.state.userProfile.orderInformation
+      const userInformation = {
+        "contactInformation": contactInformation,
+        "orderInformation": orderInformation
+      }
+      console.log(userInformation)
+      dbRefDeliverySchedule.child(value).set(userInformation)
+    }
+    
     dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
     
     this.setState({
