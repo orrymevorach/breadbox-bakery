@@ -133,6 +133,7 @@ class App extends React.Component {
     // Close Any Modal When Clicking Escape
     document.addEventListener("keydown", function(e) {
       if(e.which === 27) {
+        document.getElementsByTagName('body')[0].removeAttribute('id', 'stop-scroll')
         const el = document.getElementsByClassName('modal-container')
         for(let i = 0; i < el.length; i++) {
           el[i].style.display = 'none'
@@ -339,6 +340,7 @@ class App extends React.Component {
   showModal(modal) {
     document.querySelector(`[data-modal='${modal}']`).style.display = 'block'
     document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
+    window.scrollTo(0,0)
   }
 
   makeSelection(newInfo) {

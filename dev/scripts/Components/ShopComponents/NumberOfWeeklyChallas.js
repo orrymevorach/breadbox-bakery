@@ -33,7 +33,8 @@ const NumberOfWeeklyChallahs = (
                 <div>
                     <p>Select How Many Challahs You Would Like Delivered To Your Door Each Week</p>
                     <div className="challah-row">
-                        <div className="challah-container challah-number" onClick={(e) => scrollToNextSection(e)}>
+                        {/* <div className="challah-container challah-number" onClick={(e) => scrollToNextSection(e)}> */}
+                        <div className="challah-container challah-number">
                         <h1>1 Challah</h1>
                             {userLoggedIn ?
                                 <button type="submit" data-challahnumber="1" onClick={(e) => makeSelection(`numberOfWeeklyChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>

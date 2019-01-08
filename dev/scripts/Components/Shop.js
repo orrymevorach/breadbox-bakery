@@ -10,20 +10,20 @@ class Shop extends React.Component {
     }
 
     componentDidMount() {
-        const oldHeaderHeight = document.getElementsByTagName('header')[0].clientHeight
-        const windowHeight = window.innerHeight
-        const newHeaderHeight = 100 - (oldHeaderHeight / windowHeight * 100)
+        // const oldHeaderHeight = document.getElementsByTagName('header')[0].clientHeight
+        // const windowHeight = window.innerHeight
+        // const newHeaderHeight = 100 - (oldHeaderHeight / windowHeight * 100)
 
-        document.getElementsByClassName('begin-now')[0].style.height = `${newHeaderHeight}vh`
+        // document.getElementsByClassName('begin-now')[0].style.height = `${newHeaderHeight}vh`
 
-        if(this.props.userProfile.orderInformation.firstTimeCustomer === true) {
-            document.getElementsByClassName('begin-now')[0].style.display = 'inline-block'
-            console.log(document.getElementsByTagName('body')[0])
-            document.getElementsByTagName('body')[0].style.height = '100vh'
-            document.getElementsByTagName('body')[0].style.overflow = 'hidden'
-        }
+        // if(this.props.userProfile.orderInformation.firstTimeCustomer === true) {
+        //     document.getElementsByClassName('begin-now')[0].style.display = 'inline-block'
+        //     console.log(document.getElementsByTagName('body')[0])
+        //     document.getElementsByTagName('body')[0].style.height = '100vh'
+        //     document.getElementsByTagName('body')[0].style.overflow = 'hidden'
+        // }
 
-        console.log(document.getElementsByClassName('numberOfWeeklyChallahs')[0])
+        // console.log(document.getElementsByClassName('numberOfWeeklyChallahs')[0])
 
     }
     scrollToNextSection(e) {
@@ -52,9 +52,9 @@ class Shop extends React.Component {
             
         return (
             <div className="shop wrapper-large">
-                <div className="begin-now">
+                {/* <div className="begin-now">
                     <button className="begin-button" type="submit" onClick={(e) => this.scrollToNextSection(e)}>Begin Now</button>
-                </div>
+                </div> */}
                 <NumberOfWeeklyChallahs
                     userProfile={userProfile}
                     makeSelection={makeSelection}
