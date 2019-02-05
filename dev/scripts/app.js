@@ -62,7 +62,11 @@ class App extends React.Component {
           "firstChallahTypeSelectionMade": false,
           "secondChallahTypeSelectionMade": false,
           "deliveryTimeSelectionMade": false,
-          "firstTimeCustomer": true
+          "firstTimeCustomer": true,
+          "freshOrFrozen": "",
+          "freshOrFrozenSelectionMade": false,
+          "numberOfFrozenChallahs": 0,
+          "numberOfFrozenChallahsSelectionMade": false
         }
       },
       deliverySchedule: {
@@ -118,7 +122,11 @@ class App extends React.Component {
               userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
               userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
               userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
-        
+              userProfile.orderInformation.freshOrFrozen = orderInformation.freshOrFrozen || ''
+              userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
+              userProfile.orderInformation.numberOfFrozenChallahs = orderInformation.numberOfFrozenChallahs || 0
+              userProfile.orderInformation.numberOfFrozenChallahsSelectionMade = orderInformation.numberOfFrozenChallahsSelectionMade || false
+
             }
           }
         })
@@ -220,7 +228,15 @@ class App extends React.Component {
           "numberOfWeeklyChallahsSelectionMade": false,
           "firstChallahTypeSelectionMade": false,
           "secondChallahTypeSelectionMade": false,
-          "deliveryTimeSelectionMade": false
+          "deliveryTimeSelectionMade": false,
+          "freshOrFrozen": "",
+          "freshOrFrozenSelectionMade": false,
+          "freshChallahSelected": false,
+          "frozenChallahSelected": false,
+          "numberOfFrozenChallahsSelected": 0,
+          "numberOfFrozenChallahs": 0,
+          "numberOfFrozenChallahsSelectionMade": false
+
         }
       }
 
@@ -286,7 +302,11 @@ class App extends React.Component {
             userProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = orderInformation.numberOfWeeklyChallahsSelectionMade || false
             userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
             userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
-            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
+            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false,
+            userProfile.orderInformation.freshOrFrozen = orderInformation.freshOrFrozen || ''
+            userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
+            userProfile.orderInformation.numberOfFrozenChallahs = orderInformation.numberOfFrozenChallahs || 0
+            userProfile.orderInformation.numberOfFrozenChallahsSelectionMade = orderInformation.numberOfFrozenChallahsSelectionMade || false
           }
         }
       })

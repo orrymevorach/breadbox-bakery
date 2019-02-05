@@ -3,6 +3,8 @@ import NumberOfWeeklyChallahs from './ShopComponents/NumberOfWeeklyChallas';
 import FirstChallahType from './ShopComponents/FirstChallahType';
 import SecondChallahType from './ShopComponents/SecondChallahType';
 import DeliveryTime from './ShopComponents/DeliveryTime';
+import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
+import NumberOfFrozen from './ShopComponents/NumberOfFrozen';
 
 class Shop extends React.Component {
     constructor(props) {
@@ -55,28 +57,49 @@ class Shop extends React.Component {
                 {/* <div className="begin-now">
                     <button className="begin-button" type="submit" onClick={(e) => this.scrollToNextSection(e)}>Begin Now</button>
                 </div> */}
-                <NumberOfWeeklyChallahs
-                    userProfile={userProfile}
-                    makeSelection={makeSelection}
-                    userLoggedIn={userLoggedIn}
-                    userChangingSelection={userChangingSelection}
-                    scrollToNextSection={this.scrollToNextSection}
-                />
-                <FirstChallahType
+                <FreshOrFrozen 
                     userProfile={userProfile}
                     makeSelection={makeSelection}
                     userLoggedIn={userLoggedIn}
                     userChangingSelection={userChangingSelection}
                 />
-                {/* If 2 Challahs were selected, show this section */}
-                {userProfile.orderInformation.numberOfWeeklyChallahs === '2' ?
+                
+                {userProfile.orderInformation.freshOrFrozen === "Fresh" || userProfile.orderInformation.freshOrFrozen === "Both" ?
+                    <div>
+                        <NumberOfWeeklyChallahs
+                            userProfile={userProfile}
+                            makeSelection={makeSelection}
+                            userLoggedIn={userLoggedIn}
+                            userChangingSelection={userChangingSelection}
+                            scrollToNextSection={this.scrollToNextSection}
+                        />
+                        
+                        <FirstChallahType
+                            userProfile={userProfile}
+                            makeSelection={makeSelection}
+                            userLoggedIn={userLoggedIn}
+                            userChangingSelection={userChangingSelection}
+                        />
+                    </div>
+                : null }
+                {( userProfile.orderInformation.freshOrFrozen === "Fresh" || userProfile.orderInformation.freshOrFrozen === "Both" )  && userProfile.orderInformation.numberOfWeeklyChallahs === '2' ?
                     <SecondChallahType
                         userProfile={userProfile}
                         makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                     />
-                    : null}
+                : null }
+
+                {userProfile.orderInformation.freshOrFrozen === "Frozen" || userProfile.orderInformation.freshOrFrozen === "Both" ? 
+                <NumberOfFrozen 
+                    userProfile={userProfile}
+                    makeSelection={makeSelection}
+                    userLoggedIn={userLoggedIn}
+                    userChangingSelection={userChangingSelection}
+                />
+                : null }
+                
                 <DeliveryTime
                     userProfile={userProfile}
                     makeSelection={makeSelection}
@@ -84,6 +107,8 @@ class Shop extends React.Component {
                     userChangingSelection={userChangingSelection}
                     deliverySchedule={deliverySchedule}
                 />
+
+                
             </div> /* Closing Shop / Wrapper */
         )
     }

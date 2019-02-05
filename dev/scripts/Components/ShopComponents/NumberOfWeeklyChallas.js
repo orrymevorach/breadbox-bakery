@@ -12,18 +12,19 @@ const NumberOfWeeklyChallahs = (
     
     return (
         <div className="vh numberOfWeeklyChallahs">
-            <h2>Our Subscription Plans</h2>
+            { userLoggedIn ? <h2>Select Your Subscription Plan</h2> : <h2>Subscription Plans</h2> }
+            
             {userLoggedIn === true && numberOfWeeklyChallahs !== '0' && numberOfWeeklyChallahsSelectionMade === true ?
                 <div>
                     { // If 1 Challah was Selected
                     numberOfWeeklyChallahs === '1' ?
                         <h1>Your Selection: <br></br>
-                        {numberOfWeeklyChallahs} Challah will be delivered Weekly</h1>
+                        {numberOfWeeklyChallahs} Fresh Challah will be delivered Weekly</h1>
 
                     // If 2 Challahs were selected
                     : numberOfWeeklyChallahs === '2' ?
                         <h1>Your Selection: <br></br>
-                        {numberOfWeeklyChallahs} Challahs will be delivered Weekly</h1>
+                        {numberOfWeeklyChallahs} Fresh Challahs will be delivered Weekly</h1>
                     : null}
 
                     <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyChallahsSelectionMade')}>Click Here To Change Selection</button>
@@ -31,7 +32,7 @@ const NumberOfWeeklyChallahs = (
 
             : userLoggedIn === false || ( userLoggedIn === true && numberOfWeeklyChallahsSelectionMade === false )?
                 <div>
-                    <p>Select How Many Challahs You Would Like Delivered To Your Door Each Week</p>
+                    <p>Select How Many Fresh Challahs You Would Like Delivered To Your Door Each Week</p>
                     <div className="challah-row">
                         {/* <div className="challah-container challah-number" onClick={(e) => scrollToNextSection(e)}> */}
                         <div className="challah-container challah-number">
