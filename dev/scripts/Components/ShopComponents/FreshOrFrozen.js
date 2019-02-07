@@ -7,41 +7,29 @@ const FreshOrFrozen = (
         userChangingSelection }
 ) => {
   
-  const { freshOrFrozen, freshChallahSelected, freshOrFrozenSelectionMade, frozenChallahSelected } = orderInformation
+  const { freshChallahSelected, frozenChallahSelected, freshOrFrozenSelectionMade } = orderInformation
 
-  const selection = ( freshOrFrozenSelectionMade && freshOrFrozen === 'Fresh' ) ? 'Fresh' :
-  ( freshOrFrozenSelectionMade && freshOrFrozen === 'Frozen' ) ? 'Frozen' :
-  ( freshOrFrozenSelectionMade && freshOrFrozen === 'Both' ) ? 'Both' : 
-  null
+  const challahSelection = freshChallahSelected === true ? "Fresh" : frozenChallahSelected === true ? "Frozen" : null 
 
   const challahTypes = [
     {
         name: 'Fresh',
-        description: "Our Freshly Baked Challahs"
+        description: "Our Freshly Baked Challahs",
+        valuePassedToMakeSelection: 'fresh'
     },
     {
         name: 'Frozen',
-        description: "Our Frozen Challahs"
+        description: "Our Frozen Challahs",
+        valuePassedToMakeSelection: 'frozen'
     },
-    {
-        name: 'Both',
-        description: "Both!"
-    }
 ]
   
   return (
     <div className="vh">
       
-      {!userLoggedIn ? <h2>We Serve Fresh and Frozen Challahs</h2>: userLoggedIn && !freshOrFrozenSelectionMade ? <h2>Would You Like Your Challahs Fresh, Frozen, or Both?</h2> : null}
+      { !userLoggedIn ? <h2>Our Subscription Plans</h2>: userLoggedIn && !freshOrFrozenSelectionMade ? <h2>Select Subscription Plan</h2> : null}
 
-      { userLoggedIn && freshOrFrozenSelectionMade  ?
-        <div>
-            <h1>Your Selection: <br></br>
-            {selection}</h1>
-            <button type="submit" className="change-selection" onClick={() => userChangingSelection('freshOrFrozenSelectionMade')}>Click Here To Change Selection</button>
-        </div>
-      
-        : !userLoggedIn || userLoggedIn && !freshOrFrozenSelectionMade? 
+      { (userLoggedIn && !freshOrFrozenSelectionMade) || !userLoggedIn ?
         <div className="challah-row">
             {challahTypes.map((challah, i) => {
                 return (
@@ -49,19 +37,20 @@ const FreshOrFrozen = (
                         <h1>{challah.name}</h1>
                         <p>{challah.description}</p>
                         {userLoggedIn ?
-                            <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`freshOrFrozen-${e.target.dataset.challahtype}`)} >Select This Challah</button>
+                            <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
                         : null}
                     </div>        
                 )
             })}
         </div>
+      : userLoggedIn && freshOrFrozenSelectionMade  ?
+        <div>
+            <h1>Your Selection: <br></br>
+            {challahSelection}</h1>
+            <button type="submit" className="change-selection" onClick={() => userChangingSelection('freshOrFrozenSelectionMade')}>Click Here To Change Selection</button>
+        </div>
       
         : null}
-
-
-      
-      
-      
       
     </div>
   )

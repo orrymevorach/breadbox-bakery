@@ -53,7 +53,7 @@ gulp.task('img', () => {
 		.pipe(gulp.dest('./public/img'))
 })
 
-gulp.task('default', ['bs', 'js', 'styles', 'img', 'index'], () => {
+gulp.task('default', ['bs', 'js', 'styles', 'img'], () => {
 	gulp.watch('dev/**/*.js', ['js']);
 	gulp.watch('dev/**/*.scss', ['styles']);
 	gulp.watch('./public/styles/style.css', reload);

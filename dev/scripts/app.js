@@ -54,22 +54,29 @@ class App extends React.Component {
           "email": '',
         },
         "orderInformation": {
-          "numberOfWeeklyChallahs": 0,
-          "firstChallahType": '',
-          "secondChallahType": '',
+          // General Info
           "deliveryTime": '',
-          "numberOfWeeklyChallahsSelectionMade": false,
-          "firstChallahTypeSelectionMade": false,
-          "secondChallahTypeSelectionMade": false,
           "deliveryTimeSelectionMade": false,
-          "firstTimeCustomer": true,
-          "freshOrFrozen": "",
+          "freshChallahSelected": false,
+          "frozenChallahSelected": false,
           "freshOrFrozenSelectionMade": false,
-          "numberOfFrozenChallahs": 0,
-          "numberOfFrozenChallahsSelectionMade": false
+          // Fresh Challahs
+          "numberOfWeeklyFreshChallahs": 0,
+          "numberOfWeeklyFreshChallahsSelectionMade": false,
+          "firstFreshChallahType": '',
+          "firstFreshChallahTypeSelectionMade": false,
+          "secondFreshChallahType": '',
+          "secondFreshChallahTypeSelectionMade": false,
+          // Frozen Challahs
+          "numberOfWeeklyFrozenChallahs": 0,
+          "numberOfWeeklyFrozenChallahsSelectionMade": false,
+          "firstFrozenChallahType": '',
+          "firstFrozenChallahTypeSelectionMade": false,
+          "secondFrozenChallahType": '',
+          "secondFrozenChallahTypeSelectionMade": false,
         }
       },
-      deliverySchedule: {
+      "deliverySchedule": {
         "10:00AM": '',
         "10:30AM": '',
         "11:00AM": '',
@@ -82,7 +89,36 @@ class App extends React.Component {
         "2:30PM": '',
         "3:00PM": '',
         "3:30PM": ''
-      }
+      },
+      "freshChallahTypes": [
+        {
+          name: 'Original',
+          description: "Plain Challah with No Topping"
+        },
+        {
+          name: 'Sesame',
+          description: "Plain Challah with Sesame Seed Topping"
+        },
+        {
+          name: 'Sweet',
+          description: "Plain Challah with Streusel Topping"
+        },
+        {
+          name: 'Raisin',
+          description: "Raisin Challah with Streusel Topping"
+        }
+      ],
+      "frozenChallahTypes": [
+        {
+          name: 'Original',
+          description: "Plain Challah with No Topping"
+        },
+        {
+          name: 'Raisin',
+          description: "Raisin Challah with Streusel Topping"
+        },
+      ]
+
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -104,6 +140,7 @@ class App extends React.Component {
             const contactInformation = data[key].contactInformation
             const orderInformation = data[key].orderInformation
             if (user.uid === contactInformation.userID) {
+              // contact information
               userProfile.contactInformation.userID = contactInformation.userID
               userProfile.contactInformation.firstName = contactInformation.firstName || ''
               userProfile.contactInformation.lastName = contactInformation.lastName || ''
@@ -114,18 +151,26 @@ class App extends React.Component {
               userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
               userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
               userProfile.contactInformation.email = contactInformation.email
-              userProfile.orderInformation.numberOfWeeklyChallahs = orderInformation.numberOfWeeklyChallahs || 0
-              userProfile.orderInformation.firstChallahType = orderInformation.firstChallahType || ''
-              userProfile.orderInformation.secondChallahType = orderInformation.secondChallahType || ''
+              // order information
               userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
-              userProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = orderInformation.numberOfWeeklyChallahsSelectionMade || false
-              userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
-              userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
               userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
-              userProfile.orderInformation.freshOrFrozen = orderInformation.freshOrFrozen || ''
+              userProfile.orderInformation.freshChallahSelected = orderInformation.freshChallahSelected || false
+              userProfile.orderInformation.frozenChallahSelected = orderInformation.frozenChallahSelected || false
               userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
-              userProfile.orderInformation.numberOfFrozenChallahs = orderInformation.numberOfFrozenChallahs || 0
-              userProfile.orderInformation.numberOfFrozenChallahsSelectionMade = orderInformation.numberOfFrozenChallahsSelectionMade || false
+              // Fresh Challahs
+              userProfile.orderInformation.numberOfWeeklyFreshChallahs = orderInformation.numberOfWeeklyFreshChallahs || 0
+              userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = orderInformation.numberOfWeeklyFreshChallahsSelectionMade || false
+              userProfile.orderInformation.firstFreshChallahType = orderInformation.firstFreshChallahType || ''
+              userProfile.orderInformation.firstFreshChallahTypeSelectionMade = orderInformation.firstFreshChallahTypeSelectionMade || false
+              userProfile.orderInformation.secondFreshChallahType = orderInformation.secondFreshChallahType || ''
+              userProfile.orderInformation.secondFreshChallahTypeSelectionMade = orderInformation.secondFreshChallahTypeSelectionMade || false
+              // Frozen Challahs
+              userProfile.orderInformation.numberOfWeeklyFrozenChallahs = orderInformation.numberOfWeeklyFrozenChallahs || 0
+              userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = orderInformation.numberOfWeeklyFrozenChallahsSelectionMade || false
+              userProfile.orderInformation.firstFrozenChallahType = orderInformation.firstFrozenChallahType || ''
+              userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = orderInformation.firstFrozenChallahTypeSelectionMade || false
+              userProfile.orderInformation.secondFrozenChallahType = orderInformation.secondFrozenChallahType || ''
+              userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = orderInformation.secondFrozenChallahTypeSelectionMade || false
 
             }
           }
@@ -221,22 +266,26 @@ class App extends React.Component {
           "email": email
         },
         "orderInformation": {
-          "numberOfWeeklyChallahs": 0,
-          "firstChallahType": '',
-          "secondChallahType": '',
+          // General Info
           "deliveryTime": '',
-          "numberOfWeeklyChallahsSelectionMade": false,
-          "firstChallahTypeSelectionMade": false,
-          "secondChallahTypeSelectionMade": false,
           "deliveryTimeSelectionMade": false,
-          "freshOrFrozen": "",
-          "freshOrFrozenSelectionMade": false,
           "freshChallahSelected": false,
           "frozenChallahSelected": false,
-          "numberOfFrozenChallahsSelected": 0,
-          "numberOfFrozenChallahs": 0,
-          "numberOfFrozenChallahsSelectionMade": false
-
+          "freshOrFrozenSelectionMade": false,
+          // Fresh Challahs
+          "numberOfWeeklyFreshChallahs": 0,
+          "numberOfWeeklyFreshChallahsSelectionMade": false,
+          "firstFreshChallahType": '',
+          "firstFreshChallahTypeSelectionMade": false,
+          "secondFreshChallahType": '',
+          "secondFreshChallahTypeSelectionMade": false,
+          // Frozen Challahs
+          "numberOfWeeklyFrozenChallahs": 0,
+          "numberOfWeeklyFrozenChallahsSelectionMade": false,
+          "firstFrozenChallahType": '',
+          "firstFrozenChallahTypeSelectionMade": false,
+          "secondFrozenChallahType": '',
+          "secondFrozenChallahTypeSelectionMade": false,
         }
       }
 
@@ -294,19 +343,26 @@ class App extends React.Component {
             userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
             userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
             userProfile.contactInformation.email = contactInformation.email
-            
-            userProfile.orderInformation.numberOfWeeklyChallahs = orderInformation.numberOfWeeklyChallahs || 0
-            userProfile.orderInformation.firstChallahType = orderInformation.firstChallahType || ''
-            userProfile.orderInformation.secondChallahType = orderInformation.secondChallahType || ''
+            // order information
             userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
-            userProfile.orderInformation.numberOfWeeklyChallahsSelectionMade = orderInformation.numberOfWeeklyChallahsSelectionMade || false
-            userProfile.orderInformation.firstChallahTypeSelectionMade = orderInformation.firstChallahTypeSelectionMade || false
-            userProfile.orderInformation.secondChallahTypeSelectionMade = orderInformation.secondChallahTypeSelectionMade || false
-            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false,
-            userProfile.orderInformation.freshOrFrozen = orderInformation.freshOrFrozen || ''
+            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
+            userProfile.orderInformation.freshChallahSelected = orderInformation.freshChallahSelected || false
+            userProfile.orderInformation.frozenChallahSelected = orderInformation.frozenChallahSelected || false
             userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
-            userProfile.orderInformation.numberOfFrozenChallahs = orderInformation.numberOfFrozenChallahs || 0
-            userProfile.orderInformation.numberOfFrozenChallahsSelectionMade = orderInformation.numberOfFrozenChallahsSelectionMade || false
+            // Fresh Challahs
+            userProfile.orderInformation.numberOfWeeklyFreshChallahs = orderInformation.numberOfWeeklyFreshChallahs || 0
+            userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = orderInformation.numberOfWeeklyFreshChallahsSelectionMade || false
+            userProfile.orderInformation.firstFreshChallahType = orderInformation.firstFreshChallahType || ''
+            userProfile.orderInformation.firstFreshChallahTypeSelectionMade = orderInformation.firstFreshChallahTypeSelectionMade || false
+            userProfile.orderInformation.secondFreshChallahType = orderInformation.secondFreshChallahType || ''
+            userProfile.orderInformation.secondFreshChallahTypeSelectionMade = orderInformation.secondFreshChallahTypeSelectionMade || false
+            // Frozen Challahs
+            userProfile.orderInformation.numberOfWeeklyFrozenChallahs = orderInformation.numberOfWeeklyFrozenChallahs || 0
+            userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = orderInformation.numberOfWeeklyFrozenChallahsSelectionMade || false
+            userProfile.orderInformation.firstFrozenChallahType = orderInformation.firstFrozenChallahType || ''
+            userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = orderInformation.firstFrozenChallahTypeSelectionMade || false
+            userProfile.orderInformation.secondFrozenChallahType = orderInformation.secondFrozenChallahType || ''
+            userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = orderInformation.secondFrozenChallahTypeSelectionMade || false
           }
         }
       })
@@ -377,29 +433,55 @@ class App extends React.Component {
     let updatedProfile = Object.assign({}, this.state.userProfile)
 
     // Breaking up newInfo string to define key / value pairs that are being updated
-    const split = newInfo.split("-")
-    const key = split[0]
-    const value = split[1]
-    const keySelectionMade = `${key}SelectionMade`
-
-    updatedProfile.orderInformation[key] = value
-    updatedProfile.orderInformation[keySelectionMade] = true
-
-    // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
-    if (updatedProfile.orderInformation.numberOfWeeklyChallahs === '1') {
-      updatedProfile.orderInformation.secondChallahType = ''
-      updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
-    }
-
-    if(value.includes(":")) {
-      const contactInformation = this.state.userProfile.contactInformation
-      const orderInformation = this.state.userProfile.orderInformation
-      const userInformation = {
-        "contactInformation": contactInformation,
-        "orderInformation": orderInformation
+    if( newInfo.includes("freshChallahSelected" ) || newInfo.includes("frozenChallahSelected")) {
+      updatedProfile.orderInformation[newInfo] = true
+      updatedProfile.orderInformation.freshOrFrozenSelectionMade = true
+      if( newInfo.includes("freshChallahSelected")) {
+        updatedProfile.orderInformation.frozenChallahSelected = false
+        updatedProfile.orderInformation.numberOfWeeklyFrozenChallahs = 0
+        updatedProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = false
+        updatedProfile.orderInformation.firstFrozenChallahType = ""
+        updatedProfile.orderInformation.firstFrozenChallahTypeSelectionMade = false
+        updatedProfile.orderInformation.secondFrozenChallahType = ""
+        updatedProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
       }
-      console.log(userInformation)
-      dbRefDeliverySchedule.child(value).set(userInformation)
+      else if ( newInfo.includes("frozenChallahSelected")) {
+        updatedProfile.orderInformation.freshChallahSelected = false
+        updatedProfile.orderInformation.numberOfWeeklyFreshChallahs = 0
+        updatedProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = false
+        updatedProfile.orderInformation.firstFreshChallahType = ""
+        updatedProfile.orderInformation.firstFreshChallahTypeSelectionMade = false
+        updatedProfile.orderInformation.secondFreshChallahType = ""
+        updatedProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
+      }
+    }
+    else {
+      const split = newInfo.split("-")
+      const key = split[0]
+      let value = split[1]
+      const keySelectionMade = `${key}SelectionMade`
+
+      if(value === "1" || value === "2") {
+        value = parseInt(value)
+      }
+      updatedProfile.orderInformation[key] = value
+      updatedProfile.orderInformation[keySelectionMade] = true
+  
+      // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
+      if (updatedProfile.orderInformation.numberOfWeeklyChallahs === '1') {
+        updatedProfile.orderInformation.secondChallahType = ''
+        updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
+      }
+  
+      if(typeof value === "string" && value.includes(":")) {
+        const contactInformation = this.state.userProfile.contactInformation
+        const orderInformation = this.state.userProfile.orderInformation
+        const userInformation = {
+          "contactInformation": contactInformation,
+          "orderInformation": orderInformation
+        }
+        dbRefDeliverySchedule.child(value).set(userInformation)
+      }
     }
     
     dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
@@ -413,7 +495,13 @@ class App extends React.Component {
   userChangingSelection(itemBeingChanged) {
     let userProfile = Object.assign({}, this.state.userProfile)
 
+    
     userProfile.orderInformation[itemBeingChanged] = false
+    
+    if(itemBeingChanged === "freshOrFrozenSelectionMade") {
+      userProfile.orderInformation.freshChallahSelected = false
+      userProfile.orderInformation.frozenChallahSelected = false
+    }
 
     this.setState({
       userProfile: userProfile
@@ -477,6 +565,9 @@ class App extends React.Component {
                 userLoggedIn={this.state.userLoggedIn}
                 userChangingSelection={this.userChangingSelection}
                 deliverySchedule={this.state.deliverySchedule}
+                freshChallahTypes={this.state.freshChallahTypes}
+                frozenChallahTypes={this.state.frozenChallahTypes}
+
               />
             )
           }}/>

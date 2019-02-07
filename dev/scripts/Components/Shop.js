@@ -1,47 +1,16 @@
 import React from 'react';
-import NumberOfWeeklyChallahs from './ShopComponents/NumberOfWeeklyChallas';
-import FirstChallahType from './ShopComponents/FirstChallahType';
-import SecondChallahType from './ShopComponents/SecondChallahType';
+import NumberOfWeeklyFreshChallahs from './ShopComponents/NumberOfWeeklyFreshChallas';
+import NumberOfWeeklyFrozenChallahs from './ShopComponents/NumberOfWeeklyFrozenChallahs';
+import FirstFreshChallahType from './ShopComponents/FirstFreshChallahType';
+import SecondFreshChallahType from './ShopComponents/SecondFreshChallahType';
 import DeliveryTime from './ShopComponents/DeliveryTime';
 import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
-import NumberOfFrozen from './ShopComponents/NumberOfFrozen';
+import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
+import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 
 class Shop extends React.Component {
     constructor(props) {
         super(props)
-    }
-
-    componentDidMount() {
-        // const oldHeaderHeight = document.getElementsByTagName('header')[0].clientHeight
-        // const windowHeight = window.innerHeight
-        // const newHeaderHeight = 100 - (oldHeaderHeight / windowHeight * 100)
-
-        // document.getElementsByClassName('begin-now')[0].style.height = `${newHeaderHeight}vh`
-
-        // if(this.props.userProfile.orderInformation.firstTimeCustomer === true) {
-        //     document.getElementsByClassName('begin-now')[0].style.display = 'inline-block'
-        //     console.log(document.getElementsByTagName('body')[0])
-        //     document.getElementsByTagName('body')[0].style.height = '100vh'
-        //     document.getElementsByTagName('body')[0].style.overflow = 'hidden'
-        // }
-
-        // console.log(document.getElementsByClassName('numberOfWeeklyChallahs')[0])
-
-    }
-    scrollToNextSection(e) {
-        console.log(e.target)
-        let nextElement;
-        if(e.target.className === "begin-button") {
-            nextElement = document.getElementsByClassName('numberOfWeeklyChallahs')[0].clientHeight
-        }
-        else {
-            nextElement = e.target.nextSibling.offsetTop
-        }
-
-        window.scrollTo({
-            top: nextElement,
-            behavior: 'smooth'
-        })
     }
 
     render() {
@@ -51,12 +20,11 @@ class Shop extends React.Component {
         const userLoggedIn = this.props.userLoggedIn
         const userChangingSelection = this.props.userChangingSelection
         const deliverySchedule = this.props.deliverySchedule
+        const freshChallahTypes = this.props.freshChallahTypes
+        const frozenChallahTypes = this.props.frozenChallahTypes
             
         return (
             <div className="shop wrapper-large">
-                {/* <div className="begin-now">
-                    <button className="begin-button" type="submit" onClick={(e) => this.scrollToNextSection(e)}>Begin Now</button>
-                </div> */}
                 <FreshOrFrozen 
                     userProfile={userProfile}
                     makeSelection={makeSelection}
@@ -64,26 +32,8 @@ class Shop extends React.Component {
                     userChangingSelection={userChangingSelection}
                 />
                 
-                {userProfile.orderInformation.freshOrFrozen === "Fresh" || userProfile.orderInformation.freshOrFrozen === "Both" ?
-                    <div>
-                        <NumberOfWeeklyChallahs
-                            userProfile={userProfile}
-                            makeSelection={makeSelection}
-                            userLoggedIn={userLoggedIn}
-                            userChangingSelection={userChangingSelection}
-                            scrollToNextSection={this.scrollToNextSection}
-                        />
-                        
-                        <FirstChallahType
-                            userProfile={userProfile}
-                            makeSelection={makeSelection}
-                            userLoggedIn={userLoggedIn}
-                            userChangingSelection={userChangingSelection}
-                        />
-                    </div>
-                : null }
-                {( userProfile.orderInformation.freshOrFrozen === "Fresh" || userProfile.orderInformation.freshOrFrozen === "Both" )  && userProfile.orderInformation.numberOfWeeklyChallahs === '2' ?
-                    <SecondChallahType
+                { userLoggedIn && userProfile.orderInformation.freshChallahSelected ? 
+                    <NumberOfWeeklyFreshChallahs
                         userProfile={userProfile}
                         makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
@@ -91,22 +41,64 @@ class Shop extends React.Component {
                     />
                 : null }
 
-                {userProfile.orderInformation.freshOrFrozen === "Frozen" || userProfile.orderInformation.freshOrFrozen === "Both" ? 
-                <NumberOfFrozen 
-                    userProfile={userProfile}
-                    makeSelection={makeSelection}
-                    userLoggedIn={userLoggedIn}
-                    userChangingSelection={userChangingSelection}
-                />
+                { userLoggedIn && userProfile.orderInformation.frozenChallahSelected ? 
+                    <NumberOfWeeklyFrozenChallahs 
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                    />
+                : null }
+
+                { !userLoggedIn || ( userLoggedIn && userProfile.orderInformation.freshChallahSelected === true ) ?
+                    <FirstFreshChallahType
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                        freshChallahTypes={freshChallahTypes}
+                    />
                 : null }
                 
-                <DeliveryTime
-                    userProfile={userProfile}
-                    makeSelection={makeSelection}
-                    userLoggedIn={userLoggedIn}
-                    userChangingSelection={userChangingSelection}
-                    deliverySchedule={deliverySchedule}
-                />
+                { !userLoggedIn || ( userLoggedIn && userProfile.orderInformation.frozenChallahSelected ) === true ?
+                    <FirstFrozenChallahType 
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                        frozenChallahTypes={frozenChallahTypes}
+                    />
+                : null }
+
+                { userLoggedIn && userProfile.orderInformation.numberOfWeeklyFreshChallahs === 2 ?
+                    <SecondFreshChallahType
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                        freshChallahTypes={freshChallahTypes}
+                    />
+
+                : userLoggedIn && userProfile.orderInformation.numberOfWeeklyFrozenChallahs === 2 ?
+                    <SecondFrozenChallahType 
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                        frozenChallahTypes={frozenChallahTypes}
+                    />
+
+                : null }
+
+                { userLoggedIn ?
+                    <DeliveryTime
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                        deliverySchedule={deliverySchedule}
+                    />
+                : null }
 
                 
             </div> /* Closing Shop / Wrapper */

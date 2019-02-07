@@ -19,7 +19,6 @@ const Header = (
             <nav className="header-nav clearfix">
                 <ul>
                     <NavLink to="/"><li>Home</li></NavLink>
-                    <li>About</li>
                     <NavLink to="/shop"><li>Shop</li></NavLink>
                     
                     <li>Contact</li>

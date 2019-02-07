@@ -3,6 +3,11 @@ $font: 'Rubik', sans-serif;
 $lightPink: rgb(239, 192, 202);
 $darkPink: #FDA5C1;
 
+h1, h2, h3, h4, h5, h6, ul, li, a, p {
+    margin: 0;
+    padding: 0;
+}
+
 @import 'setup';
 @import 'header';
 @import 'modals';
@@ -12,10 +17,7 @@ $darkPink: #FDA5C1;
 
 // General Styles
 
-h1, h2, h3, h4, h5, h6, ul, li, a {
-    margin: 0;
-    padding: 0;
-}
+
 
 body {
     font-family: $font;
