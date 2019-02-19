@@ -30,9 +30,11 @@ class Shop extends React.Component {
             
         return (
             <div className="shop wrapper-large">
+                {userLoggedIn ? 
                 <FormTracker 
                     userProfile={userProfile}
-                />
+                /> : null }
+                
                 <FreshOrFrozen 
                     userProfile={userProfile}
                     makeSelection={makeSelection}

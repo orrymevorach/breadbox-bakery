@@ -4,6 +4,7 @@
     top: 200px;
     .tracking-container {
         display: flex;
+        margin: 30px 0;
     }
     .tracking-circle {
         height: 10px;
@@ -16,12 +17,12 @@
     }
     .tracking-vertical-line {
         position: absolute;
-        bottom: -70px;
+        bottom: -100px;
         left: 50%;
         transform: translateX(-50%);
         background-color: $darkPink;
         width: 2px;
-        height: 70px;
+        height: 100px;
     }
     .tracking-text-container {
         margin-left: 15px;

@@ -2,6 +2,7 @@ import React from 'react';
 
 class FormTracker extends React.Component {
     componentDidMount() {
+        // Shorten height of last vertical line
         const verticalLines = document.getElementsByClassName("tracking-vertical-line")
         const lastVeritcalLine = verticalLines.length - 1
         verticalLines[lastVeritcalLine].style.height = "35px"
