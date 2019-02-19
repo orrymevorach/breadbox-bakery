@@ -7,6 +7,7 @@ import DeliveryTime from './ShopComponents/DeliveryTime';
 import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
 import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
+import FormTracker from './ShopComponents/FormTracker';
 
 class Shop extends React.Component {
     constructor(props) {
@@ -15,16 +16,23 @@ class Shop extends React.Component {
 
     render() {
         
-        const userProfile = this.props.userProfile
-        const makeSelection = this.props.makeSelection
-        const userLoggedIn = this.props.userLoggedIn
-        const userChangingSelection = this.props.userChangingSelection
-        const deliverySchedule = this.props.deliverySchedule
-        const freshChallahTypes = this.props.freshChallahTypes
-        const frozenChallahTypes = this.props.frozenChallahTypes
+        const userProfile = this.props.userProfile,
+            makeSelection = this.props.makeSelection,
+            userLoggedIn = this.props.userLoggedIn,
+            userChangingSelection = this.props.userChangingSelection,
+            deliverySchedule = this.props.deliverySchedule,
+            freshChallahTypes = this.props.freshChallahTypes,
+            frozenChallahTypes = this.props.frozenChallahTypes,
+            freshChallahSelected = this.props.userProfile.orderInformation.freshChallahSelected,
+            frozenChallahSelected = this.props.userProfile.orderInformation.frozenChallahSelected,
+            numberOfWeeklyFreshChallahs = this.props.userProfile.orderInformation.numberOfWeeklyFreshChallahs,
+            numberOfWeeklyFrozenChallahs = this.props.userProfile.orderInformation.numberOfWeeklyFrozenChallahs
             
         return (
             <div className="shop wrapper-large">
+                <FormTracker 
+                    userProfile={userProfile}
+                />
                 <FreshOrFrozen 
                     userProfile={userProfile}
                     makeSelection={makeSelection}
@@ -32,7 +40,7 @@ class Shop extends React.Component {
                     userChangingSelection={userChangingSelection}
                 />
                 
-                { userLoggedIn && userProfile.orderInformation.freshChallahSelected ? 
+                { userLoggedIn && freshChallahSelected ? 
                     <NumberOfWeeklyFreshChallahs
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -41,7 +49,7 @@ class Shop extends React.Component {
                     />
                 : null }
 
-                { userLoggedIn && userProfile.orderInformation.frozenChallahSelected ? 
+                { userLoggedIn && frozenChallahSelected ? 
                     <NumberOfWeeklyFrozenChallahs 
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -50,7 +58,7 @@ class Shop extends React.Component {
                     />
                 : null }
 
-                { !userLoggedIn || ( userLoggedIn && userProfile.orderInformation.freshChallahSelected === true ) ?
+                { !userLoggedIn || userLoggedIn && freshChallahSelected  ?
                     <FirstFreshChallahType
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -60,7 +68,7 @@ class Shop extends React.Component {
                     />
                 : null }
                 
-                { !userLoggedIn || ( userLoggedIn && userProfile.orderInformation.frozenChallahSelected ) === true ?
+                { !userLoggedIn || userLoggedIn && frozenChallahSelected ?
                     <FirstFrozenChallahType 
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -70,7 +78,7 @@ class Shop extends React.Component {
                     />
                 : null }
 
-                { userLoggedIn && userProfile.orderInformation.numberOfWeeklyFreshChallahs === 2 ?
+                { userLoggedIn && numberOfWeeklyFreshChallahs === 2 ?
                     <SecondFreshChallahType
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -79,7 +87,7 @@ class Shop extends React.Component {
                         freshChallahTypes={freshChallahTypes}
                     />
 
-                : userLoggedIn && userProfile.orderInformation.numberOfWeeklyFrozenChallahs === 2 ?
+                : userLoggedIn && numberOfWeeklyFrozenChallahs === 2 ?
                     <SecondFrozenChallahType 
                         userProfile={userProfile}
                         makeSelection={makeSelection}

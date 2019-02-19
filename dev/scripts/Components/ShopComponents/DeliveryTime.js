@@ -18,7 +18,7 @@ const DeliveryTime = (
     }
 
     return (
-        <div className="vh">
+        <section className="vh shop-section">
             <h2>Delivery Time Options</h2>
             {userLoggedIn && deliveryTime && deliveryTimeSelectionMade === true ?
                 <div>
@@ -56,7 +56,7 @@ const DeliveryTime = (
                     </div>
                 </div>
             : null}
-        </div> /* Closing VH */
+        </section> /* Closing VH */
 
     )
 }

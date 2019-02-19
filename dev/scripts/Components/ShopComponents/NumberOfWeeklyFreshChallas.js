@@ -20,7 +20,7 @@ const NumberOfWeeklyFreshChallahs = (
     ]
 
     return (
-        <div className="vh">
+        <section className="vh shop-section">
             <h2>Select Quantity</h2>
             
             { numberOfWeeklyFreshChallahsSelectionMade === false ?
@@ -53,7 +53,7 @@ const NumberOfWeeklyFreshChallahs = (
 
             
             : null}
-        </div> /* Closing VH */
+        </section> /* Closing VH */
     )
 }
 

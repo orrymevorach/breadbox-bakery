@@ -25,7 +25,7 @@ const FreshOrFrozen = (
 ]
   
   return (
-    <div className="vh">
+    <section className="vh shop-section">
       
       { !userLoggedIn ? <h2>Our Subscription Plans</h2>: userLoggedIn && !freshOrFrozenSelectionMade ? <h2>Select Subscription Plan</h2> : null}
 
@@ -52,7 +52,7 @@ const FreshOrFrozen = (
       
         : null}
       
-    </div>
+    </section>
   )
 }
 

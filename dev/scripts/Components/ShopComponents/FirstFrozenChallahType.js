@@ -12,7 +12,7 @@ const FirstFrozenChallahType = (
     const { firstFrozenChallahType, firstFrozenChallahTypeSelectionMade, numberOfWeeklyFrozenChallahs } = orderInformation
     
     return (
-        <div className="vh">
+        <section className="vh shop-section">
             { !userLoggedIn ? <h2>Our Frozen Challahs</h2> 
             : userLoggedIn && numberOfWeeklyFrozenChallahs === 1 ? <h2>Select Your Challah</h2>
             : userLoggedIn && numberOfWeeklyFrozenChallahs === 2 ? <h2>Select Your First Challah</h2>  
@@ -39,7 +39,7 @@ const FirstFrozenChallahType = (
         </div>
       
         : null}
-        </div> /* Closing VH */
+        </section> /* Closing VH */
     )
 }
 

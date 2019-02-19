@@ -7,6 +7,7 @@ import Home from './Components/Home';
 import Footer from './Components/Footer';
 import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Shop from './Components/Shop';
+import ComingSoon from './ComingSoon';
 
 // Initialize Firebase
 const config = {
@@ -461,18 +462,27 @@ class App extends React.Component {
       let value = split[1]
       const keySelectionMade = `${key}SelectionMade`
 
+      // Convert type of strings into numbers for number of weekly challah selections
       if(value === "1" || value === "2") {
         value = parseInt(value)
       }
+
       updatedProfile.orderInformation[key] = value
       updatedProfile.orderInformation[keySelectionMade] = true
   
       // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
-      if (updatedProfile.orderInformation.numberOfWeeklyChallahs === '1') {
-        updatedProfile.orderInformation.secondChallahType = ''
-        updatedProfile.orderInformation.secondChallahTypeSelectionMade = false
+      if (updatedProfile.orderInformation.numberOfWeeklyFreshChallahs === 1) {
+        console.log(true)
+        updatedProfile.orderInformation.secondFreshChallahType = ''
+        updatedProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
+      }
+      if (updatedProfile.orderInformation.numberOfWeeklyFrozenChallahs === 1) {
+        console.log(true)
+        updatedProfile.orderInformation.secondFrozenChallahType = ''
+        updatedProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
       }
   
+      // Specific to delivery time selections
       if(typeof value === "string" && value.includes(":")) {
         const contactInformation = this.state.userProfile.contactInformation
         const orderInformation = this.state.userProfile.orderInformation
@@ -480,10 +490,12 @@ class App extends React.Component {
           "contactInformation": contactInformation,
           "orderInformation": orderInformation
         }
+        // Set delivery schedule in firebase
         dbRefDeliverySchedule.child(value).set(userInformation)
       }
     }
     
+    // Update all changes to firebase
     dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
     
     this.setState({
@@ -514,6 +526,7 @@ class App extends React.Component {
 
     return (
       <div>
+        {/* <ComingSoon /> */}
         <LoginModal 
           closeModal={this.closeModal}
           showModal={this.showModal}

@@ -12,7 +12,7 @@ const secondFreshChallahType = (
     const { secondFreshChallahType, secondFreshChallahTypeSelectionMade, numberOfWeeklyFreshChallahs } = orderInformation
     
     return (
-        <div className="vh">
+        <section className="vh shop-section">
             <h2>Select Your Second Challah</h2>
             { !secondFreshChallahTypeSelectionMade  ?
             <div className="challah-row">
@@ -36,7 +36,7 @@ const secondFreshChallahType = (
         </div>
       
         : null}
-        </div> /* Closing VH */
+        </section> /* Closing VH */
     )
 }
 
