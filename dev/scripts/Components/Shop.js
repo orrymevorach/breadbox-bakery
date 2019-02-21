@@ -31,9 +31,21 @@ class Shop extends React.Component {
         return (
             <div className="shop wrapper-large">
                 {userLoggedIn ? 
-                <FormTracker 
-                    userProfile={userProfile}
-                /> : null }
+                    <div>
+                        {/* Form Tracker */}
+                        <FormTracker 
+                            userProfile={userProfile}
+                        /> 
+                        
+                        {/* Back To Top Button */}
+                        <a href="#freshOrFrozen">
+                            <button className="back-to-top">Back To Top</button>
+                        </a>
+                        
+                    </div>
+
+
+                : null }
                 
                 <FreshOrFrozen 
                     userProfile={userProfile}

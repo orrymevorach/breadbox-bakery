@@ -54,6 +54,12 @@ class FormTracker extends React.Component {
 
         return (
             <div className="form-tracker">
+                <div className="tracking-box">
+                    <div className="box top"></div>
+                    <div className="box left"></div>
+                    <div className="box right"></div>
+                    <div className="box bottom"></div>
+                </div>
                 {sections.map((section, index) => {
                     return (
                         <div className="tracking-container" key={index}>

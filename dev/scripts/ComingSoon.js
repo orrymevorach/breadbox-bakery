@@ -35,8 +35,8 @@ class ComingSoon extends Component {
 
     return (
       <section className="coming-soon">
-        <h1>Breadbox Bakery Website Launch In:</h1>
-        <h2 id="demo"></h2>
+        <h1>Breadbox Bakery Website Coming Soon...</h1>
+        {/* <h2 id="demo"></h2> */}
         <img src="../img/logo.png" alt="Logo"/>
         <div className="pink-box top"></div>
         <div className="pink-box left"></div>

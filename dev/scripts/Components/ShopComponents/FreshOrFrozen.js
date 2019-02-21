@@ -15,17 +15,27 @@ const FreshOrFrozen = (
     {
         name: 'Fresh',
         description: "Our Freshly Baked Challahs",
-        valuePassedToMakeSelection: 'fresh'
+        valuePassedToMakeSelection: 'fresh',
+        anchor: "#numberOfWeeklyFreshChallahs"
     },
     {
         name: 'Frozen',
         description: "Our Frozen Challahs",
-        valuePassedToMakeSelection: 'frozen'
+        valuePassedToMakeSelection: 'frozen',
+        anchor: "#numberOfWeeklyFrozenChallahs"
     },
 ]
+
+function scrollAndSelect(challah) {
+    window.location.hash = "firstFreshChallahType"
+
+    console.log("yooooooooooooo")
+
+    makeSelection(challah)
+}
   
   return (
-    <section className="vh shop-section">
+    <section className="vh shop-section" id="freshOrFrozen">
       
       { !userLoggedIn ? <h2>Our Subscription Plans</h2>: userLoggedIn && !freshOrFrozenSelectionMade ? <h2>Select Subscription Plan</h2> : null}
 
@@ -37,7 +47,9 @@ const FreshOrFrozen = (
                         <h1>{challah.name}</h1>
                         <p>{challah.description}</p>
                         {userLoggedIn ?
-                            <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
+                        <a href={challah.anchor}>
+                            <button type="submit" data-challahtype={challah.name} onClick={(e) => scrollAndSelect(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
+                        </a>
                         : null}
                     </div>        
                 )

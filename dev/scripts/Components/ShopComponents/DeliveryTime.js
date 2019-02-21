@@ -18,7 +18,7 @@ const DeliveryTime = (
     }
 
     return (
-        <section className="vh shop-section">
+        <section className="vh shop-section" id="deliveryTime">
             <h2>Delivery Time Options</h2>
             {userLoggedIn && deliveryTime && deliveryTimeSelectionMade === true ?
                 <div>

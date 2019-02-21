@@ -12,7 +12,7 @@ const SecondFrozenChallahType = (
     const { secondFrozenChallahType, secondFrozenChallahTypeSelectionMade, numberOfWeeklyFrozenChallahs } = orderInformation
     
     return (
-        <section className="vh shop-section">
+        <section className="vh shop-section" id="secondFrozenChallahType">
             <h2>Select Your Second Challah</h2>  
             { !secondFrozenChallahTypeSelectionMade  ?
             <div className="challah-row">
@@ -22,7 +22,9 @@ const SecondFrozenChallahType = (
                             <h1>{challah.name}</h1>
                             <p>{challah.description}</p>
                             {userLoggedIn ? 
+                            <a href="#deliveryTime">
                                 <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`secondFrozenChallahType-${e.target.dataset.challahtype}`)} >Select This Challah</button>
+                            </a>
                             : null }
                         </div>        
                     )

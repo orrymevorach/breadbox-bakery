@@ -11,16 +11,18 @@ const NumberOfWeeklyFrozenChallahs = (
     const numberOfChallahs = [
         {
             number: 1,
-            description: "1 Challah"
+            description: "1 Challah",
+            anchor: "#firstFrozenChallahType"
         },
         {
             number: 2,
-            description: "2 Challahs"
+            description: "2 Challahs",
+            anchor: "#firstFrozenChallahType"
         }
     ]
 
     return (
-        <section className="vh shop-section">
+        <section className="vh shop-section" id="numberOfWeeklyFrozenChallahs">
             <h2>Select Quantity</h2>
             
             { numberOfWeeklyFrozenChallahsSelectionMade === false ?
@@ -29,7 +31,9 @@ const NumberOfWeeklyFrozenChallahs = (
                         return (
                             <div className="challah-container challah-number" key={index}>
                                 <h1>{challah.description}</h1>
-                                <button type="submit" data-challahnumber={challah.number} onClick={(e) => makeSelection(`numberOfWeeklyFrozenChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                                <a href={challah.anchor}>
+                                    <button type="submit" data-challahnumber={challah.number} onClick={(e) => makeSelection(`numberOfWeeklyFrozenChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                                </a>
                             </div>    
                         )
                     })}

@@ -93,6 +93,14 @@
             transition: 0.1s;
         }
     }
+    button.back-to-top {
+        position: fixed;
+        bottom: 40px;
+        right: 0;
+        left: auto;
+        width: 100px;
+        height: 90px;
+    }
 
     .selected {
         box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
@@ -100,6 +108,7 @@
 
     .vh {
         height: 100vh;
+        padding-top: 40vh;
     }
 
     .change-selection {
