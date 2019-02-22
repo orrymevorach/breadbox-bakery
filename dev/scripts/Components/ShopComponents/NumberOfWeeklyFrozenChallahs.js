@@ -52,7 +52,7 @@ const NumberOfWeeklyFrozenChallahs = (
                         {numberOfWeeklyFrozenChallahs} Frozen Challahs will be delivered Weekly</h1>
                     : null }
 
-                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyFrozenChallahsSelectionMade')}>Click Here To Change Selection</button>
+                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyFrozenChallahsSelectionMade')}>Change Selection</button>
                 </div>
 
             

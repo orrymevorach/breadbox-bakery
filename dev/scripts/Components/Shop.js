@@ -8,28 +8,83 @@ import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
 import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 import FormTracker from './ShopComponents/FormTracker';
+import classnames from 'classnames';
+import IncompleteOrderModal from './IncompleteOrderModal';
 
 class Shop extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            formComplete: false
+        }
+
+        this.confirmOrder = this.confirmOrder.bind(this)
+    }
+
+    componentDidMount() {
+        const footerHeight = document.getElementsByTagName('footer')[0].clientHeight
+        const incompleteOrderModal = document.getElementsByClassName('incomplete-order-modal')[0]
+
+        const bottom = 0 - footerHeight
+
+        incompleteOrderModal.style.bottom = `${bottom}px`
+
+
+        
+    }
+
+    componentDidUpdate(prevProps) {
+        const { userProfile: { orderInformation: 
+            { freshOrFrozenSelectionMade,  
+                numberOfWeeklyFreshChallahs,
+                numberOfWeeklyFrozenChallahs,
+                numberOfWeeklyFreshChallahsSelectionMade,
+                numberOfWeeklyFrozenChallahsSelectionMade,
+                firstFreshChallahTypeSelectionMade,
+                firstFrozenChallahTypeSelectionMade,
+                secondFreshChallahTypeSelectionMade,
+                secondFrozenChallahTypeSelectionMade,
+                deliveryTimeSelectionMade
+            
+            }}} = this.props
+
+        const secondChallah = (numberOfWeeklyFreshChallahs === 1 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 1 && !secondFrozenChallahTypeSelectionMade) || (numberOfWeeklyFreshChallahs === 2 && secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 2 && secondFrozenChallahTypeSelectionMade) ? true : false ;
+
+        if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
+            this.setState({
+                formComplete: true
+            })
+        }
+    }
+
+    confirmOrder() {
+        if(this.state.formComplete) {
+            console.log(true)
+        }
+        else {
+            this.props.showModal('incomplete-order-modal')
+        }
     }
 
     render() {
+
+        const { formComplete } = this.state
         
-        const userProfile = this.props.userProfile,
-            makeSelection = this.props.makeSelection,
-            userLoggedIn = this.props.userLoggedIn,
-            userChangingSelection = this.props.userChangingSelection,
-            deliverySchedule = this.props.deliverySchedule,
-            freshChallahTypes = this.props.freshChallahTypes,
-            frozenChallahTypes = this.props.frozenChallahTypes,
-            freshChallahSelected = this.props.userProfile.orderInformation.freshChallahSelected,
-            frozenChallahSelected = this.props.userProfile.orderInformation.frozenChallahSelected,
-            numberOfWeeklyFreshChallahs = this.props.userProfile.orderInformation.numberOfWeeklyFreshChallahs,
-            numberOfWeeklyFrozenChallahs = this.props.userProfile.orderInformation.numberOfWeeklyFrozenChallahs
+        const { userProfile,
+                makeSelection,
+                userLoggedIn,
+                userChangingSelection,
+                deliverySchedule,
+                freshChallahTypes,
+                frozenChallahTypes,
+                userProfile: { orderInformation: { freshChallahSelected, frozenChallahSelected, numberOfWeeklyFreshChallahs, numberOfWeeklyFrozenChallahs } }
+            } = this.props
             
         return (
             <div className="shop wrapper-large">
+            <IncompleteOrderModal 
+                closeModal={this.props.closeModal}
+            />
                 {userLoggedIn ? 
                     <div>
                         {/* Form Tracker */}
@@ -39,7 +94,7 @@ class Shop extends React.Component {
                         
                         {/* Back To Top Button */}
                         <a href="#freshOrFrozen">
-                            <button className="back-to-top">Back To Top</button>
+                            <button className="back-to-top">Top</button>
                         </a>
                         
                     </div>
@@ -121,6 +176,13 @@ class Shop extends React.Component {
                         deliverySchedule={deliverySchedule}
                     />
                 : null }
+
+                <button 
+                    className={classnames({disabled: !formComplete})} 
+                    onClick={this.confirmOrder}
+                    >Submit
+                    <div className="hover-note"><p>Please Complete The Form Before Submitting</p></div>
+                    </button>
 
                 
             </div> /* Closing Shop / Wrapper */

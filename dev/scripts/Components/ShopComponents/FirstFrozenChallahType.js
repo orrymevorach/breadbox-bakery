@@ -38,7 +38,7 @@ const FirstFrozenChallahType = (
         <div>
             <h1>Your Selection: <br></br>
             {firstFrozenChallahType}</h1>
-            <button type="submit" className="change-selection" onClick={() => userChangingSelection('firstFrozenChallahTypeSelectionMade')}>Click Here To Change Selection</button>
+            <button type="submit" className="change-selection" onClick={() => userChangingSelection('firstFrozenChallahTypeSelectionMade')}>Change Selection</button>
         </div>
       
         : null}

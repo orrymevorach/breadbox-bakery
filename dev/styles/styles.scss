@@ -2,10 +2,12 @@
 $font: 'Rubik', sans-serif;
 $lightPink: rgb(239, 192, 202);
 $darkPink: #FDA5C1;
+$black: #31322b;
 
 h1, h2, h3, h4, h5, h6, ul, li, a, p {
     margin: 0;
     padding: 0;
+    color: $black;
 }
 
 @import 'setup';

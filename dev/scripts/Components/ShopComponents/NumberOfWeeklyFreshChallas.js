@@ -52,7 +52,7 @@ const NumberOfWeeklyFreshChallahs = (
                         {numberOfWeeklyFreshChallahs} Fresh Challahs will be delivered Weekly</h1>
                     : null }
 
-                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyFreshChallahsSelectionMade')}>Click Here To Change Selection</button>
+                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('numberOfWeeklyFreshChallahsSelectionMade')}>Change Selection</button>
                 </div>
 
             

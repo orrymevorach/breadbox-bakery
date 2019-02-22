@@ -25,15 +25,6 @@ const FreshOrFrozen = (
         anchor: "#numberOfWeeklyFrozenChallahs"
     },
 ]
-
-function scrollAndSelect(challah) {
-    window.location.hash = "firstFreshChallahType"
-
-    console.log("yooooooooooooo")
-
-    makeSelection(challah)
-}
-  
   return (
     <section className="vh shop-section" id="freshOrFrozen">
       
@@ -48,7 +39,7 @@ function scrollAndSelect(challah) {
                         <p>{challah.description}</p>
                         {userLoggedIn ?
                         <a href={challah.anchor}>
-                            <button type="submit" data-challahtype={challah.name} onClick={(e) => scrollAndSelect(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
+                            <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
                         </a>
                         : null}
                     </div>        
@@ -59,7 +50,7 @@ function scrollAndSelect(challah) {
         <div>
             <h1>Your Selection: <br></br>
             {challahSelection}</h1>
-            <button type="submit" className="change-selection" onClick={() => userChangingSelection('freshOrFrozenSelectionMade')}>Click Here To Change Selection</button>
+            <button type="submit" className="change-selection" onClick={() => userChangingSelection('freshOrFrozenSelectionMade')}>Change Selection</button>
         </div>
       
         : null}

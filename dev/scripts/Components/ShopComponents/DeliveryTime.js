@@ -24,7 +24,7 @@ const DeliveryTime = (
                 <div>
                     <h1>Your Selection: <br></br>
                         {deliveryTime}</h1>
-                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('deliveryTimeSelectionMade')}>Click Here To Change Selection</button>
+                    <button type="submit" className="change-selection" onClick={() => userChangingSelection('deliveryTimeSelectionMade')}>Change Selection</button>
                 </div>
             : userLoggedIn === false || userLoggedIn === true && deliveryTimeSelectionMade === false ?
                 <div>

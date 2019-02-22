@@ -34,7 +34,7 @@ const secondFreshChallahType = (
         <div>
             <h1>Your Selection: <br></br>
             {secondFreshChallahType}</h1>
-            <button type="submit" className="change-selection" onClick={() => userChangingSelection('secondFreshChallahTypeSelectionMade')}>Click Here To Change Selection</button>
+            <button type="submit" className="change-selection" onClick={() => userChangingSelection('secondFreshChallahTypeSelectionMade')}>Change Selection</button>
         </div>
       
         : null}

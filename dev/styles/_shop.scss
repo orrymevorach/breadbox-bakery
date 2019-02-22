@@ -82,7 +82,6 @@
         width: 45%;
         display: block;
         padding: 10px 0;
-        border: none;
         color: white;
         text-transform: uppercase;
         border: 2px solid $darkPink;
@@ -92,14 +91,48 @@
             background-color: white;
             transition: 0.1s;
         }
+        &.disabled {
+            background-color: #cfcfcf;
+            border: 2px solid #cfcfcf;
+            color: white;
+            position: relative;
+            &:hover > .hover-note {
+                display: block;
+                position: absolute;
+                top: -45px;
+                left: 0;
+                padding: 15px 10px;
+                background-color: rgb(255, 255, 160);
+                color: $black;
+                :after {
+                    content: '';
+                    width: 0; 
+                    height: 0; 
+                    border-left: 10px solid transparent;
+                    border-right: 10px solid transparent;
+                    border-top: 10px solid rgb(255, 255, 160);
+                    position: absolute;
+                    bottom: -10px;
+                    left: 0;
+                }
+                p {
+                    font-size: 12px;
+                    margin-bottom: 0;
+                }
+            }
+            & > .hover-note {
+                display: none;
+            }
+        }
     }
+    
     button.back-to-top {
         position: fixed;
         bottom: 40px;
         right: 0;
         left: auto;
-        width: 100px;
-        height: 90px;
+        width: 60px;
+        height: 50px;
     }
 
     .selected {
@@ -107,8 +140,8 @@
     }
 
     .vh {
-        height: 100vh;
-        padding-top: 40vh;
+        height: 90vh;
+        padding-top: 10vh;
     }
 
     .change-selection {

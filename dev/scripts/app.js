@@ -417,7 +417,9 @@ class App extends React.Component {
   showModal(modal) {
     document.querySelector(`[data-modal='${modal}']`).style.display = 'block'
     document.getElementsByTagName('body')[0].setAttribute('id', 'stop-scroll')
-    window.scrollTo(0,0)
+    if(modal !== "incomplete-order-modal") {
+      window.scrollTo(0,0)
+    }
   }
 
   makeSelection(newInfo) {
@@ -472,12 +474,10 @@ class App extends React.Component {
   
       // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
       if (updatedProfile.orderInformation.numberOfWeeklyFreshChallahs === 1) {
-        console.log(true)
         updatedProfile.orderInformation.secondFreshChallahType = ''
         updatedProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
       }
       if (updatedProfile.orderInformation.numberOfWeeklyFrozenChallahs === 1) {
-        console.log(true)
         updatedProfile.orderInformation.secondFrozenChallahType = ''
         updatedProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
       }
@@ -580,6 +580,8 @@ class App extends React.Component {
                 deliverySchedule={this.state.deliverySchedule}
                 freshChallahTypes={this.state.freshChallahTypes}
                 frozenChallahTypes={this.state.frozenChallahTypes}
+                closeModal={this.closeModal}
+                showModal={this.showModal}
 
               />
             )

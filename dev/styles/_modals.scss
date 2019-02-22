@@ -124,3 +124,11 @@ input[type=submit] {
     cursor: pointer;
     text-decoration: underline;
 }
+
+.incomplete-order-modal {
+    .modal {
+        overflow-y: visible;
+        height: 254px;
+        top: 30%;
+    }
+}
