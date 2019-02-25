@@ -34,7 +34,7 @@ class Header extends React.Component {
                         </div>
                     : userLoggedIn === true ? 
                         <div className="nav-right">
-                            <button>My Account</button>
+                            <NavLink to="/myAccount">My Account</NavLink>
                             <button className="login-button" onClick={logout}>Log Out</button> 
                         </div>
                         

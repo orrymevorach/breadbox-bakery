@@ -8,6 +8,7 @@ import Footer from './Components/Footer';
 import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Shop from './Components/Shop';
 import ComingSoon from './ComingSoon';
+import AccountInfo from './AccountInfo';
 
 // Initialize Firebase
 const config = {
@@ -75,7 +76,9 @@ class App extends React.Component {
           "firstFrozenChallahTypeSelectionMade": false,
           "secondFrozenChallahType": '',
           "secondFrozenChallahTypeSelectionMade": false,
+          "formSubmitted": false
         }
+
       },
       "deliverySchedule": {
         "10:00AM": '',
@@ -128,6 +131,7 @@ class App extends React.Component {
     this.createNewAccount = this.createNewAccount.bind(this)
     this.makeSelection = this.makeSelection.bind(this)
     this.userChangingSelection = this.userChangingSelection.bind(this)
+    this.submitForm = this.submitForm.bind(this)
   }
 
   componentDidMount() {
@@ -518,7 +522,25 @@ class App extends React.Component {
     this.setState({
       userProfile: userProfile
     })
+
   }
+
+  submitForm() {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.formSubmitted = true
+
+    this.setState({
+        userProfile: userProfile
+    })
+
+    // Variables needed to update Firebase
+    const userID = this.state.userProfile.contactInformation.userID
+    const firstName = this.state.userProfile.contactInformation.firstName
+    const lastName = this.state.userProfile.contactInformation.lastName
+    const child = `${lastName}-${firstName}-${userID}`
+
+    dbRefUsers.child(child).child('orderInformation').child('formSubmitted').set(true)
+}
   
   render() {
     // Close All Modals when user logs in
@@ -582,10 +604,29 @@ class App extends React.Component {
                 frozenChallahTypes={this.state.frozenChallahTypes}
                 closeModal={this.closeModal}
                 showModal={this.showModal}
-
+                submitForm={this.submitForm}
               />
             )
           }}/>
+
+          <Route path="/myAccount" exact render={() => {
+            return (
+              <AccountInfo 
+                userProfile={this.state.userProfile}
+                handleChange={this.handleChange}
+                email={this.state.email}
+                password={this.state.password}
+                firstName={this.state.firstName}
+                lastName={this.state.lastName}
+                address={this.state.address}
+                apartmentSuite={this.state.apartmentSuite}
+                city={this.state.city}
+                province={this.state.province}
+                postalCode={this.state.postalCode}
+                phoneNumber={this.state.phoneNumber}
+              />
+            )
+          }} />
         </div>
 
       </Router>

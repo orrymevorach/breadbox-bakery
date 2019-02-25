@@ -1,4 +1,5 @@
 import React from 'react';
+import classnames from 'classnames';
 import NumberOfWeeklyFreshChallahs from './ShopComponents/NumberOfWeeklyFreshChallas';
 import NumberOfWeeklyFrozenChallahs from './ShopComponents/NumberOfWeeklyFrozenChallahs';
 import FirstFreshChallahType from './ShopComponents/FirstFreshChallahType';
@@ -8,29 +9,39 @@ import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
 import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 import FormTracker from './ShopComponents/FormTracker';
-import classnames from 'classnames';
-import IncompleteOrderModal from './IncompleteOrderModal';
+import OrderSummary from '../OrderSummary';
 
 class Shop extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            formComplete: false
+            formComplete: false,
+            formSubmitted: this.props.userProfile.orderInformation.formSubmitted
         }
-
-        this.confirmOrder = this.confirmOrder.bind(this)
     }
 
     componentDidMount() {
-        const footerHeight = document.getElementsByTagName('footer')[0].clientHeight
-        const incompleteOrderModal = document.getElementsByClassName('incomplete-order-modal')[0]
+        const { userProfile: { orderInformation: 
+            { freshOrFrozenSelectionMade,  
+                numberOfWeeklyFreshChallahs,
+                numberOfWeeklyFrozenChallahs,
+                numberOfWeeklyFreshChallahsSelectionMade,
+                numberOfWeeklyFrozenChallahsSelectionMade,
+                firstFreshChallahTypeSelectionMade,
+                firstFrozenChallahTypeSelectionMade,
+                secondFreshChallahTypeSelectionMade,
+                secondFrozenChallahTypeSelectionMade,
+                deliveryTimeSelectionMade,
+            
+            }}} = this.props
 
-        const bottom = 0 - footerHeight
+        const secondChallah = (numberOfWeeklyFreshChallahs === 1 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 1 && !secondFrozenChallahTypeSelectionMade) || (numberOfWeeklyFreshChallahs === 2 && secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 2 && secondFrozenChallahTypeSelectionMade) ? true : false ;
 
-        incompleteOrderModal.style.bottom = `${bottom}px`
-
-
-        
+        if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
+            this.setState({
+                formComplete: true
+            })
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -57,18 +68,10 @@ class Shop extends React.Component {
         }
     }
 
-    confirmOrder() {
-        if(this.state.formComplete) {
-            console.log(true)
-        }
-        else {
-            this.props.showModal('incomplete-order-modal')
-        }
-    }
-
     render() {
 
-        const { formComplete } = this.state
+        const { formComplete, formSubmitted } = this.state
+        const { submitForm } = this.props
         
         const { userProfile,
                 makeSelection,
@@ -82,34 +85,33 @@ class Shop extends React.Component {
             
         return (
             <div className="shop wrapper-large">
-            <IncompleteOrderModal 
-                closeModal={this.props.closeModal}
-            />
-                {userLoggedIn ? 
-                    <div>
+                {/* {userLoggedIn ?  */}
+                    {/* <div> */}
                         {/* Form Tracker */}
-                        <FormTracker 
-                            userProfile={userProfile}
-                        /> 
+                        {/* <FormTracker  */}
+                            {/* userProfile={userProfile} */}
+                        {/* />  */}
                         
                         {/* Back To Top Button */}
-                        <a href="#freshOrFrozen">
-                            <button className="back-to-top">Top</button>
-                        </a>
+                        {/* <a href="#freshOrFrozen"> */}
+                            {/* <button className="back-to-top">Top</button> */}
+                        {/* </a> */}
                         
-                    </div>
+                    {/* </div> */}
 
 
-                : null }
+                {/* // : null } */}
+
+                {/* {!formSubmitted ? 
+                    <FreshOrFrozen 
+                        userProfile={userProfile}
+                        makeSelection={makeSelection}
+                        userLoggedIn={userLoggedIn}
+                        userChangingSelection={userChangingSelection}
+                    />
+                : null } */}
                 
-                <FreshOrFrozen 
-                    userProfile={userProfile}
-                    makeSelection={makeSelection}
-                    userLoggedIn={userLoggedIn}
-                    userChangingSelection={userChangingSelection}
-                />
-                
-                { userLoggedIn && freshChallahSelected ? 
+                {/* { userLoggedIn && freshChallahSelected && !formSubmitted ? 
                     <NumberOfWeeklyFreshChallahs
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -118,16 +120,16 @@ class Shop extends React.Component {
                     />
                 : null }
 
-                { userLoggedIn && frozenChallahSelected ? 
+                { userLoggedIn && frozenChallahSelected && !formSubmitted ? 
                     <NumberOfWeeklyFrozenChallahs 
                         userProfile={userProfile}
                         makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                     />
-                : null }
+                : null } */}
 
-                { !userLoggedIn || userLoggedIn && freshChallahSelected  ?
+                {/* { !userLoggedIn || userLoggedIn && freshChallahSelected && !formSubmitted  ?
                     <FirstFreshChallahType
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -135,9 +137,9 @@ class Shop extends React.Component {
                         userChangingSelection={userChangingSelection}
                         freshChallahTypes={freshChallahTypes}
                     />
-                : null }
+                : null } */}
                 
-                { !userLoggedIn || userLoggedIn && frozenChallahSelected ?
+                {/* { !userLoggedIn || userLoggedIn && frozenChallahSelected && !formSubmitted  ?
                     <FirstFrozenChallahType 
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -145,9 +147,9 @@ class Shop extends React.Component {
                         userChangingSelection={userChangingSelection}
                         frozenChallahTypes={frozenChallahTypes}
                     />
-                : null }
-
-                { userLoggedIn && numberOfWeeklyFreshChallahs === 2 ?
+                : null } */}
+{/* 
+                { userLoggedIn && numberOfWeeklyFreshChallahs === 2 && !formSubmitted  ?
                     <SecondFreshChallahType
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -156,7 +158,7 @@ class Shop extends React.Component {
                         freshChallahTypes={freshChallahTypes}
                     />
 
-                : userLoggedIn && numberOfWeeklyFrozenChallahs === 2 ?
+                : userLoggedIn && numberOfWeeklyFrozenChallahs === 2 && !formSubmitted  ?
                     <SecondFrozenChallahType 
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -165,9 +167,9 @@ class Shop extends React.Component {
                         frozenChallahTypes={frozenChallahTypes}
                     />
 
-                : null }
+                : null } */}
 
-                { userLoggedIn ?
+                {/* { userLoggedIn && !formSubmitted  ?
                     <DeliveryTime
                         userProfile={userProfile}
                         makeSelection={makeSelection}
@@ -175,14 +177,31 @@ class Shop extends React.Component {
                         userChangingSelection={userChangingSelection}
                         deliverySchedule={deliverySchedule}
                     />
+                : null } */}
+
+                {/* {userLoggedIn && formSubmitted ? */}
+                    <div>
+                        <h2>Thank You For Your Order!</h2>
+                        <OrderSummary 
+                            userProfile={userProfile}
+                        />
+                    </div>
+                {/* : null } */}
+                
+                {/* {!formSubmitted && formComplete ? 
+                    <button 
+                        onClick={ submitForm }
+                        >Confirm Order
+                    </button>
                 : null }
 
-                <button 
-                    className={classnames({disabled: !formComplete})} 
-                    onClick={this.confirmOrder}
-                    >Submit
-                    <div className="hover-note"><p>Please Complete The Form Before Submitting</p></div>
+                {!formSubmitted && !formComplete ? 
+                    <button 
+                        className="disabled"
+                        >Confirm Order
+                        { !formComplete ? <div className="hover-note"><p>Please Complete The Form Before Submitting</p></div> : null }
                     </button>
+                : null } */}
 
                 
             </div> /* Closing Shop / Wrapper */

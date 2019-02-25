@@ -1,0 +1,22 @@
+section.order-summary {
+    .text-container {
+        display: flex;
+        flex-direction: column;
+        max-width: 271px;
+        margin: 0 auto;
+    }
+    .row {
+        display: flex;
+        margin: 20px 0;
+    }
+    .text-left {
+        width: 200px;
+        margin-right: 5px;
+        text-align: left;
+    }
+    .text-right {
+        color: $darkPink;
+        font-weight: 500;
+        font-size: 18px;
+    }
+}
