@@ -8,8 +8,9 @@
     }
 
     h1 {
-        font-size: 40px;
+        font-size: 35px;
         margin: 30px auto;
+        text-transform: uppercase;
     }
     h2 {
         font-weight: 400;
@@ -17,7 +18,7 @@
         margin-bottom: 40px;
     }
     p {
-        margin-bottom: 20px;;
+        margin-bottom: 20px;
     }
     .text-container {
         text-align: center;
@@ -29,11 +30,26 @@
     }
 
     .challah-container {
-        height: 350px;
-        width: 350px;
-        background-color: white;
+        background-image: url(../img/Shop_Raisin.jpg);
+        background-repeat: no-repeat;
+        min-height: 350px;
+        min-width: 270px;
+        background-position: center 100px;
+        background-size: 80%;
+        background-color: #f7e5ed;
         box-shadow: 0 4px 15px 0 rgba(0,0,0,0.2);
         position: relative;
+        padding: 0 15px;
+        button {
+            background-color: #f7e5ed;
+            color: $black;
+            border: none;
+            &:hover {
+                outline: 1px solid $black;
+                background-color: #f7e5ed;
+                color: $black;
+            }
+        }
         &:hover {
             box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
             & > button {
@@ -42,6 +58,13 @@
                 transition: 0.1s;
             }
         }
+        a {
+            text-decoration: none;
+        }
+    }
+
+    #firstFreshChallahType .challah-container {
+        background-position-x: -50px;
     }
 
     .challah-number {
@@ -52,7 +75,7 @@
             margin-left: 50px;
         }
         &:hover {
-            box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
+            box-shadow: 0 4px 15px 0 rgba(0,0,0,0.2);
             & > button {
                 color: $darkPink;
                 background-color: white;
@@ -63,14 +86,69 @@
 
     .challah-type {
         &:nth-of-type(2) {
-            margin: 0 50px;
+            margin-left: 50px;
         }
     }
 
+    #firstFreshChallahType .challah-type,
+    #secondFreshChallahType .challah-type,
+    #firstFrozenChallahType .challah-type, 
+    #secondFrozenChallahType .challah-type {
+        background-position: center 95px;
+        &:nth-of-type(1) {
+            margin-right: 25px;
+        }
+        &:nth-of-type(2),
+        &:nth-of-type(3) {
+            margin: 0 25px;
+        }
+        &:nth-of-type(4) {
+            margin-left: 25px;
+        }
+    }
+
+    
+
     .delivery-time {
-        width: 100px;
-        height: 100px;
+        max-width: 100px;
+        max-height: 100px;
+        min-height: auto;
+        min-width: auto;
         margin: 0 10px;
+        padding: 20px 15px 0;
+        position: relative;
+        background-image: none;
+        p {
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+        &:hover {
+            box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
+        }
+        &:hover > button {
+            background-color: rgba(0,0,0,0);
+            color: $black;
+            outline: none;
+        }
+        button {
+            font-size: 14px;
+            top: 47px;
+            &:hover {
+                background-color: rgba(0,0,0,0);
+                color: $black;
+                outline: none;
+            }
+        }
+        // &:before {
+        //     content: '';
+        //     position: absolute;
+        //     height: 1px;
+        //     width: 100%;
+        //     top: 20px;
+        //     left: 0;
+        //     background-color: $black;
+        //     transform: rotate(45deg);
+        // }
     }
 
     button {
@@ -79,7 +157,7 @@
         left: 50%;
         transform: translateX(-50%);
         background-color: $darkPink;
-        width: 45%;
+        width: 55%;
         display: block;
         padding: 10px 0;
         color: white;
@@ -102,15 +180,15 @@
                 top: -45px;
                 left: 0;
                 padding: 15px 10px;
-                background-color: rgb(255, 255, 160);
-                color: $black;
+                background-color: $darkPink;
+                color: white;
                 :after {
                     content: '';
                     width: 0; 
                     height: 0; 
                     border-left: 10px solid transparent;
                     border-right: 10px solid transparent;
-                    border-top: 10px solid rgb(255, 255, 160);
+                    border-top: 10px solid $darkPink;
                     position: absolute;
                     bottom: -10px;
                     left: 0;

@@ -1,6 +1,29 @@
 .account-info {
-    padding: 0 400px;
+    padding: 0 500px;
+    h1 {
+        text-align: center;
+        font-size: 60px;
+    }
+
+
+
     .isDisabled {
         border: none;
+    }
+    button {
+        margin: 0 auto;
+        background-color: $darkPink;
+        width: 45%;
+        display: block;
+        padding: 10px 0;
+        color: white;
+        text-transform: uppercase;
+        border: 2px solid $darkPink;
+        transition: 0.1s;
+        &:hover {
+            color: $darkPink;
+            background-color: white;
+            transition: 0.1s;
+        }
     }
 }

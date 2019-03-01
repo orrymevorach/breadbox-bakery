@@ -62,6 +62,7 @@ class OrderSummary extends React.Component {
                         <p className="text-right">{deliveryTime}</p>
                     </div>
                 </div>
+                <button onClick={ this.props.isEditing }>Edit Order</button>
             </section>
                 
         )

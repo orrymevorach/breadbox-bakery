@@ -1,22 +1,41 @@
 section.order-summary {
+    text-align: center;
+    h1 {
+        font-size: 50px;
+    }
     .text-container {
         display: flex;
         flex-direction: column;
-        max-width: 271px;
+        // max-width: 271px;
         margin: 0 auto;
     }
     .row {
-        display: flex;
-        margin: 20px 0;
+        margin: 20px auto;
     }
     .text-left {
         width: 200px;
-        margin-right: 5px;
-        text-align: left;
+        text-align: center;
     }
     .text-right {
-        color: $darkPink;
+        color: $black;
         font-weight: 500;
         font-size: 18px;
+        text-align: center;
+    }
+    button {
+        margin: 0 auto;
+        background-color: $darkPink;
+        min-width: 360px;
+        display: block;
+        padding: 10px 0;
+        color: white;
+        text-transform: uppercase;
+        border: 2px solid $darkPink;
+        transition: 0.1s;
+        &:hover {
+            color: $darkPink;
+            background-color: white;
+            transition: 0.1s;
+        }
     }
 }

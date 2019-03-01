@@ -32,6 +32,8 @@ class AccountInfo extends React.Component {
                 postalCode,
                 phoneNumber
                 } = this.props
+
+        const { isEditing } = this.state
         
         return (
             <div className="account-info">
@@ -44,10 +46,9 @@ class AccountInfo extends React.Component {
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     type="text"
                                     name="firstName"
-                                    // value={firstName}
                                     value={contactInformation.firstName}
                                     onChange={handleChange}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                             <div className="last-name column">
@@ -58,7 +59,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.lastName}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
 
@@ -72,7 +73,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.address}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                             <div className="apartment-suite column">
@@ -83,7 +84,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.apartmentSuite}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                         </div>
@@ -96,7 +97,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.city}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                             <div className="province column">
@@ -107,7 +108,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.province}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                             <div className="postal-code column">
@@ -118,7 +119,7 @@ class AccountInfo extends React.Component {
                                     value={contactInformation.postalCode}
                                     onChange={handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
-                                    disabled
+                                    disabled={isEditing ? false : true}
                                 />
                             </div>
                         </div> {/* Closing Address-Line2 */}
@@ -130,7 +131,7 @@ class AccountInfo extends React.Component {
                                 value={contactInformation.phoneNumber}
                                 onChange={handleChange}
                                 className={classnames( {isDisabled: !this.state.isEditing} )}
-                                disabled
+                                disabled={isEditing ? false : true}
                             />
                         </div>
                         <div className="email column row">
@@ -141,65 +142,15 @@ class AccountInfo extends React.Component {
                                 value={contactInformation.email}
                                 onChange={handleChange}
                                 className={classnames( {isDisabled: !this.state.isEditing} )}
-                                disabled
-                            />
-                        </div>
-                        <div className="password column row">
-                            <label htmlFor="password">Password</label>
-                            <input
-                                type="password"
-                                name="password"
-                                value={contactInformation.password}
-                                onChange={handleChange}
-                                className={classnames( {isDisabled: !this.state.isEditing} )}
-                                disabled
+                                disabled={isEditing ? false : true}
                             />
                         </div>
                     </form>
                         <button onClick={this.isEditing}>Edit Account Details</button>
-                        {/* <button>Edit Account Details</button> */}
-                {/* <div className="row">
-                    <div className="first-name">
-                        <p>First Name:</p>
-                        <p>{contactInformation.firstName}</p>
-                    </div>
-                    <div className="last-name">
-                        <p>Last Name:</p>
-                        <p>{contactInformation.lastName}</p>
-                    </div>
-                </div>
-                <div className="row">
-                    <p>Address:</p>
-                    <p>{contactInformation.address}</p>
-                    
-                    {contactInformation.apartmentSuite ? 
-                        <div>
-                            <p>Apartment/Suite:</p>
-                            <p>{apartmentSuite}</p>
-                        </div>
-                    
-                    : null}
-                    
-                </div>
-                <div className="row">
-                    <p>City:</p>
-                    <p>{contactInformation.city}</p>
-                    <p>Province:</p>
-                    <p>{contactInformation.province}</p>
-                </div>
-                <div className="row">
-                    <p>Postal Code:</p>
-                    <p>{contactInformation.postalCode}</p>
-                </div>
-                <div className="row">'
-                    <p>Phone Number:</p>
-                    <p>{contactInformation.phoneNumber}</p>
-                    <p>Email:</p>
-                    <p>{contactInformation.email}</p>
-                </div>
-                */}
                 <OrderSummary 
                     userProfile={this.props.userProfile}
+                    isEditing={this.isEditing}
+                    doneEditing={this.doneEditing}
                 /> 
 
             </div>

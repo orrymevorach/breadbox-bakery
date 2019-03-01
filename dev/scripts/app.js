@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Shop from './Components/Shop';
 import ComingSoon from './ComingSoon';
 import AccountInfo from './AccountInfo';
+import OrderSummary from './OrderSummary';
 
 // Initialize Firebase
 const config = {
@@ -42,6 +43,7 @@ class App extends React.Component {
       province: '',
       postalCode: '',
       phoneNumber: '',
+      isEditing: false,
       userProfile: {
         "contactInformation": {
           "userID": '',
@@ -76,15 +78,16 @@ class App extends React.Component {
           "firstFrozenChallahTypeSelectionMade": false,
           "secondFrozenChallahType": '',
           "secondFrozenChallahTypeSelectionMade": false,
-          "formSubmitted": false
+          // Conditions for rendering
+          "formComplete": false
         }
 
       },
       "deliverySchedule": {
-        "10:00AM": '',
-        "10:30AM": '',
-        "11:00AM": '',
-        "11:30AM": '',
+        // "10:00AM": '',
+        // "10:30AM": '',
+        // "11:00AM": '',
+        // "11:30AM": '',
         "12:00PM": '',
         "12:30PM": '',
         "1:00PM": '',
@@ -131,7 +134,8 @@ class App extends React.Component {
     this.createNewAccount = this.createNewAccount.bind(this)
     this.makeSelection = this.makeSelection.bind(this)
     this.userChangingSelection = this.userChangingSelection.bind(this)
-    this.submitForm = this.submitForm.bind(this)
+    this.isEditing = this.isEditing.bind(this)
+    this.doneEditing = this.doneEditing.bind(this)
   }
 
   componentDidMount() {
@@ -227,6 +231,78 @@ class App extends React.Component {
         deliverySchedule: deliverySchedule
       })
     })
+
+    setTimeout(() => {
+      const { userProfile: { orderInformation: 
+        { freshOrFrozenSelectionMade,  
+            numberOfWeeklyFreshChallahs,
+            numberOfWeeklyFrozenChallahs,
+            numberOfWeeklyFreshChallahsSelectionMade,
+            numberOfWeeklyFrozenChallahsSelectionMade,
+            firstFreshChallahTypeSelectionMade,
+            firstFrozenChallahTypeSelectionMade,
+            secondFreshChallahTypeSelectionMade,
+            secondFrozenChallahTypeSelectionMade,
+            deliveryTimeSelectionMade
+        
+        }}} = this.state
+        const secondChallah = (numberOfWeeklyFreshChallahs == 2 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs == 2 && !secondFrozenChallahTypeSelectionMade) ? false : true ;
+
+      if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
+        const userProfile = this.state.userProfile
+        userProfile.orderInformation.formComplete = true
+        this.setState({
+            userProfile: userProfile,
+            isEditing: false
+        })
+      }
+      else {
+        const userProfile = this.state.userProfile
+        userProfile.orderInformation.formComplete = false
+        this.setState({
+            userProfile: userProfile,
+            isEditing: true
+        })
+      }
+    }, 2000)
+
+
+  }
+
+  componentDidUpdate(prevProps) {
+    if(prevProps !== this.props) {
+        const { userProfile: { orderInformation: 
+          { freshOrFrozenSelectionMade,  
+              numberOfWeeklyFreshChallahs,
+              numberOfWeeklyFrozenChallahs,
+              numberOfWeeklyFreshChallahsSelectionMade,
+              numberOfWeeklyFrozenChallahsSelectionMade,
+              firstFreshChallahTypeSelectionMade,
+              firstFrozenChallahTypeSelectionMade,
+              secondFreshChallahTypeSelectionMade,
+              secondFrozenChallahTypeSelectionMade,
+              deliveryTimeSelectionMade
+          
+          }}} = this.state
+          const secondChallah = (numberOfWeeklyFreshChallahs == 2 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs == 2 && !secondFrozenChallahTypeSelectionMade) ? false : true ;
+  
+        if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
+          const userProfile = this.state.userProfile
+          userProfile.orderInformation.formComplete = true
+          this.setState({
+              userProfile: userProfile,
+              isEditing: false
+          })
+        }
+        else {
+          const userProfile = this.state.userProfile
+          userProfile.orderInformation.formComplete = false
+          this.setState({
+              userProfile: userProfile,
+              isEditing: true
+          })
+        }
+    }
   }
 
   handleChange(e) {
@@ -525,26 +601,26 @@ class App extends React.Component {
 
   }
 
-  submitForm() {
-    const userProfile = this.state.userProfile
-    userProfile.orderInformation.formSubmitted = true
-
+  isEditing() {
     this.setState({
-        userProfile: userProfile
+      isEditing: true
     })
+  }
 
-    // Variables needed to update Firebase
-    const userID = this.state.userProfile.contactInformation.userID
-    const firstName = this.state.userProfile.contactInformation.firstName
-    const lastName = this.state.userProfile.contactInformation.lastName
-    const child = `${lastName}-${firstName}-${userID}`
+  doneEditing() {
+    console.log("done editing")
+    this.setState({
+      isEditing: false
+    })
+  }
 
-    dbRefUsers.child(child).child('orderInformation').child('formSubmitted').set(true)
-}
-  
   render() {
     // Close All Modals when user logs in
     this.state.userLoggedIn === true ? this.closeModal('modal-container') : null
+
+    const formComplete = this.state.userProfile.orderInformation.formComplete,
+          isEditing = this.state.isEditing
+
 
     return (
       <div>
@@ -594,37 +670,50 @@ class App extends React.Component {
 
           <Route path="/shop" exact render={() => {
             return (
-              <Shop 
-                userProfile={this.state.userProfile}
-                makeSelection={this.makeSelection}
-                userLoggedIn={this.state.userLoggedIn}
-                userChangingSelection={this.userChangingSelection}
-                deliverySchedule={this.state.deliverySchedule}
-                freshChallahTypes={this.state.freshChallahTypes}
-                frozenChallahTypes={this.state.frozenChallahTypes}
-                closeModal={this.closeModal}
-                showModal={this.showModal}
-                submitForm={this.submitForm}
-              />
+              <div>
+                { !formComplete && isEditing || formComplete && isEditing ?
+                <Shop 
+                  userProfile={this.state.userProfile}
+                  makeSelection={this.makeSelection}
+                  userLoggedIn={this.state.userLoggedIn}
+                  userChangingSelection={this.userChangingSelection}
+                  deliverySchedule={this.state.deliverySchedule}
+                  freshChallahTypes={this.state.freshChallahTypes}
+                  frozenChallahTypes={this.state.frozenChallahTypes}
+                  closeModal={this.closeModal}
+                  showModal={this.showModal}
+                  doneEditing={this.doneEditing}
+                  isEditing={this.state.isEditing}
+                /> 
+                : formComplete && !isEditing || !formComplete && isEditing ?
+                 <OrderSummary 
+                    userProfile={this.state.userProfile}
+                    isEditing={this.isEditing}
+                    doneEditing={this.doneEditing}
+                  /> 
+                : null }
+              </div>
             )
           }}/>
 
           <Route path="/myAccount" exact render={() => {
             return (
-              <AccountInfo 
-                userProfile={this.state.userProfile}
-                handleChange={this.handleChange}
-                email={this.state.email}
-                password={this.state.password}
-                firstName={this.state.firstName}
-                lastName={this.state.lastName}
-                address={this.state.address}
-                apartmentSuite={this.state.apartmentSuite}
-                city={this.state.city}
-                province={this.state.province}
-                postalCode={this.state.postalCode}
-                phoneNumber={this.state.phoneNumber}
-              />
+                <AccountInfo 
+                  userProfile={this.state.userProfile}
+                  handleChange={this.handleChange}
+                  email={this.state.email}
+                  password={this.state.password}
+                  firstName={this.state.firstName}
+                  lastName={this.state.lastName}
+                  address={this.state.address}
+                  apartmentSuite={this.state.apartmentSuite}
+                  city={this.state.city}
+                  province={this.state.province}
+                  postalCode={this.state.postalCode}
+                  phoneNumber={this.state.phoneNumber}
+                  isEditing={this.isEditing}
+                  doneEditing={this.doneEditing}
+                />
             )
           }} />
         </div>

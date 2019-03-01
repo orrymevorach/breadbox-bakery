@@ -22,9 +22,9 @@ const Home = () => {
                 </div>
             </section>
             <section className="section-three">
-                <div className="box box1"></div>
-                <div className="box box2"></div>
-                <div className="box box3"></div>
+                <div><img src="../img/Shop_Sweet.jpg" alt=""/></div>
+                <div><img src="../img/Shop_Sesame.jpg" alt=""/></div>
+                <div><img src="../img/Shop_Raisin.jpg" alt=""/></div>
             </section>
             <section className="section-four">
                 <div className="left">

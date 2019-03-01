@@ -12,12 +12,14 @@ const NumberOfWeeklyFrozenChallahs = (
         {
             number: 1,
             description: "1 Challah",
-            anchor: "#firstFrozenChallahType"
+            anchor: "#firstFrozenChallahType",
+            text: "1 Frozen Challah Weekly x 1 Month - $20"
         },
         {
             number: 2,
             description: "2 Challahs",
-            anchor: "#firstFrozenChallahType"
+            anchor: "#firstFrozenChallahType",
+            text: "2 Frozen Challahs Weekly x 1 Month - $36"
         }
     ]
 
@@ -32,6 +34,7 @@ const NumberOfWeeklyFrozenChallahs = (
                             <div className="challah-container challah-number" key={index}>
                                 <h1>{challah.description}</h1>
                                 <a href={challah.anchor}>
+                                    <p>{challah.text}</p>
                                     <button type="submit" data-challahnumber={challah.number} onClick={(e) => makeSelection(`numberOfWeeklyFrozenChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
                                 </a>
                             </div>    
