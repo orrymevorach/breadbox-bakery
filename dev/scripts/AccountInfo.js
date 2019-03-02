@@ -150,7 +150,6 @@ class AccountInfo extends React.Component {
                 <OrderSummary 
                     userProfile={this.props.userProfile}
                     isEditing={this.isEditing}
-                    doneEditing={this.doneEditing}
                 /> 
 
             </div>

@@ -9,81 +9,61 @@ import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
 import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 import FormTracker from './ShopComponents/FormTracker';
-import OrderSummary from '../OrderSummary';
 
 class Shop extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            
+              "freshChallahTypes": [
+                {
+                  name: 'Original',
+                  description: "Plain Challah with No Topping"
+                },
+                {
+                  name: 'Sesame',
+                  description: "Plain Challah with Sesame Seed Topping"
+                },
+                {
+                  name: 'Sweet',
+                  description: "Plain Challah with Streusel Topping"
+                },
+                {
+                  name: 'Raisin',
+                  description: "Raisin Challah with Streusel Topping"
+                }
+              ],
+              "frozenChallahTypes": [
+                {
+                  name: 'Original',
+                  description: "Plain Challah with No Topping"
+                },
+                {
+                  name: 'Raisin',
+                  description: "Raisin Challah with Streusel Topping"
+                },
+              ]
         }
     }
 
-    // componentDidMount() {
-    //     const { userProfile: { orderInformation: 
-    //         { freshOrFrozenSelectionMade,  
-    //             numberOfWeeklyFreshChallahs,
-    //             numberOfWeeklyFrozenChallahs,
-    //             numberOfWeeklyFreshChallahsSelectionMade,
-    //             numberOfWeeklyFrozenChallahsSelectionMade,
-    //             firstFreshChallahTypeSelectionMade,
-    //             firstFrozenChallahTypeSelectionMade,
-    //             secondFreshChallahTypeSelectionMade,
-    //             secondFrozenChallahTypeSelectionMade,
-    //             deliveryTimeSelectionMade,
-            
-    //         }}} = this.props
-
-    //     const secondChallah = (numberOfWeeklyFreshChallahs === 1 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 1 && !secondFrozenChallahTypeSelectionMade) || (numberOfWeeklyFreshChallahs === 2 && secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 2 && secondFrozenChallahTypeSelectionMade) ? true : false ;
-
-    //     if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
-    //         this.setState({
-    //             formComplete: true
-    //         })
-    //     }
-    // }
-
-    // componentDidUpdate(prevProps) {
-    //     if(prevProps !== this.props) {
-
-    //         const { userProfile: { orderInformation: 
-    //             { freshOrFrozenSelectionMade,  
-    //                 numberOfWeeklyFreshChallahs,
-    //                 numberOfWeeklyFrozenChallahs,
-    //                 numberOfWeeklyFreshChallahsSelectionMade,
-    //                 numberOfWeeklyFrozenChallahsSelectionMade,
-    //                 firstFreshChallahTypeSelectionMade,
-    //                 firstFrozenChallahTypeSelectionMade,
-    //                 secondFreshChallahTypeSelectionMade,
-    //                 secondFrozenChallahTypeSelectionMade,
-    //                 deliveryTimeSelectionMade
-                
-    //             }}} = this.props
-    
-    //         const secondChallah = (numberOfWeeklyFreshChallahs === 1 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 1 && !secondFrozenChallahTypeSelectionMade) || (numberOfWeeklyFreshChallahs === 2 && secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs === 2 && secondFrozenChallahTypeSelectionMade) ? true : false ;
-    
-    //         if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
-    //             this.setState({
-    //                 formComplete: true
-    //             })
-    //         }
-    //     }
-    // }
-
     render() {
 
-        const formComplete = this.props.userProfile.orderInformation.formComplete
+        const freshChallahTypes = this.state.freshChallahTypes,
+                frozenChallahTypes = this.state.frozenChallahTypes
         
         const { userProfile,
-                makeSelection,
                 userLoggedIn,
                 userChangingSelection,
                 deliverySchedule,
-                freshChallahTypes,
-                frozenChallahTypes,
-                doneEditing,
-                isEditing,
-                userProfile: { orderInformation: { freshChallahSelected, frozenChallahSelected, numberOfWeeklyFreshChallahs, numberOfWeeklyFrozenChallahs } }
+                confirmOrder,
+                selectFreshOrFrozen,
+                selectNumberOfWeeklyFreshChallahs,
+                selectNumberOfWeeklyFrozenChallahs,
+                selectFirstFreshChallahType,
+                selectSecondFreshChallahType,
+                selectFirstFrozenChallahType,
+                selectSecondFrozenChallahType,
+                selectDeliveryTime,
+                userProfile: { orderInformation: { freshChallahSelected, frozenChallahSelected, numberOfWeeklyFreshChallahs, numberOfWeeklyFrozenChallahs, formComplete } }
             } = this.props
             
         return (
@@ -107,65 +87,66 @@ class Shop extends React.Component {
 
                 <FreshOrFrozen 
                     userProfile={userProfile}
-                    makeSelection={makeSelection}
                     userLoggedIn={userLoggedIn}
                     userChangingSelection={userChangingSelection}
+                    selectFreshOrFrozen={selectFreshOrFrozen}
                 />
                 
                 { userLoggedIn && freshChallahSelected ? 
                     <NumberOfWeeklyFreshChallahs
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
+                        selectNumberOfWeeklyFreshChallahs={selectNumberOfWeeklyFreshChallahs}
+
                     />
                 : null }
 
                 { userLoggedIn && frozenChallahSelected ? 
                     <NumberOfWeeklyFrozenChallahs 
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
+                        selectNumberOfWeeklyFrozenChallahs={selectNumberOfWeeklyFrozenChallahs}
                     />
                 : null }
 
                 { !userLoggedIn || userLoggedIn && freshChallahSelected  ?
                     <FirstFreshChallahType
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                         freshChallahTypes={freshChallahTypes}
+                        selectFirstFreshChallahType={selectFirstFreshChallahType}
                     />
                 : null }
                 
                 { !userLoggedIn || userLoggedIn && frozenChallahSelected ?
                     <FirstFrozenChallahType 
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                         frozenChallahTypes={frozenChallahTypes}
+                        selectFirstFrozenChallahType={selectFirstFrozenChallahType}
                     />
                 : null }
 
                 { userLoggedIn && numberOfWeeklyFreshChallahs === 2  ?
                     <SecondFreshChallahType
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                         freshChallahTypes={freshChallahTypes}
+                        selectSecondFreshChallahType={selectSecondFreshChallahType}
                     />
 
                 : userLoggedIn && numberOfWeeklyFrozenChallahs === 2  ?
                     <SecondFrozenChallahType 
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                         frozenChallahTypes={frozenChallahTypes}
+                        selectSecondFrozenChallahType={selectSecondFrozenChallahType}
                     />
 
                 : null } 
@@ -173,15 +154,15 @@ class Shop extends React.Component {
                 { userLoggedIn  ?
                     <DeliveryTime
                         userProfile={userProfile}
-                        makeSelection={makeSelection}
                         userLoggedIn={userLoggedIn}
                         userChangingSelection={userChangingSelection}
                         deliverySchedule={deliverySchedule}
+                        selectDeliveryTime={selectDeliveryTime}
                     />
                 : null }
 
                  { userLoggedIn && formComplete ?
-                    <button onClick={ doneEditing }>Confirm Order</button>
+                    <button onClick={ confirmOrder }>Confirm Order</button>
 
                 : userLoggedIn && !formComplete ?
                     <button 

@@ -2,7 +2,7 @@ import React from 'react';
 
 const secondFreshChallahType = (
     { userProfile: { orderInformation },
-        makeSelection,
+        selectSecondFreshChallahType,
         userLoggedIn,
         userChangingSelection,
         freshChallahTypes
@@ -23,7 +23,7 @@ const secondFreshChallahType = (
                             <p>{challah.description}</p>
                             {userLoggedIn ? 
                             <a href="#deliveryTime">
-                                <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`secondFreshChallahType-${e.target.dataset.challahtype}`)} >Select This Challah</button>
+                                <button type="submit" onClick={(e) => selectSecondFreshChallahType(challah.name)} >Select This Challah</button>
                             </a>
                             : null }
                         </div>        

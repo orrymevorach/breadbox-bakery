@@ -2,7 +2,7 @@ import React from 'react';
 
 const SecondFrozenChallahType = (
     { userProfile: { orderInformation },
-        makeSelection,
+        selectSecondFrozenChallahType,
         userLoggedIn,
         userChangingSelection,
         frozenChallahTypes
@@ -23,7 +23,7 @@ const SecondFrozenChallahType = (
                             <p>{challah.description}</p>
                             {userLoggedIn ? 
                             <a href="#deliveryTime">
-                                <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`secondFrozenChallahType-${e.target.dataset.challahtype}`)} >Select This Challah</button>
+                                <button type="submit"onClick={(e) => selectSecondFrozenChallahType(challah.name)} >Select This Challah</button>
                             </a>
                             : null }
                         </div>        

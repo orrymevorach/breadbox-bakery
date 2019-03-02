@@ -7,9 +7,8 @@ import Home from './Components/Home';
 import Footer from './Components/Footer';
 import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Shop from './Components/Shop';
-import ComingSoon from './ComingSoon';
 import AccountInfo from './AccountInfo';
-import OrderSummary from './OrderSummary';
+import Checkout from './Checkout/Checkout';
 
 // Initialize Firebase
 const config = {
@@ -43,7 +42,7 @@ class App extends React.Component {
       province: '',
       postalCode: '',
       phoneNumber: '',
-      isEditing: false,
+      isEditing: true,
       userProfile: {
         "contactInformation": {
           "userID": '',
@@ -80,14 +79,20 @@ class App extends React.Component {
           "secondFrozenChallahTypeSelectionMade": false,
           // Conditions for rendering
           "formComplete": false
+        },
+        "deliveryAddress": {
+          "firstNameDelivery": '',
+          "lastNameDelivery": '',
+          "addressDelivery": '',
+          "apartmentSuiteDelivery": '',
+          "cityDelivery": '',
+          "provinceDelivery": '',
+          "postalCodeDelivery": '',
+          "phoneNumberDelivery": '',
         }
 
       },
       "deliverySchedule": {
-        // "10:00AM": '',
-        // "10:30AM": '',
-        // "11:00AM": '',
-        // "11:30AM": '',
         "12:00PM": '',
         "12:30PM": '',
         "1:00PM": '',
@@ -97,97 +102,46 @@ class App extends React.Component {
         "3:00PM": '',
         "3:30PM": ''
       },
-      "freshChallahTypes": [
-        {
-          name: 'Original',
-          description: "Plain Challah with No Topping"
-        },
-        {
-          name: 'Sesame',
-          description: "Plain Challah with Sesame Seed Topping"
-        },
-        {
-          name: 'Sweet',
-          description: "Plain Challah with Streusel Topping"
-        },
-        {
-          name: 'Raisin',
-          description: "Raisin Challah with Streusel Topping"
-        }
-      ],
-      "frozenChallahTypes": [
-        {
-          name: 'Original',
-          description: "Plain Challah with No Topping"
-        },
-        {
-          name: 'Raisin',
-          description: "Raisin Challah with Streusel Topping"
-        },
-      ]
-
     }
 
     this.handleChange = this.handleChange.bind(this)
     this.login = this.login.bind(this)
     this.logout = this.logout.bind(this)
     this.createNewAccount = this.createNewAccount.bind(this)
-    this.makeSelection = this.makeSelection.bind(this)
     this.userChangingSelection = this.userChangingSelection.bind(this)
     this.isEditing = this.isEditing.bind(this)
-    this.doneEditing = this.doneEditing.bind(this)
+    this.selectFreshOrFrozen = this.selectFreshOrFrozen.bind(this)
+    this.selectFirstFreshChallahType = this.selectFirstFreshChallahType.bind(this)
+    this.selectSecondFreshChallahType = this.selectSecondFreshChallahType.bind(this)
+    this.selectFirstFrozenChallahType = this.selectFirstFrozenChallahType.bind(this)
+    this.selectSecondFrozenChallahType = this.selectSecondFrozenChallahType.bind(this)
+    this.selectDeliveryTime = this.selectDeliveryTime.bind(this)
+    this.selectNumberOfWeeklyFreshChallahs = this.selectNumberOfWeeklyFreshChallahs.bind(this)
+    this.selectNumberOfWeeklyFrozenChallahs = this.selectNumberOfWeeklyFrozenChallahs.bind(this)
+    this.confirmOrder = this.confirmOrder.bind(this)
+    this.formComplete = this.formComplete.bind(this)
+    this.selectAlternateDeliveryAddress = this.selectAlternateDeliveryAddress.bind(this)
+
   }
 
   componentDidMount() {
     // Log In User If They Didn't Log Out After Last Use
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        let userProfile = Object.assign({}, this.state.userProfile)
         dbRefUsers.on('value', snapshot => {
           const data = snapshot.val()
           for(let key in data) {
             const contactInformation = data[key].contactInformation
-            const orderInformation = data[key].orderInformation
             if (user.uid === contactInformation.userID) {
-              // contact information
-              userProfile.contactInformation.userID = contactInformation.userID
-              userProfile.contactInformation.firstName = contactInformation.firstName || ''
-              userProfile.contactInformation.lastName = contactInformation.lastName || ''
-              userProfile.contactInformation.address = contactInformation.address || ''
-              userProfile.contactInformation.apartmentSuite = contactInformation.apartmentSuite || ''
-              userProfile.contactInformation.city = contactInformation.city || ''
-              userProfile.contactInformation.province = contactInformation.province || ''
-              userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
-              userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
-              userProfile.contactInformation.email = contactInformation.email
-              // order information
-              userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
-              userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
-              userProfile.orderInformation.freshChallahSelected = orderInformation.freshChallahSelected || false
-              userProfile.orderInformation.frozenChallahSelected = orderInformation.frozenChallahSelected || false
-              userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
-              // Fresh Challahs
-              userProfile.orderInformation.numberOfWeeklyFreshChallahs = orderInformation.numberOfWeeklyFreshChallahs || 0
-              userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = orderInformation.numberOfWeeklyFreshChallahsSelectionMade || false
-              userProfile.orderInformation.firstFreshChallahType = orderInformation.firstFreshChallahType || ''
-              userProfile.orderInformation.firstFreshChallahTypeSelectionMade = orderInformation.firstFreshChallahTypeSelectionMade || false
-              userProfile.orderInformation.secondFreshChallahType = orderInformation.secondFreshChallahType || ''
-              userProfile.orderInformation.secondFreshChallahTypeSelectionMade = orderInformation.secondFreshChallahTypeSelectionMade || false
-              // Frozen Challahs
-              userProfile.orderInformation.numberOfWeeklyFrozenChallahs = orderInformation.numberOfWeeklyFrozenChallahs || 0
-              userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = orderInformation.numberOfWeeklyFrozenChallahsSelectionMade || false
-              userProfile.orderInformation.firstFrozenChallahType = orderInformation.firstFrozenChallahType || ''
-              userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = orderInformation.firstFrozenChallahTypeSelectionMade || false
-              userProfile.orderInformation.secondFrozenChallahType = orderInformation.secondFrozenChallahType || ''
-              userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = orderInformation.secondFrozenChallahTypeSelectionMade || false
-
+              const isEditing = data[key].orderInformation.formComplete ? false : true
+              console.log('user auto logged in')
+              this.setState({
+                userLoggedIn: true,
+                userProfile: data[key],
+                isEditing: isEditing
+              })
             }
           }
-        })
-        console.log('user auto logged in')
-        this.setState({
-          userLoggedIn: true,
-          userProfile: userProfile
         })
       } 
     })
@@ -203,107 +157,21 @@ class App extends React.Component {
       }
     })
 
-    // Update Delivery Times Available
-    dbRefUsers.on('value', snapshot => {
+    // Update Delivery Times Schedule
+    dbRefDeliverySchedule.on('value', snapshot => {
       const data = snapshot.val()
-      let deliverySchedule = Object.assign({}, this.state.deliverySchedule)
+      let deliverySchedule = this.state.deliverySchedule
       for(let key in data) {
-        const contactInformation = data[key].contactInformation
-        const orderInformation = data[key].orderInformation
-        const userDeliveryTime = data[key].orderInformation.deliveryTime
-        for(let stateKey in deliverySchedule) {
-          const currentUserID = this.state.userProfile.contactInformation.userID
-          const previousUser = deliverySchedule[stateKey].contactInformation
-          if(stateKey === userDeliveryTime) {
-            deliverySchedule[stateKey] = {
-              "contactInformation": contactInformation,
-              "orderInformation": orderInformation
-            }
-          }
-          // If user changes desired deliveryTime, remove the user from past time
-          else if (previousUser && currentUserID === previousUser.userID && stateKey !== userDeliveryTime) {
-            deliverySchedule[stateKey] = ""
-          }
+        if(data[key].contactInformation) {
+          deliverySchedule[key] = data[key]
         }
       }
-      dbRefDeliverySchedule.set(deliverySchedule)
       this.setState({
         deliverySchedule: deliverySchedule
       })
     })
-
-    setTimeout(() => {
-      const { userProfile: { orderInformation: 
-        { freshOrFrozenSelectionMade,  
-            numberOfWeeklyFreshChallahs,
-            numberOfWeeklyFrozenChallahs,
-            numberOfWeeklyFreshChallahsSelectionMade,
-            numberOfWeeklyFrozenChallahsSelectionMade,
-            firstFreshChallahTypeSelectionMade,
-            firstFrozenChallahTypeSelectionMade,
-            secondFreshChallahTypeSelectionMade,
-            secondFrozenChallahTypeSelectionMade,
-            deliveryTimeSelectionMade
-        
-        }}} = this.state
-        const secondChallah = (numberOfWeeklyFreshChallahs == 2 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs == 2 && !secondFrozenChallahTypeSelectionMade) ? false : true ;
-
-      if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
-        const userProfile = this.state.userProfile
-        userProfile.orderInformation.formComplete = true
-        this.setState({
-            userProfile: userProfile,
-            isEditing: false
-        })
-      }
-      else {
-        const userProfile = this.state.userProfile
-        userProfile.orderInformation.formComplete = false
-        this.setState({
-            userProfile: userProfile,
-            isEditing: true
-        })
-      }
-    }, 2000)
-
-
   }
 
-  componentDidUpdate(prevProps) {
-    if(prevProps !== this.props) {
-        const { userProfile: { orderInformation: 
-          { freshOrFrozenSelectionMade,  
-              numberOfWeeklyFreshChallahs,
-              numberOfWeeklyFrozenChallahs,
-              numberOfWeeklyFreshChallahsSelectionMade,
-              numberOfWeeklyFrozenChallahsSelectionMade,
-              firstFreshChallahTypeSelectionMade,
-              firstFrozenChallahTypeSelectionMade,
-              secondFreshChallahTypeSelectionMade,
-              secondFrozenChallahTypeSelectionMade,
-              deliveryTimeSelectionMade
-          
-          }}} = this.state
-          const secondChallah = (numberOfWeeklyFreshChallahs == 2 && !secondFreshChallahTypeSelectionMade ) || (numberOfWeeklyFrozenChallahs == 2 && !secondFrozenChallahTypeSelectionMade) ? false : true ;
-  
-        if (freshOrFrozenSelectionMade && (numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade) && (firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade) && secondChallah && deliveryTimeSelectionMade) {
-          const userProfile = this.state.userProfile
-          userProfile.orderInformation.formComplete = true
-          this.setState({
-              userProfile: userProfile,
-              isEditing: false
-          })
-        }
-        else {
-          const userProfile = this.state.userProfile
-          userProfile.orderInformation.formComplete = false
-          this.setState({
-              userProfile: userProfile,
-              isEditing: true
-          })
-        }
-    }
-  }
 
   handleChange(e) {
     this.setState({
@@ -325,16 +193,15 @@ class App extends React.Component {
     const email = el[8].value
     const password = el[9].value
 
-    let userProfile = Object.assign({}, this.state.userProfile)
+    const userProfile = this.state.userProfile
+    let contactInformation, deliveryAddress;
 
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
       
-      console.log("new account created")
-      
       const userID = user.user.uid
       
-      userProfile = {
-        "contactInformation": {
+      contactInformation = {
+        // "contactInformation": {
           "userID": userID,
           "firstName": firstName || '',
           "lastName": lastName || '',
@@ -345,35 +212,29 @@ class App extends React.Component {
           "postalCode": postalCode || '',
           "phoneNumber": phoneNumber || '',
           "email": email
-        },
-        "orderInformation": {
-          // General Info
-          "deliveryTime": '',
-          "deliveryTimeSelectionMade": false,
-          "freshChallahSelected": false,
-          "frozenChallahSelected": false,
-          "freshOrFrozenSelectionMade": false,
-          // Fresh Challahs
-          "numberOfWeeklyFreshChallahs": 0,
-          "numberOfWeeklyFreshChallahsSelectionMade": false,
-          "firstFreshChallahType": '',
-          "firstFreshChallahTypeSelectionMade": false,
-          "secondFreshChallahType": '',
-          "secondFreshChallahTypeSelectionMade": false,
-          // Frozen Challahs
-          "numberOfWeeklyFrozenChallahs": 0,
-          "numberOfWeeklyFrozenChallahsSelectionMade": false,
-          "firstFrozenChallahType": '',
-          "firstFrozenChallahTypeSelectionMade": false,
-          "secondFrozenChallahType": '',
-          "secondFrozenChallahTypeSelectionMade": false,
         }
-      }
+        deliveryAddress = {
+          "firstNameDelivery": firstName || '',
+          "lastNameDelivery": lastName || '',
+          "addressDelivery": address || '',
+          "apartmentSuiteDelivery": apartmentSuite || '',
+          "cityDelivery": city || '',
+          "provinceDelivery": province || '',
+          "postalCodeDelivery": postalCode || '',
+          "phoneNumberDelivery": phoneNumber || '',
+        }
 
+        userProfile.contactInformation = contactInformation
+        userProfile.deliveryAddress = deliveryAddress
+
+      
+      
+      // Push user to firebase
       dbRefUsers.child(`${lastName}-${firstName}-${userID}`).set(userProfile)
 
     })
     .then(() => {
+      console.log("new account created")
       this.setState({
         userLoggedIn: true,
         userProfile: userProfile,
@@ -396,70 +257,36 @@ class App extends React.Component {
     });
   }
 
-  login(e) {
-    e.preventDefault();
-    const email = e.target[0].value
-    const password = e.target[1].value
-
-    let userProfile = Object.assign({}, this.state.userProfile)
+  login() {
+    const email = this.state.email
+    const password = this.state.password
+    let loggedInUser;
 
     firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
-      console.log("logged In")
       
       const currentUserID = user.user.uid
-
       dbRefUsers.on('value', snapshot => {
         const data = snapshot.val()
         for(let key in data) {
           const contactInformation = data[key].contactInformation
-          const orderInformation = data[key].orderInformation
           if (currentUserID === contactInformation.userID) {
-            userProfile.contactInformation.userID = contactInformation.userID
-            userProfile.contactInformation.firstName = contactInformation.firstName || ''
-            userProfile.contactInformation.lastName = contactInformation.lastName || ''
-            userProfile.contactInformation.address = contactInformation.address || ''
-            userProfile.contactInformation.apartmentSuite = contactInformation.apartmentSuite || ''
-            userProfile.contactInformation.city = contactInformation.city || ''
-            userProfile.contactInformation.province = contactInformation.province || ''
-            userProfile.contactInformation.postalCode = contactInformation.postalCode || ''
-            userProfile.contactInformation.phoneNumber = contactInformation.phoneNumber || ''
-            userProfile.contactInformation.email = contactInformation.email
-            // order information
-            userProfile.orderInformation.deliveryTime = orderInformation.deliveryTime || ''
-            userProfile.orderInformation.deliveryTimeSelectionMade = orderInformation.deliveryTimeSelectionMade || false
-            userProfile.orderInformation.freshChallahSelected = orderInformation.freshChallahSelected || false
-            userProfile.orderInformation.frozenChallahSelected = orderInformation.frozenChallahSelected || false
-            userProfile.orderInformation.freshOrFrozenSelectionMade = orderInformation.freshOrFrozenSelectionMade || false
-            // Fresh Challahs
-            userProfile.orderInformation.numberOfWeeklyFreshChallahs = orderInformation.numberOfWeeklyFreshChallahs || 0
-            userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = orderInformation.numberOfWeeklyFreshChallahsSelectionMade || false
-            userProfile.orderInformation.firstFreshChallahType = orderInformation.firstFreshChallahType || ''
-            userProfile.orderInformation.firstFreshChallahTypeSelectionMade = orderInformation.firstFreshChallahTypeSelectionMade || false
-            userProfile.orderInformation.secondFreshChallahType = orderInformation.secondFreshChallahType || ''
-            userProfile.orderInformation.secondFreshChallahTypeSelectionMade = orderInformation.secondFreshChallahTypeSelectionMade || false
-            // Frozen Challahs
-            userProfile.orderInformation.numberOfWeeklyFrozenChallahs = orderInformation.numberOfWeeklyFrozenChallahs || 0
-            userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = orderInformation.numberOfWeeklyFrozenChallahsSelectionMade || false
-            userProfile.orderInformation.firstFrozenChallahType = orderInformation.firstFrozenChallahType || ''
-            userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = orderInformation.firstFrozenChallahTypeSelectionMade || false
-            userProfile.orderInformation.secondFrozenChallahType = orderInformation.secondFrozenChallahType || ''
-            userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = orderInformation.secondFrozenChallahTypeSelectionMade || false
+            loggedInUser = data[key]   
           }
         }
       })
       
+    }).then(() => {
+      console.log("logged In")
+            this.setState({
+              userLoggedIn: true,
+              userProfile: loggedInUser,
+              email: '',
+              password: '',
+            })
     })
-    .then(() => {
-      this.setState({
-        userLoggedIn: true,
-        userProfile: userProfile,
-        email: '',
-        password: '',
-      })
-    })
-    .catch(function (error) {
+    .catch(error => {
       console.log(error)
-      alert(`${error.code}: ${error.message}`)
+      alert(error.message)
     });
   }
 
@@ -467,10 +294,10 @@ class App extends React.Component {
     firebase.auth().signOut()
     .then(() => {
       console.log('signed out')
-      let userProfile = Object.assign({}, this.state.userProfile)
+      let userProfile = this.state.userProfile
       this.setState({
         userLoggedIn: false,
-        userProfile: userProfile,
+        userProfile: userProfile
       })
     }).catch(function (error) {
       console.log(error)
@@ -502,93 +329,221 @@ class App extends React.Component {
     }
   }
 
-  makeSelection(newInfo) {
-    // ***** This section only updates the User Profile
-    // ***** The deliverySchedule is updated in ComponentDidMount automatically everytime a user adds / changes a deliveryTIme (delivery schedule will only update on refresh).
+  selectFreshOrFrozen(challah) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.freshOrFrozenSelectionMade = true
 
-    // Variables needed to update Firebase
-    const userID = this.state.userProfile.contactInformation.userID
-    const firstName = this.state.userProfile.contactInformation.firstName
-    const lastName = this.state.userProfile.contactInformation.lastName
-    const child = `${lastName}-${firstName}-${userID}`
-    
-    // Current User Profile Information
-    let updatedProfile = Object.assign({}, this.state.userProfile)
-
-    // Breaking up newInfo string to define key / value pairs that are being updated
-    if( newInfo.includes("freshChallahSelected" ) || newInfo.includes("frozenChallahSelected")) {
-      updatedProfile.orderInformation[newInfo] = true
-      updatedProfile.orderInformation.freshOrFrozenSelectionMade = true
-      if( newInfo.includes("freshChallahSelected")) {
-        updatedProfile.orderInformation.frozenChallahSelected = false
-        updatedProfile.orderInformation.numberOfWeeklyFrozenChallahs = 0
-        updatedProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = false
-        updatedProfile.orderInformation.firstFrozenChallahType = ""
-        updatedProfile.orderInformation.firstFrozenChallahTypeSelectionMade = false
-        updatedProfile.orderInformation.secondFrozenChallahType = ""
-        updatedProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
-      }
-      else if ( newInfo.includes("frozenChallahSelected")) {
-        updatedProfile.orderInformation.freshChallahSelected = false
-        updatedProfile.orderInformation.numberOfWeeklyFreshChallahs = 0
-        updatedProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = false
-        updatedProfile.orderInformation.firstFreshChallahType = ""
-        updatedProfile.orderInformation.firstFreshChallahTypeSelectionMade = false
-        updatedProfile.orderInformation.secondFreshChallahType = ""
-        updatedProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
-      }
+    if( challah === "Fresh") {
+      userProfile.orderInformation.freshChallahSelected = true
+      userProfile.orderInformation.frozenChallahSelected = false
+      userProfile.orderInformation.numberOfWeeklyFrozenChallahs = 0
+      userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = false
+      userProfile.orderInformation.firstFrozenChallahType = ""
+      userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = false
+      userProfile.orderInformation.secondFrozenChallahType = ""
+      userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
     }
-    else {
-      const split = newInfo.split("-")
-      const key = split[0]
-      let value = split[1]
-      const keySelectionMade = `${key}SelectionMade`
-
-      // Convert type of strings into numbers for number of weekly challah selections
-      if(value === "1" || value === "2") {
-        value = parseInt(value)
-      }
-
-      updatedProfile.orderInformation[key] = value
-      updatedProfile.orderInformation[keySelectionMade] = true
-  
-      // In case preference is changed from 2 Challahs to 1, empty first Challah Selection
-      if (updatedProfile.orderInformation.numberOfWeeklyFreshChallahs === 1) {
-        updatedProfile.orderInformation.secondFreshChallahType = ''
-        updatedProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
-      }
-      if (updatedProfile.orderInformation.numberOfWeeklyFrozenChallahs === 1) {
-        updatedProfile.orderInformation.secondFrozenChallahType = ''
-        updatedProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
-      }
-  
-      // Specific to delivery time selections
-      if(typeof value === "string" && value.includes(":")) {
-        const contactInformation = this.state.userProfile.contactInformation
-        const orderInformation = this.state.userProfile.orderInformation
-        const userInformation = {
-          "contactInformation": contactInformation,
-          "orderInformation": orderInformation
-        }
-        // Set delivery schedule in firebase
-        dbRefDeliverySchedule.child(value).set(userInformation)
-      }
+    else if ( challah === "Frozen") {
+      userProfile.orderInformation.frozenChallahSelected = true
+      userProfile.orderInformation.freshChallahSelected = false
+      userProfile.orderInformation.numberOfWeeklyFreshChallahs = 0
+      userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = false
+      userProfile.orderInformation.firstFreshChallahType = ""
+      userProfile.orderInformation.firstFreshChallahTypeSelectionMade = false
+      userProfile.orderInformation.secondFreshChallahType = ""
+      userProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
     }
-    
-    // Update all changes to firebase
-    dbRefUsers.child(child).child('orderInformation').set(updatedProfile.orderInformation)
-    
+
     this.setState({
-      userProfile: updatedProfile,
+      userProfile: userProfile
     })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
 
   }
 
+  selectNumberOfWeeklyFreshChallahs(number) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.numberOfWeeklyFreshChallahs = parseInt(number)
+    userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade = true
+    if (parseInt(number) === 1) {
+      userProfile.orderInformation.secondFreshChallahType = ''
+      userProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
+    }
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+     
+  }
+
+  selectNumberOfWeeklyFrozenChallahs(number) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.numberOfWeeklyFrozenChallahs = parseInt(number)
+    userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade = true
+    if (parseInt(number) === 1) {
+      userProfile.orderInformation.secondFrozenChallahType = ''
+      userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
+    }
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
+  selectFirstFreshChallahType(challahType) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.firstFreshChallahType = challahType
+    userProfile.orderInformation.firstFreshChallahTypeSelectionMade = true
+    this.setState({
+      userProfile: userProfile
+    }),() => {
+      this.formComplete()
+    }
+  }
+
+  selectSecondFreshChallahType(challahType) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.secondFreshChallahType = challahType
+    userProfile.orderInformation.secondFreshChallahTypeSelectionMade = true
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
+  selectFirstFrozenChallahType(challahType) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.firstFrozenChallahType = challahType
+    userProfile.orderInformation.firstFrozenChallahTypeSelectionMade = true
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
+  selectSecondFrozenChallahType(challahType) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.secondFrozenChallahType = challahType
+    userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = true
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
+  selectDeliveryTime(time) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.deliveryTime = time
+    userProfile.orderInformation.deliveryTimeSelectionMade = true
+
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
+  formComplete() {
+    const { deliveryTimeSelectionMade, 
+      freshOrFrozenSelectionMade, 
+      numberOfWeeklyFreshChallahsSelectionMade, 
+      firstFreshChallahTypeSelectionMade, 
+      secondFreshChallahTypeSelectionMade, 
+      numberOfWeeklyFrozenChallahsSelectionMade, 
+      firstFrozenChallahTypeSelectionMade, 
+      secondFrozenChallahTypeSelectionMade, 
+    } = this.state.userProfile.orderInformation
+
+    const numberOfChallahsSelected = numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade ? true : false,
+          firstChallahSelected = firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade ? true : false,
+          secondChallahSelected = (numberOfWeeklyFreshChallahsSelectionMade && !secondFreshChallahTypeSelectionMade) || (numberOfWeeklyFrozenChallahsSelectionMade && !secondFrozenChallahTypeSelectionMade) ? false : true
+
+
+
+    if(deliveryTimeSelectionMade && freshOrFrozenSelectionMade && numberOfChallahsSelected && firstChallahSelected && secondChallahSelected) {
+      console.log("Form Complete")
+      const userProfile = this.state.userProfile
+      userProfile.orderInformation.formComplete = true
+
+      this.setState({
+        userProfile: userProfile,
+      })
+    }
+  }
+        
+  confirmOrder() {
+    this.setState({
+      isEditing: false
+    })
+    const { userProfile: { contactInformation, orderInformation}, deliverySchedule } = this.state
+    
+    const lastName = contactInformation.lastName,
+          firstName = contactInformation.firstName,
+          userId = contactInformation.userID,
+          fbId = `${lastName}-${firstName}-${userId}`
+
+    // Save order to users profile in firebase
+    dbRefUsers.child(fbId).child('orderInformation').set(this.state.userProfile.orderInformation)
+      // Update delivery Schedule in FB and state
+      .then(() => {
+        dbRefUsers.on('value', snapshot => {
+          const data = snapshot.val();
+          for(let key in data) {
+            const contactInformation = data[key].contactInformation,
+                  orderInformation = data[key].orderInformation,
+                  deliveryAddress = data[key].deliveryAddress,
+                  userDeliveryTime = data[key].orderInformation.deliveryTime
+
+            for(let stateKey in deliverySchedule) {
+              const currentUserID = this.state.userProfile.contactInformation.userID
+              const previousUser = deliverySchedule[stateKey].contactInformation
+              if(stateKey === userDeliveryTime) {
+                deliverySchedule[stateKey] = {
+                  "contactInformation": contactInformation,
+                  "orderInformation": orderInformation,
+                  "deliveryAddress": deliveryAddress
+                }
+              }
+              // If user changes desired deliveryTime, remove the user from past time
+              else if (previousUser && currentUserID === previousUser.userID && stateKey !== userDeliveryTime) {
+                deliverySchedule[stateKey] = ""
+              }
+            }
+          }
+          dbRefDeliverySchedule.set(deliverySchedule)
+          this.setState({
+            deliverySchedule: deliverySchedule
+          })
+        })
+      })
+  }
+    
+
   userChangingSelection(itemBeingChanged) {
     let userProfile = Object.assign({}, this.state.userProfile)
-
     
     userProfile.orderInformation[itemBeingChanged] = false
+    userProfile.orderInformation.formComplete = false
     
     if(itemBeingChanged === "freshOrFrozenSelectionMade") {
       userProfile.orderInformation.freshChallahSelected = false
@@ -607,11 +562,51 @@ class App extends React.Component {
     })
   }
 
-  doneEditing() {
-    console.log("done editing")
+  selectAlternateDeliveryAddress(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber) {
+    const userProfile = this.state.userProfile
+    let deliveryAddress = {};
+      deliveryAddress.firstNameDelivery = firstName
+      deliveryAddress.lastNameDelivery = lastName
+      deliveryAddress.addressDelivery = address
+      deliveryAddress.apartmentSuiteDelivery = apartmentSuite
+      deliveryAddress.cityDelivery = city
+      deliveryAddress.provinceDelivery = province
+      deliveryAddress.postalCodeDelivery = postalCode
+      deliveryAddress.phoneNumberDelivery = phoneNumber
+    
+    userProfile.deliveryAddress = deliveryAddress
+
     this.setState({
-      isEditing: false
+      userProfile: userProfile
     })
+
+    const contactLastName = this.state.userProfile.contactInformation.lastName,
+          contactFirstName = this.state.userProfile.contactInformation.firstName,
+          contactUserID = this.state.userProfile.contactInformation.userID,
+          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`
+
+    console.log(this.state.userProfile.deliveryAddress)
+    // Save order to users profile in firebase
+    dbRefUsers.child(fbId).child('deliveryAddress').set(deliveryAddress)
+
+    dbRefDeliverySchedule.on('value', snapshot => {
+      const data = snapshot.val();
+      let updatedTimeInfo, timeSlot;
+      
+      for(let key in data) {
+        if(data[key].contactInformation) {
+          if(data[key].contactInformation.userID === contactUserID) {
+            timeSlot = key
+            updatedTimeInfo = data[key]
+            updatedTimeInfo.deliveryAddress = deliveryAddress
+          }
+        }
+      }
+      console.log(timeSlot)
+      dbRefDeliverySchedule.child(timeSlot).set(updatedTimeInfo)
+    })
+
+
   }
 
   render() {
@@ -619,8 +614,8 @@ class App extends React.Component {
     this.state.userLoggedIn === true ? this.closeModal('modal-container') : null
 
     const formComplete = this.state.userProfile.orderInformation.formComplete,
-          isEditing = this.state.isEditing
-
+          isEditing = this.state.isEditing,
+          userLoggedIn = this.state.userLoggedIn
 
     return (
       <div>
@@ -671,26 +666,33 @@ class App extends React.Component {
           <Route path="/shop" exact render={() => {
             return (
               <div>
-                { !formComplete && isEditing || formComplete && isEditing ?
+                { !formComplete && isEditing || formComplete && isEditing || !userLoggedIn ?
                 <Shop 
                   userProfile={this.state.userProfile}
                   makeSelection={this.makeSelection}
                   userLoggedIn={this.state.userLoggedIn}
                   userChangingSelection={this.userChangingSelection}
                   deliverySchedule={this.state.deliverySchedule}
-                  freshChallahTypes={this.state.freshChallahTypes}
-                  frozenChallahTypes={this.state.frozenChallahTypes}
                   closeModal={this.closeModal}
                   showModal={this.showModal}
-                  doneEditing={this.doneEditing}
                   isEditing={this.state.isEditing}
+                  selectFreshOrFrozen={this.selectFreshOrFrozen}
+                  selectNumberOfWeeklyFreshChallahs={this.selectNumberOfWeeklyFreshChallahs}
+                  selectNumberOfWeeklyFrozenChallahs={this.selectNumberOfWeeklyFrozenChallahs}
+                  selectFirstFreshChallahType={this.selectFirstFreshChallahType}
+                  selectSecondFreshChallahType={this.selectSecondFreshChallahType}
+                  selectFirstFrozenChallahType={this.selectFirstFrozenChallahType}
+                  selectSecondFrozenChallahType={this.selectSecondFrozenChallahType}
+                  selectDeliveryTime={this.selectDeliveryTime}
+                  confirmOrder={this.confirmOrder}
+                  formComplete={this.formComplete}
                 /> 
-                : formComplete && !isEditing || !formComplete && isEditing ?
-                 <OrderSummary 
-                    userProfile={this.state.userProfile}
-                    isEditing={this.isEditing}
-                    doneEditing={this.doneEditing}
-                  /> 
+                : userLoggedIn && formComplete && !isEditing || userLoggedIn && !formComplete && isEditing ?
+                <Checkout 
+                  userProfile={this.state.userProfile}
+                  isEditing={this.isEditing}
+                  selectAlternateDeliveryAddress={this.selectAlternateDeliveryAddress}
+                />
                 : null }
               </div>
             )
@@ -698,6 +700,7 @@ class App extends React.Component {
 
           <Route path="/myAccount" exact render={() => {
             return (
+                userLoggedIn ?
                 <AccountInfo 
                   userProfile={this.state.userProfile}
                   handleChange={this.handleChange}
@@ -712,8 +715,8 @@ class App extends React.Component {
                   postalCode={this.state.postalCode}
                   phoneNumber={this.state.phoneNumber}
                   isEditing={this.isEditing}
-                  doneEditing={this.doneEditing}
                 />
+                : window.location = "/"
             )
           }} />
         </div>

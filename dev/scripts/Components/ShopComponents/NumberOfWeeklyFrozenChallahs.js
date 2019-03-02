@@ -2,7 +2,7 @@ import React from 'react';
 
 const NumberOfWeeklyFrozenChallahs = (
     { userProfile: { orderInformation }, 
-        makeSelection, 
+        selectNumberOfWeeklyFrozenChallahs,
         userChangingSelection }
     ) => {
 
@@ -35,7 +35,7 @@ const NumberOfWeeklyFrozenChallahs = (
                                 <h1>{challah.description}</h1>
                                 <a href={challah.anchor}>
                                     <p>{challah.text}</p>
-                                    <button type="submit" data-challahnumber={challah.number} onClick={(e) => makeSelection(`numberOfWeeklyFrozenChallahs-${e.target.dataset.challahnumber}`)} >Select This Plan</button>
+                                    <button type="submit" onClick={(e) => selectNumberOfWeeklyFrozenChallahs(challah.number)} >Select This Plan</button>
                                 </a>
                             </div>    
                         )

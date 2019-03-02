@@ -4,7 +4,8 @@ const FreshOrFrozen = (
     { userProfile: { orderInformation },
         makeSelection,
         userLoggedIn,
-        userChangingSelection }
+        userChangingSelection,
+    selectFreshOrFrozen }
 ) => {
   
   const { freshChallahSelected, frozenChallahSelected, freshOrFrozenSelectionMade } = orderInformation
@@ -15,13 +16,11 @@ const FreshOrFrozen = (
     {
         name: 'Fresh',
         description: "Our Freshly Baked Challahs",
-        valuePassedToMakeSelection: 'fresh',
         anchor: "#numberOfWeeklyFreshChallahs"
     },
     {
         name: 'Frozen',
         description: "Our Frozen Challahs",
-        valuePassedToMakeSelection: 'frozen',
         anchor: "#numberOfWeeklyFrozenChallahs"
     },
 ]
@@ -39,7 +38,7 @@ const FreshOrFrozen = (
                         <p>{challah.description}</p>
                         {userLoggedIn ?
                         <a href={challah.anchor}>
-                            <button type="submit" data-challahtype={challah.name} onClick={(e) => makeSelection(`${challah.valuePassedToMakeSelection}ChallahSelected`)}>Select This Challah</button>
+                            <button type="submit" onClick={() => selectFreshOrFrozen(challah.name)}>Select This Challah</button>
                         </a>
                         : null}
                     </div>        
