@@ -89,7 +89,7 @@ class App extends React.Component {
           "provinceDelivery": '',
           "postalCodeDelivery": '',
           "phoneNumberDelivery": '',
-        }
+        },
 
       },
       "deliverySchedule": {
@@ -260,29 +260,26 @@ class App extends React.Component {
   login() {
     const email = this.state.email
     const password = this.state.password
-    let loggedInUser;
 
-    firebase.auth().signInWithEmailAndPassword(email, password).then((user) => {
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((user) => {
       
       const currentUserID = user.user.uid
+
       dbRefUsers.on('value', snapshot => {
         const data = snapshot.val()
         for(let key in data) {
-          const contactInformation = data[key].contactInformation
-          if (currentUserID === contactInformation.userID) {
-            loggedInUser = data[key]   
+          if (currentUserID === data[key].contactInformation.userID) {
+            console.log('logged in')
+            this.setState({
+              userLoggedIn: true,
+              userProfile: data[key],
+              email: '',
+              password: '',
+            })   
           }
         }
       })
-      
-    }).then(() => {
-      console.log("logged In")
-            this.setState({
-              userLoggedIn: true,
-              userProfile: loggedInUser,
-              email: '',
-              password: '',
-            })
     })
     .catch(error => {
       console.log(error)
@@ -583,30 +580,13 @@ class App extends React.Component {
     const contactLastName = this.state.userProfile.contactInformation.lastName,
           contactFirstName = this.state.userProfile.contactInformation.firstName,
           contactUserID = this.state.userProfile.contactInformation.userID,
-          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`
+          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`,
+          timeSlot = this.state.userProfile.orderInformation.deliveryTime
 
-    console.log(this.state.userProfile.deliveryAddress)
-    // Save order to users profile in firebase
+    // Save new address to users profile in firebase
     dbRefUsers.child(fbId).child('deliveryAddress').set(deliveryAddress)
-
-    dbRefDeliverySchedule.on('value', snapshot => {
-      const data = snapshot.val();
-      let updatedTimeInfo, timeSlot;
-      
-      for(let key in data) {
-        if(data[key].contactInformation) {
-          if(data[key].contactInformation.userID === contactUserID) {
-            timeSlot = key
-            updatedTimeInfo = data[key]
-            updatedTimeInfo.deliveryAddress = deliveryAddress
-          }
-        }
-      }
-      console.log(timeSlot)
-      dbRefDeliverySchedule.child(timeSlot).set(updatedTimeInfo)
-    })
-
-
+    // Save new address to delivery schedule for Emily 
+    dbRefDeliverySchedule.child(timeSlot).child('deliveryAddress').set(deliveryAddress)
   }
 
   render() {

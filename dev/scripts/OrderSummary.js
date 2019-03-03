@@ -46,15 +46,15 @@ class OrderSummary extends React.Component {
                             <p className="text-right">{firstChallah}</p>
                         </div>
                     : freshChallahSelected && numberOfWeeklyFreshChallahs === 2 || frozenChallahSelected && numberOfWeeklyFrozenChallahs === 2 ?
-                        <div className="row">
-                            <p className="text-left">First Challah:</p>
-                            <p className="text-right">{firstChallah}</p>
-                        </div>
-                    : null}
-                    {freshChallahSelected && numberOfWeeklyFreshChallahs === 2 || frozenChallahSelected && numberOfWeeklyFrozenChallahs === 2 ?
-                        <div className="row">
-                            <p className="text-left">Second Challah:</p>
-                            <p className="text-right">{secondChallah}</p>
+                        <div className="row two-challahs-row">
+                            <div>
+                                <p className="text-left">First Challah:</p>
+                                <p className="text-right">{firstChallah}</p>
+                            </div>
+                            <div className="second-challah">
+                                <p className="text-left">Second Challah:</p>
+                                <p className="text-right">{secondChallah}</p>
+                            </div>
                         </div>
                     : null }
                     <div className="row">
