@@ -25,8 +25,7 @@ class Header extends React.Component {
                     <ul className="nav-center">
                         <NavLink to="/"><li>Home</li></NavLink>
                         <NavLink to="/shop"><li>Shop</li></NavLink>
-                        
-                        <li>Contact</li>
+                        <NavLink to="/contact"><li>Contact</li></NavLink>
                     </ul>
                     {userLoggedIn === false ? 
                         <div className="nav-right">

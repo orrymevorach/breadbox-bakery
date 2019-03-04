@@ -160,7 +160,7 @@
         display: block;
         padding: 10px 0;
         color: white;
-        text-transform: uppercase;
+        text-transform: capitalize;
         border: 2px solid $darkPink;
         transition: 0.1s;
         &:hover {

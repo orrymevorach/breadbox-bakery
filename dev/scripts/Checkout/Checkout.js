@@ -7,13 +7,32 @@ class Checkout extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isEditingDelivery: true,
+            isEditingOrderSummary: true,
+            isEditingDelivery: false,
             isEditingPayment: false
         }
 
         this.confirmDeliveryAddress = this.confirmDeliveryAddress.bind(this)
         this.editDeliveryAddress = this.editDeliveryAddress.bind(this)
+        this.confirmOrderSummary = this.confirmOrderSummary.bind(this)
+        this.editOrderSummary = this.editOrderSummary.bind(this)
 
+    }
+
+    confirmOrderSummary() {
+        this.setState({
+            isEditingOrderSummary: false,
+            isEditingDelivery: true
+        })
+
+        window.scrollBy(0, 400)
+    }
+
+    editOrderSummary() {
+        this.setState({
+            isEditingOrderSummary: true,
+            isEditingDelivery: false
+        })
     }
 
     confirmDeliveryAddress() {
@@ -21,6 +40,8 @@ class Checkout extends React.Component {
             isEditingDelivery: false,
             isEditingPayment: true
         })
+
+        window.scrollBy(0, 400)
     }
 
     editDeliveryAddress() {
@@ -35,10 +56,12 @@ class Checkout extends React.Component {
 
         return (
             <section className="checkout">
-                <div className="checkout-desktop">
                     <OrderSummary 
                         isEditing={isEditing}
                         userProfile={userProfile}
+                        isEditingOrderSummary={this.state.isEditingOrderSummary}
+                        confirmOrderSummary={this.confirmOrderSummary}
+                        editOrderSummary={this.editOrderSummary}
                     />
                     <Delivery 
                         userProfile={userProfile}
@@ -47,7 +70,6 @@ class Checkout extends React.Component {
                         confirmDeliveryAddress={this.confirmDeliveryAddress}
                         editDeliveryAddress={this.editDeliveryAddress}
                     />
-                </div>
                 <Payment />
             </section>
         )

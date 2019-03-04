@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Route, NavLink } from 'react-router-dom';
 import Shop from './Components/Shop';
 import AccountInfo from './AccountInfo';
 import Checkout from './Checkout/Checkout';
+import ContactForm from './Components/ContactForm';
 
 // Initialize Firebase
 const config = {
@@ -78,7 +79,8 @@ class App extends React.Component {
           "secondFrozenChallahType": '',
           "secondFrozenChallahTypeSelectionMade": false,
           // Conditions for rendering
-          "formComplete": false
+          "formComplete": false,
+          "totalCost": "",
         },
         "deliveryAddress": {
           "firstNameDelivery": '',
@@ -121,6 +123,7 @@ class App extends React.Component {
     this.confirmOrder = this.confirmOrder.bind(this)
     this.formComplete = this.formComplete.bind(this)
     this.selectAlternateDeliveryAddress = this.selectAlternateDeliveryAddress.bind(this)
+    this.changeContactInformation = this.changeContactInformation.bind(this)
 
   }
 
@@ -130,9 +133,9 @@ class App extends React.Component {
       if (user) {
         dbRefUsers.on('value', snapshot => {
           const data = snapshot.val()
+          let currentUser;
           for(let key in data) {
-            const contactInformation = data[key].contactInformation
-            if (user.uid === contactInformation.userID) {
+            if (user.uid === data[key].contactInformation.userID) {
               const isEditing = data[key].orderInformation.formComplete ? false : true
               console.log('user auto logged in')
               this.setState({
@@ -368,6 +371,10 @@ class App extends React.Component {
     if (parseInt(number) === 1) {
       userProfile.orderInformation.secondFreshChallahType = ''
       userProfile.orderInformation.secondFreshChallahTypeSelectionMade = false
+      userProfile.orderInformation.totalCost = "40"
+    }
+    else if (parseInt(number) === 2) {
+      userProfile.orderInformation.totalCost = "72"
     }
     this.setState({
       userProfile: userProfile
@@ -386,6 +393,10 @@ class App extends React.Component {
     if (parseInt(number) === 1) {
       userProfile.orderInformation.secondFrozenChallahType = ''
       userProfile.orderInformation.secondFrozenChallahTypeSelectionMade = false
+      userProfile.orderInformation.totalCost = "20"
+    }
+    else if(parseInt(number) === 2) {
+      userProfile.orderInformation.totalCost = "36"
     }
     this.setState({
       userProfile: userProfile
@@ -473,7 +484,7 @@ class App extends React.Component {
 
     const numberOfChallahsSelected = numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade ? true : false,
           firstChallahSelected = firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade ? true : false,
-          secondChallahSelected = (numberOfWeeklyFreshChallahsSelectionMade && !secondFreshChallahTypeSelectionMade) || (numberOfWeeklyFrozenChallahsSelectionMade && !secondFrozenChallahTypeSelectionMade) ? false : true
+          secondChallahSelected = (parseInt(numberOfWeeklyFreshChallahsSelectionMade) === 2 && !secondFreshChallahTypeSelectionMade) || (parseInt(numberOfWeeklyFrozenChallahsSelectionMade) === 2 && !secondFrozenChallahTypeSelectionMade) ? false : true
 
 
 
@@ -492,7 +503,7 @@ class App extends React.Component {
     this.setState({
       isEditing: false
     })
-    const { userProfile: { contactInformation, orderInformation}, deliverySchedule } = this.state
+    const { userProfile: { contactInformation }, deliverySchedule } = this.state
     
     const lastName = contactInformation.lastName,
           firstName = contactInformation.firstName,
@@ -589,6 +600,53 @@ class App extends React.Component {
     dbRefDeliverySchedule.child(timeSlot).child('deliveryAddress').set(deliveryAddress)
   }
 
+  changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email) {
+    const userProfile = this.state.userProfile,
+      userId = this.state.userProfile.contactInformation.userID,
+      contactInformation = {
+        "userID": userId,
+        "firstName": firstName,
+        "lastName": lastName,
+        "address": address,
+        "apartmentSuite": apartmentSuite,
+        "city": city,
+        "province": province,
+        "postalCode": postalCode,
+        "phoneNumber": phoneNumber,
+        "email": email, 
+      },
+      deliveryAddress = {
+        "firstNameDelivery": firstName,
+        "lastNameDelivery": lastName,
+        "addressDelivery": address,
+        "apartmentSuiteDelivery": apartmentSuite,
+        "cityDelivery": city,
+        "provinceDelivery": province,
+        "postalCodeDelivery": postalCode,
+        "phoneNumberDelivery": phoneNumber
+      }
+
+      userProfile.contactInformation = contactInformation
+      userProfile.deliveryAddress = deliveryAddress
+
+      
+
+      const contactLastName = this.state.userProfile.contactInformation.lastName,
+          contactFirstName = this.state.userProfile.contactInformation.firstName,
+          contactUserID = this.state.userProfile.contactInformation.userID,
+          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`
+
+      console.log(fbId)
+
+      // dbRefUsers.child(fbId).child("contactInformation").set(contactInformation).then(() => {
+      //   this.setState({
+      //     userProfile: userProfile
+      //   })
+      // })
+      // dbRefUsers.child(fbId).child("deliveryAddress").set(contactInformation)
+
+  }
+
   render() {
     // Close All Modals when user logs in
     this.state.userLoggedIn === true ? this.closeModal('modal-container') : null
@@ -678,12 +736,17 @@ class App extends React.Component {
             )
           }}/>
 
+          <Route path="/contact" exact render={() => {
+            return (
+              <ContactForm />
+            )
+          }} />
+
           <Route path="/myAccount" exact render={() => {
             return (
                 userLoggedIn ?
                 <AccountInfo 
                   userProfile={this.state.userProfile}
-                  handleChange={this.handleChange}
                   email={this.state.email}
                   password={this.state.password}
                   firstName={this.state.firstName}
@@ -695,6 +758,7 @@ class App extends React.Component {
                   postalCode={this.state.postalCode}
                   phoneNumber={this.state.phoneNumber}
                   isEditing={this.isEditing}
+                  changeContactInformation={this.changeContactInformation}
                 />
                 : window.location = "/"
             )

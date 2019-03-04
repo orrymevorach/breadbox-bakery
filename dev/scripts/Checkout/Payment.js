@@ -1,12 +1,18 @@
 import React from 'react';
+import Paypal from './Paypal';
 
 class Payment extends React.Component {
     render() {
         return (
-            <section className="payment">
-                <h1>Payment</h1>
-                <script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-                <script>paypal.Buttons().render('body');</script>
+            <section className="payment" id="payment">
+                <div className="heading-tab">
+                    <div className="row">
+                        <h1>Payment</h1>
+                    </div>
+                </div>
+                <div className="main-content">
+                    <Paypal />
+                </div>
             </section>
         )
     }

@@ -2,36 +2,69 @@ import React from 'react';
 
 class OrderSummary extends React.Component {
     render() {
-        const { userProfile: { orderInformation: 
-            { freshOrFrozenSelectionMade,  
-                freshChallahSelected,
-                frozenChallahSelected,
-                numberOfWeeklyFreshChallahs,
-                numberOfWeeklyFrozenChallahs,
-                numberOfWeeklyFreshChallahsSelectionMade,
-                numberOfWeeklyFrozenChallahsSelectionMade,
-                firstFreshChallahTypeSelectionMade,
-                firstFrozenChallahTypeSelectionMade,
-                secondFreshChallahTypeSelectionMade,
-                secondFrozenChallahTypeSelectionMade,
-                firstFreshChallahType,
-                firstFrozenChallahType,
-                secondFreshChallahType,
-                secondFrozenChallahType,
-                deliveryTime
-            
-            }}} = this.props
+        const { isEditingOrderSummary,
+                editOrderSummary,
+                confirmOrderSummary,
+                isEditing,
+                userProfile: { orderInformation: 
+                    { freshOrFrozenSelectionMade,  
+                    freshChallahSelected,
+                    frozenChallahSelected,
+                    numberOfWeeklyFreshChallahs,
+                    numberOfWeeklyFrozenChallahs,
+                    numberOfWeeklyFreshChallahsSelectionMade,
+                    numberOfWeeklyFrozenChallahsSelectionMade,
+                    firstFreshChallahTypeSelectionMade,
+                    firstFrozenChallahTypeSelectionMade,
+                    secondFreshChallahTypeSelectionMade,
+                    secondFrozenChallahTypeSelectionMade,
+                    firstFreshChallahType,
+                    firstFrozenChallahType,
+                    secondFreshChallahType,
+                    secondFrozenChallahType,
+                    deliveryTime,
+                    totalCost }
+            }} = this.props
 
-        const freshOrFrozen = freshChallahSelected ? "Fresh" : frozenChallahSelected ? "Frozen" : null
-        const numberOfChallahs = numberOfWeeklyFreshChallahsSelectionMade ? numberOfWeeklyFreshChallahs : numberOfWeeklyFrozenChallahsSelectionMade ? numberOfWeeklyFrozenChallahs : null 
-        const firstChallah = firstFreshChallahTypeSelectionMade ? firstFreshChallahType : firstFrozenChallahTypeSelectionMade ? firstFrozenChallahType : null
-        const secondChallah = secondFreshChallahTypeSelectionMade ? secondFreshChallahType : secondFrozenChallahTypeSelectionMade ? secondFrozenChallahType : null
+        const freshOrFrozen = freshChallahSelected ? "Fresh" : frozenChallahSelected ? "Frozen" : null,
+              numberOfChallahs = numberOfWeeklyFreshChallahsSelectionMade ? numberOfWeeklyFreshChallahs : numberOfWeeklyFrozenChallahsSelectionMade ? numberOfWeeklyFrozenChallahs : null,
+              firstChallah = firstFreshChallahTypeSelectionMade ? firstFreshChallahType : firstFrozenChallahTypeSelectionMade ? firstFrozenChallahType : null,
+              secondChallah = secondFreshChallahTypeSelectionMade ? secondFreshChallahType : secondFrozenChallahTypeSelectionMade ? secondFrozenChallahType : null,
+              deliveryWindow = 
+                deliveryTime === "12:00PM" ? "12:00PM - 12:30PM" :
+                deliveryTime === "12:30PM" ? "12:30PM - 1:00PM" :
+                deliveryTime === "1:00PM" ? "1:00PM - 1:30PM" :
+                deliveryTime === "1:30PM" ? "1:30PM - 2:00PM" :
+                deliveryTime === "2:00PM" ? "2:00PM - 2:30PM" :
+                deliveryTime === "2:30PM" ? "2:30PM - 3:00PM" :
+                deliveryTime === "3:00PM" ? "3:00PM - 3:30PM" :
+                deliveryTime === "3:30PM" ? "3:30PM - 4:00PM" : null,
+            challahFirstChallah = numberOfChallahs === 1 ? "Challah" : "First Challah",
+            challahOrChallahs = numberOfChallahs === 1 ? "Challah" : "Challahs"
         
         return (
             <section className="order-summary">
-                <h1>Order Summary:</h1>
+                <div className="heading-tab">
+                    <div className="row">
+                        <h1>Order Summary</h1>
+                        { !isEditingOrderSummary && (<button className="link" onClick={editOrderSummary}>Review</button>) }
+                    </div>
+                </div>
+                    {!isEditingOrderSummary && (
+                      <div className="summary">
+                          <p>Delivering <span className="bold">{numberOfChallahs}</span> {challahOrChallahs} at <span className="bold">{deliveryWindow}</span></p>
+                          <div className="row challah-selections">
+                            <p>{challahFirstChallah}: <span className="bold">{firstChallah}</span></p>
+                            {numberOfChallahs === 2 && (
+                                <p>Second Challah: <span className="bold">{secondChallah}</span></p>
+                            )}
+                          </div>
+                      </div>  
+                    )}
+                 
                 
-                <div className="text-container">
+                {isEditingOrderSummary && (
+                <div className="main-content text-container">
                     <div className="row">
                         <p className="text-left">Fresh Or Frozen Challah:</p>
                         <p className="text-right">{freshOrFrozen}</p>
@@ -40,29 +73,33 @@ class OrderSummary extends React.Component {
                         <p className="text-left">Number Of Challahs:</p>
                         <p className="text-right">{numberOfChallahs}</p>
                     </div>
-                    {freshChallahSelected && numberOfWeeklyFreshChallahs === 1 || frozenChallahSelected && numberOfWeeklyFrozenChallahs === 1 ?
+                    <div className="row">
+                        <p className="text-left">{challahFirstChallah}</p>
+                        <p className="text-right">{firstChallah}</p>
+                    </div>
+                    { freshChallahSelected && numberOfWeeklyFreshChallahs === 2 || frozenChallahSelected && numberOfWeeklyFrozenChallahs === 2 ?
                         <div className="row">
-                            <p className="text-left">Challah:</p>
-                            <p className="text-right">{firstChallah}</p>
-                        </div>
-                    : freshChallahSelected && numberOfWeeklyFreshChallahs === 2 || frozenChallahSelected && numberOfWeeklyFrozenChallahs === 2 ?
-                        <div className="row two-challahs-row">
-                            <div>
-                                <p className="text-left">First Challah:</p>
-                                <p className="text-right">{firstChallah}</p>
-                            </div>
-                            <div className="second-challah">
-                                <p className="text-left">Second Challah:</p>
-                                <p className="text-right">{secondChallah}</p>
-                            </div>
+                            <p className="text-left">Second Challah:</p>
+                            <p className="text-right">{secondChallah}</p>
                         </div>
                     : null }
-                    <div className="row">
-                        <p className="text-left">Delivery Time:</p>
-                        <p className="text-right">{deliveryTime}</p>
+                    <div className="row delivery-window">
+                        <div>
+                            <p className="text-left bold">Delivery Window:</p>
+                            <p className="subtext">*Please make sure someone is home at this time</p>
+                        </div>
+                        <p className="text-right">{deliveryWindow}</p>
+                    </div>
+                    <div className="row order-total">
+                        <p className="text-left bold">Order Total:</p>
+                        <p className="text-right">${totalCost}.00</p>
+                    </div>
+                    <div className="row buttons-container">
+                        <button onClick={ confirmOrderSummary }>Continue</button>
+                        <button className="link" onClick={ isEditing }>Edit Order</button>
                     </div>
                 </div>
-                <button onClick={ this.props.isEditing }>Edit Order</button>
+                )}
             </section>
                 
         )

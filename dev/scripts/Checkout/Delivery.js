@@ -68,50 +68,66 @@ class Delivery extends React.Component {
 
 
         return (
-            <section className="delivery">
-                <div className="delivery-tab">
-                    <h1>Delivery</h1>
-                    { !isEditingDelivery && (<button className="link" onClick={editDeliveryAddress}>Edit</button>) }
-
+            <section className="delivery" id="delivery">
+                <div className="heading-tab">
+                    <div className="row">
+                        { !isEditingDelivery ? <h1>Delivering To:</h1> :  <h1>Delivery</h1> } 
+                        { !isEditingDelivery && (<button className="link" onClick={editDeliveryAddress}>Edit</button>) }
+                    </div>
                 </div>
-                { isEditingDelivery ? 
-                    <div>
-                        <div className="text-container">
-                            <p>{firstName} {lastName}</p>
-                            <p>{address} {apartmentSuite && (`Appt. ${apartmentSuite}`)}</p>
-                            <p>{city}, {province}</p>
-                            <p>{postalCode}</p>
+                    {!isEditingDelivery && (
+                        <div className="summary">
+                            <div className="text-container">
+                                <p className="bold">{firstName} {lastName}</p>
+                                <p>{address} {apartmentSuite && (`Appt. ${apartmentSuite}`)}</p>
+                                <p>{city}, {province}</p>
+                                <p>{postalCode}</p>
+                            </div>
                         </div>
+                    )}
+                { isEditingDelivery ? 
+                    <div className="main-content">
                         <form action="#" className="select-address-radios">
-                            <label htmlFor="same" value="same">
-                                <input 
-                                type="radio" 
-                                name="addressRadio" 
-                                checked={currentSelected === "same" ? true : false} 
-                                value="same"
-                                onChange={(e) => this.selectDeliveryAddress(e)}
-                                className={classnames(currentSelected === "same" ? "checked" : null)}/>
-                                Deliver to this address
-                            </label>
-                            <label htmlFor="isNew" value="isNew">
-                                <input 
-                                type="radio" 
-                                name="addressRadio" 
-                                checked={currentSelected === "isNew" ? true : false}
-                                value="isNew"
-                                onChange={(e) => this.selectDeliveryAddress(e)}
-                                className={classnames(currentSelected === "isNew" ? "checked" : null)}/> 
-                                Deliver to a different address
-                            </label>
+                            <div className="radio-section">
+                                <label htmlFor="same" value="same">
+                                    <input 
+                                    type="radio" 
+                                    name="addressRadio" 
+                                    checked={currentSelected === "same" ? true : false} 
+                                    value="same"
+                                    onChange={(e) => this.selectDeliveryAddress(e)}
+                                    className={classnames(currentSelected === "same" ? "checked" : null)}/>
+                                    Deliver to this address
+                                </label>
+                                <div className="text-container">
+                                    <p>{firstName} {lastName}</p>
+                                    <p>{address} {apartmentSuite && (`Appt. ${apartmentSuite}`)}</p>
+                                    <p>{city}, {province}</p>
+                                    <p>{postalCode}</p>
+                                </div>
+                            
+                            </div>
+                            <div className="radio-section">
+                                <label htmlFor="isNew" value="isNew">
+                                    <input 
+                                    type="radio" 
+                                    name="addressRadio" 
+                                    checked={currentSelected === "isNew" ? true : false}
+                                    value="isNew"
+                                    onChange={(e) => this.selectDeliveryAddress(e)}
+                                    className={classnames(currentSelected === "isNew" ? "checked" : null)}/> 
+                                    Deliver to a different address
+                                </label>
+                            </div>
                         </form>
                         { // CTA button if selected address = current address
                         currentSelected === "same" && (
-                            <button onClick={confirmDeliveryAddress}>Continue To Billing</button>
+                            <button onClick={confirmDeliveryAddress}>Continue</button>
                         )}
                         
                         { // New Delivery Address Form
                         currentSelected === "isNew" ?
-                            <div className="new-address">
+                            <div className="new-address radio-section">
                                 <form action="#" onSubmit={(e) => this.passNewDeliveryToStateAndFirebase(e)}>
                                     <div className="name row">
                                         <div className="first-name column">
@@ -183,7 +199,7 @@ class Delivery extends React.Component {
                                             />
                                         </div>
                                     </div> 
-                                    <input type="submit" value="Submit New Address" />
+                                    <input type="submit" value="Deliver To This Address" />
                                 </form>
                             </div>
                         : null }

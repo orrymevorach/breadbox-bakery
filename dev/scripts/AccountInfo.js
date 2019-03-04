@@ -6,10 +6,53 @@ class AccountInfo extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isEditing: false
+            isEditing: false,
+            firstName: '',
+            lastName: '',
+            address: '',
+            apartmentSuite: '',
+            city: '',
+            province: '',
+            postalCode: '',
+            phoneNumber: '',
+            email: ''
         }
 
         this.isEditing = this.isEditing.bind(this)
+        this.handleChange = this.handleChange.bind(this)
+
+    }
+
+    componentDidMount() {
+        const { userProfile: {contactInformation: {
+            firstName,
+            lastName,
+            address,
+            apartmentSuite,
+            city,
+            province,
+            postalCode,
+            phoneNumber,
+            email
+        }}} = this.props
+
+        this.setState({
+            firstName: firstName,
+            lastName: lastName,
+            address: address,
+            apartmentSuite: apartmentSuite,
+            city: city,
+            province: province,
+            postalCode: postalCode,
+            phoneNumber: phoneNumber,
+            email: email
+        })
+    }
+
+    handleChange(e) {
+        this.setState({
+            [e.target.name]: e.target.value
+        })
     }
 
     isEditing() {
@@ -18,27 +61,32 @@ class AccountInfo extends React.Component {
         })
     }
 
-    render() {
-        const {userProfile: {orderInformation, contactInformation },
-                handleChange,
-                email,
-                password,
-                firstName,
-                lastName,
-                address,
-                apartmentSuite,
-                city,
-                province,
-                postalCode,
-                phoneNumber
-                } = this.props
+    submitForm(e) {
+        e.preventDefault();
 
-        const { isEditing } = this.state
+        const {firstName,
+            lastName,
+            address,
+            apartmentSuite,
+            city,
+            province,
+            postalCode,
+            phoneNumber,
+            email
+    } = this.state 
+    
+    this.props.changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email);
+        
+    }
+
+    render() {
+        const {userProfile: { contactInformation }} = this.props,
+             { isEditing } = this.state
         
         return (
             <div className="account-info">
                 <h1>Account Info</h1>
-                <form action="#">
+                <form action="#" onSubmit={(e) => this.submitForm(e)}>
                         <div className="name row">
                             <div className="first-name column">
                                 <label htmlFor="firstName">First Name</label>
@@ -46,8 +94,8 @@ class AccountInfo extends React.Component {
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     type="text"
                                     name="firstName"
-                                    value={contactInformation.firstName}
-                                    onChange={handleChange}
+                                    value={this.state.firstName}
+                                    onChange={this.handleChange}
                                     disabled={isEditing ? false : true}
                                 />
                             </div>
@@ -56,8 +104,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="lastName"
-                                    value={contactInformation.lastName}
-                                    onChange={handleChange}
+                                    value={this.state.lastName}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -70,8 +118,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="address"
-                                    value={contactInformation.address}
-                                    onChange={handleChange}
+                                    value={this.state.address}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -81,8 +129,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="apartmentSuite"
-                                    value={contactInformation.apartmentSuite}
-                                    onChange={handleChange}
+                                    value={this.state.apartmentSuite}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -94,8 +142,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="city"
-                                    value={contactInformation.city}
-                                    onChange={handleChange}
+                                    value={this.state.city}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -105,8 +153,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="province"
-                                    value={contactInformation.province}
-                                    onChange={handleChange}
+                                    value={this.state.province}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -116,8 +164,8 @@ class AccountInfo extends React.Component {
                                 <input
                                     type="text"
                                     name="postalCode"
-                                    value={contactInformation.postalCode}
-                                    onChange={handleChange}
+                                    value={this.state.postalCode}
+                                    onChange={this.handleChange}
                                     className={classnames( {isDisabled: !this.state.isEditing} )}
                                     disabled={isEditing ? false : true}
                                 />
@@ -128,8 +176,8 @@ class AccountInfo extends React.Component {
                             <input
                                 type="text"
                                 name="phoneNumber"
-                                value={contactInformation.phoneNumber}
-                                onChange={handleChange}
+                                value={this.state.phoneNumber}
+                                onChange={this.handleChange}
                                 className={classnames( {isDisabled: !this.state.isEditing} )}
                                 disabled={isEditing ? false : true}
                             />
@@ -139,19 +187,17 @@ class AccountInfo extends React.Component {
                             <input
                                 type="email"
                                 name="email"
-                                value={contactInformation.email}
-                                onChange={handleChange}
+                                value={this.state.email}
+                                onChange={this.handleChange}
                                 className={classnames( {isDisabled: !this.state.isEditing} )}
                                 disabled={isEditing ? false : true}
                             />
                         </div>
+                        { isEditing && <input type="submit" value="Submit"/> }
                     </form>
+                    {!isEditing && (
                         <button onClick={this.isEditing}>Edit Account Details</button>
-                <OrderSummary 
-                    userProfile={this.props.userProfile}
-                    isEditing={this.isEditing}
-                /> 
-
+                    )}
             </div>
         )
     }
