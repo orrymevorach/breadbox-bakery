@@ -22,7 +22,7 @@ const Home = () => {
                 </div>
             </section>
             <section className="section-three wrapper">
-                <div className="challah-box"><img src="../img/homepage/Shop_Sesame.png" alt="Challah"/></div>
+                <div className="challah-box"><img src="../img/homepage/Shop_Sesame.jpg" alt="Challah"/></div>
                 <div className="mobile-hide challah-box"><img src="../img/homepage/Shop_Sweet.jpg" alt="Challah"/></div>
                 <div className="mobile-hide challah-box"><img src="../img/homepage/Shop_Raisin.jpg" alt="Challah"/></div>
             </section>

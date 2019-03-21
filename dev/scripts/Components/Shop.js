@@ -10,6 +10,7 @@ import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 import FormTracker from './ShopComponents/FormTracker';
 import WeeklyOrMonthly from './ShopComponents/WeeklyOrMonthly';
+import PricingPlan from './ShopComponents/PricingPlan';
 
 class Shop extends React.Component {
     constructor(props) {
@@ -82,6 +83,8 @@ class Shop extends React.Component {
 
 
                 : null } 
+
+                <PricingPlan />
 
                 <WeeklyOrMonthly 
                     userProfile={userProfile}

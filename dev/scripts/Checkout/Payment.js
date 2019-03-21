@@ -12,6 +12,7 @@ class Payment extends React.Component {
                             showPaymentSuccess={this.props.showPaymentSuccess}
                             showPaymentFail={this.props.showPaymentFail}
                             className="paypal-button"
+                            totalCost={this.props.totalCost}
                         />
                     </div>
                 </div>

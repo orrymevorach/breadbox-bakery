@@ -34,7 +34,7 @@ const NumberOfWeeklyFrozenChallahs = (
                             <div className="challah-container challah-number" key={index}>
                                 <h1>{challah.description}</h1>
                                 <a href={challah.anchor}>
-                                    <p>{challah.text}</p>
+                                    {/* <p>{challah.text}</p> */}
                                     <button type="submit" onClick={(e) => selectNumberOfWeeklyFrozenChallahs(challah.number)} >Select This Plan</button>
                                 </a>
                             </div>    

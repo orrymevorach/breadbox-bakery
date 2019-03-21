@@ -68,7 +68,7 @@ class Checkout extends React.Component {
     }
     
     render() {
-        const { userProfile, isEditing, selectAlternateDeliveryAddress } = this.props
+        const { userProfile, userProfile: {orderInformation: {totalCost}}, isEditing, selectAlternateDeliveryAddress } = this.props
         const { isPaymentReceived, didPaymentFail } = this.state
 
         return (
@@ -92,6 +92,7 @@ class Checkout extends React.Component {
                         <Payment 
                             showPaymentSuccess={this.showPaymentSuccess}
                             showPaymentFail={this.showPaymentFail}
+                            totalCost={totalCost}
                         />
                     </div>
                 : !isPaymentReceived && didPaymentFail ?

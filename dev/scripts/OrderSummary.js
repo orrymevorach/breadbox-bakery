@@ -1,4 +1,5 @@
 import React from 'react';
+import WeeklyOrMonthly from './Components/ShopComponents/WeeklyOrMonthly';
 
 class OrderSummary extends React.Component {
     render() {
@@ -22,6 +23,7 @@ class OrderSummary extends React.Component {
                     firstFrozenChallahType,
                     secondFreshChallahType,
                     secondFrozenChallahType,
+                    weeklyOrMonthly,
                     deliveryTime,
                     totalCost }
             }} = this.props
@@ -65,6 +67,10 @@ class OrderSummary extends React.Component {
                 
                 {isEditingOrderSummary && (
                 <div className="main-content text-container">
+                    <div className="row">
+                        <p className="text-left">Delivery Plan:</p>
+                        <p className="text-right">{weeklyOrMonthly}</p>
+                    </div>
                     <div className="row">
                         <p className="text-left">Fresh Or Frozen Challah:</p>
                         <p className="text-right">{freshOrFrozen}</p>

@@ -497,17 +497,33 @@ class App extends React.Component {
       numberOfWeeklyFrozenChallahsSelectionMade, 
       firstFrozenChallahTypeSelectionMade, 
       secondFrozenChallahTypeSelectionMade, 
-      weeklyOrMonthlySelectionMade
+      weeklyOrMonthly,
+      weeklyOrMonthlySelectionMade,
+      numberOfWeeklyFreshChallahs,
+      numberOfWeeklyFrozenChallahs,
     } = this.state.userProfile.orderInformation
 
     const numberOfChallahsSelected = numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade ? true : false,
           firstChallahSelected = firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade ? true : false,
-          secondChallahSelected = (parseInt(numberOfWeeklyFreshChallahsSelectionMade) === 2 && !secondFreshChallahTypeSelectionMade) || (parseInt(numberOfWeeklyFrozenChallahsSelectionMade) === 2 && !secondFrozenChallahTypeSelectionMade) ? false : true
+          secondChallahSelected = (parseInt(numberOfWeeklyFreshChallahsSelectionMade) === 2 && !secondFreshChallahTypeSelectionMade) || (parseInt(numberOfWeeklyFrozenChallahsSelectionMade) === 2 && !secondFrozenChallahTypeSelectionMade) ? false : true,
+          weekly = weeklyOrMonthly === "Weekly" ? true : false,
+          monthly = weeklyOrMonthly === "Monthly" ? true : false,
+          orderTotal = 
+            weekly && numberOfWeeklyFreshChallahs === 1 ? 15 
+            : weekly && numberOfWeeklyFreshChallahs === 2 ? 25 
+            : weekly && numberOfWeeklyFrozenChallahs === 1 ? 10 
+            : weekly && numberOfWeeklyFrozenChallahs === 2 ? 18 
+            : monthly && numberOfWeeklyFreshChallahs === 1 ? 40
+            : monthly && numberOfWeeklyFreshChallahs === 2 ? 72
+            : monthly && numberOfWeeklyFrozenChallahs === 1 ? 20 
+            : monthly && numberOfWeeklyFrozenChallahs === 2 ? 36
+            : console.error("Total not being calculated correctly")
 
     if(deliveryTimeSelectionMade && freshOrFrozenSelectionMade && numberOfChallahsSelected && firstChallahSelected && secondChallahSelected && weeklyOrMonthlySelectionMade) {
       console.log("Form Complete")
       const userProfile = this.state.userProfile
       userProfile.orderInformation.formComplete = true
+      userProfile.orderInformation.totalCost = orderTotal
 
       this.setState({
         userProfile: userProfile,

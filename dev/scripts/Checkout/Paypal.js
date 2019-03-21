@@ -24,14 +24,16 @@ class Paypal extends React.Component {
             this.props.showPaymentFail();
         }
  
-        let env = 'sandbox'; // you can set here to 'production' for production, or 'sandbox' for testing
+        let env = 'production'; // you can set here to 'production' for production, or 'sandbox' for testing
         let currency = 'CAD'; // or you can set this value from your props or state
-        let total = 40; // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
+        let total = this.props.totalCost || 0
+         // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
         // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
+        console.log(total)
  
         const client = {
             sandbox:    'AZ_hLb9Ek38BvtN-PZbjLAkMj59juyzs4SDI97RLB2TzsQIgX65YXvgzIuhoc7OOFYmjCC9Puy6Q4vZn',
-            production: 'AR68LPezQE.GcfXDdWLAHTh3uheYAzF7v397LD6Ej90XYssBiPkPI2sC'
+            production: 'AcLhFI-lWO9vV24PzZCt28AeKFhxUxT1fZWLAV2Tbecj10gRz0Rrhlm2A9zJpaMCM6GF2NEeqeC1coCF'
         }
         // In order to get production's app-ID, you will have to send your app to Paypal for approval first
         // For sandbox app-ID (after logging into your developer account, please locate the "REST API apps" section, click "Create App"):

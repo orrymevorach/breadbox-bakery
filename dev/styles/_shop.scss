@@ -29,7 +29,6 @@
     }
 
     .challah-container {
-        background-image: url(../img/Shop_Raisin.jpg);
         background-repeat: no-repeat;
         min-height: 380px;
         width: 270px;
@@ -241,6 +240,76 @@
         // left: none;
         // transform: translateX(0);
     }
+
+    #weeklyOrMonthly .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/shop/Shop_Select_Challah_Sweet.jpg);
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/shop/Shop_Select_Challah_Raisin.jpg);
+        }
+    }
+
+    #freshOrFrozen .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/shop/Shop_Fresh.jpg);
+            background-position: center 120px;
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/shop/Shop_Frozen.jpg);
+            background-position: center 120px;
+        }
+    }
+
+    #firstFreshChallahType .challah-container,
+    #secondFreshChallahType .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/homepage/Shop_Sesame.jpg);
+            background-position: center 140px;
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/homepage/Shop_Sweet.jpg);
+            background-position: center 140px;
+        }
+        &:nth-of-type(3) {
+            background-image: url(../img/homepage/Shop_Raisin.jpg);
+            background-position: center 140px;
+        }
+    }
+
+    #firstFrozenChallahType .challah-container,
+    #secondFrozenChallahType .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/shop/Shop_Frozen.jpg);
+            background-position: center 120px;
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/shop/Shop_Frozen.jpg);
+            background-position: center 120px;
+        }
+    }
+
+    #numberOfWeeklyFreshChallahs .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/shop/Shop_Quantity_1.jpg);
+            background-position: center 120px;
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/shop/Shop_Quantity_2.jpg);
+            background-position: center 120px;
+        }
+    }
+
+    #numberOfWeeklyFrozenChallahs .challah-container {
+        &:nth-of-type(1) {
+            background-image: url(../img/shop/Shop_Frozen.jpg);
+        }
+        &:nth-of-type(2) {
+            background-image: url(../img/shop/Shop_Frozen_Quantity_2.jpg);
+        }
+    }
+
+    
     
 
 }
