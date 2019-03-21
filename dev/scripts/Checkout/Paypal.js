@@ -21,6 +21,7 @@ class Paypal extends React.Component {
             console.log("Error!", err);
             // Because the Paypal's main script is loaded asynchronously from "https://www.paypalobjects.com/api/checkout.js"
             // => sometimes it may take about 0.5 second for everything to get set, or for the button to appear
+            this.props.showPaymentFail();
         }
  
         let env = 'sandbox'; // you can set here to 'production' for production, or 'sandbox' for testing

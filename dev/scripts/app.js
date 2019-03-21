@@ -81,6 +81,8 @@ class App extends React.Component {
           // Conditions for rendering
           "formComplete": false,
           "totalCost": "",
+          "weeklyOrMonthly": "",
+          "weeklyOrMonthlySelectionMade": false
         },
         "deliveryAddress": {
           "firstNameDelivery": '',
@@ -120,6 +122,7 @@ class App extends React.Component {
     this.selectDeliveryTime = this.selectDeliveryTime.bind(this)
     this.selectNumberOfWeeklyFreshChallahs = this.selectNumberOfWeeklyFreshChallahs.bind(this)
     this.selectNumberOfWeeklyFrozenChallahs = this.selectNumberOfWeeklyFrozenChallahs.bind(this)
+    this.selectWeeklyOrMonthly = this.selectWeeklyOrMonthly.bind(this)
     this.confirmOrder = this.confirmOrder.bind(this)
     this.formComplete = this.formComplete.bind(this)
     this.selectAlternateDeliveryAddress = this.selectAlternateDeliveryAddress.bind(this)
@@ -471,6 +474,20 @@ class App extends React.Component {
     },500)  
   }
 
+  selectWeeklyOrMonthly(selection) {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.weeklyOrMonthly = selection
+    userProfile.orderInformation.weeklyOrMonthlySelectionMade = true
+
+    this.setState({
+      userProfile: userProfile
+    })
+    
+    setTimeout(() => {
+      this.formComplete()
+    },500)  
+  }
+
   formComplete() {
     const { deliveryTimeSelectionMade, 
       freshOrFrozenSelectionMade, 
@@ -480,15 +497,14 @@ class App extends React.Component {
       numberOfWeeklyFrozenChallahsSelectionMade, 
       firstFrozenChallahTypeSelectionMade, 
       secondFrozenChallahTypeSelectionMade, 
+      weeklyOrMonthlySelectionMade
     } = this.state.userProfile.orderInformation
 
     const numberOfChallahsSelected = numberOfWeeklyFreshChallahsSelectionMade || numberOfWeeklyFrozenChallahsSelectionMade ? true : false,
           firstChallahSelected = firstFreshChallahTypeSelectionMade || firstFrozenChallahTypeSelectionMade ? true : false,
           secondChallahSelected = (parseInt(numberOfWeeklyFreshChallahsSelectionMade) === 2 && !secondFreshChallahTypeSelectionMade) || (parseInt(numberOfWeeklyFrozenChallahsSelectionMade) === 2 && !secondFrozenChallahTypeSelectionMade) ? false : true
 
-
-
-    if(deliveryTimeSelectionMade && freshOrFrozenSelectionMade && numberOfChallahsSelected && firstChallahSelected && secondChallahSelected) {
+    if(deliveryTimeSelectionMade && freshOrFrozenSelectionMade && numberOfChallahsSelected && firstChallahSelected && secondChallahSelected && weeklyOrMonthlySelectionMade) {
       console.log("Form Complete")
       const userProfile = this.state.userProfile
       userProfile.orderInformation.formComplete = true
@@ -629,9 +645,6 @@ class App extends React.Component {
       userProfile.contactInformation = contactInformation
       userProfile.deliveryAddress = deliveryAddress
 
-      
-
-
       dbRefUsers.child(fbId).child("contactInformation").set(contactInformation)
       dbRefUsers.child(fbId).child("deliveryAddress").set(contactInformation)
 
@@ -715,6 +728,7 @@ class App extends React.Component {
                   selectFirstFrozenChallahType={this.selectFirstFrozenChallahType}
                   selectSecondFrozenChallahType={this.selectSecondFrozenChallahType}
                   selectDeliveryTime={this.selectDeliveryTime}
+                  selectWeeklyOrMonthly={this.selectWeeklyOrMonthly}
                   confirmOrder={this.confirmOrder}
                   formComplete={this.formComplete}
                 /> 

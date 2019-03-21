@@ -7,7 +7,6 @@ const Home = () => {
                 <div className="section-wrapper">
                     <div className="section-text-container">
                         <img src="../img/homepage/official-banner.jpg" alt="Header Image"/>
-                        <p className="section-text">Shop Now</p>
                     </div>
                 </div>
             </section>
@@ -19,7 +18,7 @@ const Home = () => {
                         Ingredients</h1>
                 </div>
                 <div className="right">
-                    <p>Breadbox Bakery is a local artisan bakery. Each of our handmade challahs are crafted with love and all natural ingredients. We make each challah in small batches to ensure the quality of your bread is never compromised. Each batch of challah dough is made with: Flour, Water, Canola Oil, Eggs, Yeast, Salt, and Vanilla. Each challah is handmake and unique in its own way. Therefore, no two challahs are the same. </p>
+                    <p>Breadbox Bakery is a local artisan bakery. Each of our handmade challahs are crafted with love and all natural ingredients. We make each challah in small batches to ensure the quality of your bread is never compromised. Each batch of challah dough is made with: Flour, Water, Canola Oil, Eggs, Yeast, Salt, and Vanilla. Each challah is handmade and unique in its own way. Therefore, no two challahs are the same. </p>
                 </div>
             </section>
             <section className="section-three wrapper">

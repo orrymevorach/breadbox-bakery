@@ -8,12 +8,12 @@ class Payment extends React.Component {
                 <div className="heading-tab">
                     <div className="row">
                         <h1>Payment</h1>
+                        <Paypal 
+                            showPaymentSuccess={this.props.showPaymentSuccess}
+                            showPaymentFail={this.props.showPaymentFail}
+                            className="paypal-button"
+                        />
                     </div>
-                </div>
-                <div className="main-content">
-                    <Paypal 
-                        showPaymentSuccess={this.props.showPaymentSuccess}
-                    />
                 </div>
             </section>
         )

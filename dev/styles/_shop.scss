@@ -32,7 +32,7 @@
         background-image: url(../img/Shop_Raisin.jpg);
         background-repeat: no-repeat;
         min-height: 380px;
-        min-width: 270px;
+        width: 270px;
         background-position: center 100px;
         background-size: 80%;
         background-color: #f7e5ed;
@@ -59,6 +59,10 @@
         a {
             text-decoration: none;
         }
+    }
+
+    #weeklyOrMonthly .challah-container h1 {
+        font-size: 20px;
     }
 
     #firstFreshChallahType .challah-container {

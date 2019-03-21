@@ -3,6 +3,7 @@ import OrderSummary from '../OrderSummary';
 import Delivery from './Delivery';
 import Payment from './Payment';
 import PaymentSuccess from './PaymentSuccess';
+import PaymentFail from './PaymentFail';
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -11,7 +12,8 @@ class Checkout extends React.Component {
             isEditingOrderSummary: true,
             isEditingDelivery: false,
             isEditingPayment: false,
-            isPaymentReceived: false
+            isPaymentReceived: false,
+            didPaymentFail: false
         }
 
         this.confirmDeliveryAddress = this.confirmDeliveryAddress.bind(this)
@@ -19,6 +21,7 @@ class Checkout extends React.Component {
         this.confirmOrderSummary = this.confirmOrderSummary.bind(this)
         this.editOrderSummary = this.editOrderSummary.bind(this)
         this.showPaymentSuccess = this.showPaymentSuccess.bind(this)
+        this.showPaymentFail = this.showPaymentFail.bind(this)
 
     }
 
@@ -57,14 +60,20 @@ class Checkout extends React.Component {
             isPaymentReceived: true
         })
     }
+
+    showPaymentFail() {
+        this.setState({
+            didPaymentFail: true
+        })
+    }
     
     render() {
         const { userProfile, isEditing, selectAlternateDeliveryAddress } = this.props
+        const { isPaymentReceived, didPaymentFail } = this.state
 
         return (
             <section className="checkout">
-                <PaymentSuccess />
-                {/* {!this.state.isPaymentReceived ?
+                {!isPaymentReceived && !didPaymentFail ?
                     <div>
                         <OrderSummary 
                             isEditing={isEditing}
@@ -82,9 +91,14 @@ class Checkout extends React.Component {
                         />
                         <Payment 
                             showPaymentSuccess={this.showPaymentSuccess}
+                            showPaymentFail={this.showPaymentFail}
                         />
                     </div>
-                : <h1>Order Confirmed</h1> } */}
+                : !isPaymentReceived && didPaymentFail ?
+                    <PaymentFail />
+                : isPaymentReceived ? 
+                    <PaymentSuccess />
+                : null }
             </section>
         )
     }

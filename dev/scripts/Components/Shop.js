@@ -9,6 +9,7 @@ import FreshOrFrozen from './ShopComponents/FreshOrFrozen';
 import FirstFrozenChallahType from './ShopComponents/FirstFrozenChallahType';
 import SecondFrozenChallahType from './ShopComponents/SecondFrozenChallahType';
 import FormTracker from './ShopComponents/FormTracker';
+import WeeklyOrMonthly from './ShopComponents/WeeklyOrMonthly';
 
 class Shop extends React.Component {
     constructor(props) {
@@ -59,6 +60,7 @@ class Shop extends React.Component {
                 selectFirstFrozenChallahType,
                 selectSecondFrozenChallahType,
                 selectDeliveryTime,
+                selectWeeklyOrMonthly,
                 userProfile: { orderInformation: { freshChallahSelected, frozenChallahSelected, numberOfWeeklyFreshChallahs, numberOfWeeklyFrozenChallahs, formComplete } }
             } = this.props
             
@@ -80,6 +82,13 @@ class Shop extends React.Component {
 
 
                 : null } 
+
+                <WeeklyOrMonthly 
+                    userProfile={userProfile}
+                    userLoggedIn={userLoggedIn}
+                    userChangingSelection={userChangingSelection}
+                    selectWeeklyOrMonthly={selectWeeklyOrMonthly}
+                />
 
                 <FreshOrFrozen 
                     userProfile={userProfile}
