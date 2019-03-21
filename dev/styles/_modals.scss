@@ -112,7 +112,13 @@ input[type=submit] {
         width: 600px;
     }
 }
+
 .login-modal {
+    .modal {
+        overflow-y: visible;
+        height: auto;
+        top: 15vh;
+    }
     form {
         width: 400px;
     }

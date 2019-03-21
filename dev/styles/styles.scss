@@ -19,6 +19,7 @@ h1, h2, h3, h4, h5, h6, ul, li, a, p {
 @import 'checkout';
 @import 'accountInfo';
 @import 'contactForm';
+@import 'paymentSuccess';
 
 
 
@@ -38,7 +39,7 @@ html {
 h1 {
     font-family: $font;
     font-weight: 300;
-    font-size: 80px;
+    font-size: 60px;
 }
 
 h2 {
@@ -52,5 +53,11 @@ h2 {
     overflow: hidden;
 }
 
-@import 'comingsoon';
+a {
+    text-decoration: none;
+    &.active {
+        outline: 2px solid $darkPink;
+    }
+}
+
 

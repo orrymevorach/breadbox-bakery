@@ -2,6 +2,7 @@ import React from 'react';
 import OrderSummary from '../OrderSummary';
 import Delivery from './Delivery';
 import Payment from './Payment';
+import PaymentSuccess from './PaymentSuccess';
 
 class Checkout extends React.Component {
     constructor(props) {
@@ -9,13 +10,15 @@ class Checkout extends React.Component {
         this.state = {
             isEditingOrderSummary: true,
             isEditingDelivery: false,
-            isEditingPayment: false
+            isEditingPayment: false,
+            isPaymentReceived: false
         }
 
         this.confirmDeliveryAddress = this.confirmDeliveryAddress.bind(this)
         this.editDeliveryAddress = this.editDeliveryAddress.bind(this)
         this.confirmOrderSummary = this.confirmOrderSummary.bind(this)
         this.editOrderSummary = this.editOrderSummary.bind(this)
+        this.showPaymentSuccess = this.showPaymentSuccess.bind(this)
 
     }
 
@@ -40,8 +43,6 @@ class Checkout extends React.Component {
             isEditingDelivery: false,
             isEditingPayment: true
         })
-
-        window.scrollBy(0, 400)
     }
 
     editDeliveryAddress() {
@@ -50,27 +51,40 @@ class Checkout extends React.Component {
             isEditingPayment: false
         })
     }
+
+    showPaymentSuccess() {
+        this.setState({
+            isPaymentReceived: true
+        })
+    }
     
     render() {
         const { userProfile, isEditing, selectAlternateDeliveryAddress } = this.props
 
         return (
             <section className="checkout">
-                    <OrderSummary 
-                        isEditing={isEditing}
-                        userProfile={userProfile}
-                        isEditingOrderSummary={this.state.isEditingOrderSummary}
-                        confirmOrderSummary={this.confirmOrderSummary}
-                        editOrderSummary={this.editOrderSummary}
-                    />
-                    <Delivery 
-                        userProfile={userProfile}
-                        selectAlternateDeliveryAddress={selectAlternateDeliveryAddress}
-                        isEditingDelivery={this.state.isEditingDelivery}
-                        confirmDeliveryAddress={this.confirmDeliveryAddress}
-                        editDeliveryAddress={this.editDeliveryAddress}
-                    />
-                <Payment />
+                <PaymentSuccess />
+                {/* {!this.state.isPaymentReceived ?
+                    <div>
+                        <OrderSummary 
+                            isEditing={isEditing}
+                            userProfile={userProfile}
+                            isEditingOrderSummary={this.state.isEditingOrderSummary}
+                            confirmOrderSummary={this.confirmOrderSummary}
+                            editOrderSummary={this.editOrderSummary}
+                        />
+                        <Delivery 
+                            userProfile={userProfile}
+                            selectAlternateDeliveryAddress={selectAlternateDeliveryAddress}
+                            isEditingDelivery={this.state.isEditingDelivery}
+                            confirmDeliveryAddress={this.confirmDeliveryAddress}
+                            editDeliveryAddress={this.editDeliveryAddress}
+                        />
+                        <Payment 
+                            showPaymentSuccess={this.showPaymentSuccess}
+                        />
+                    </div>
+                : <h1>Order Confirmed</h1> } */}
             </section>
         )
     }

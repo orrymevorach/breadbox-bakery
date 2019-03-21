@@ -1,0 +1,12 @@
+.payment-success,
+.payment-fail {
+    text-align: center;
+    h1 {
+        color: $darkPink;
+        margin: 50px 0 25px;
+    }
+    p {
+        font-size: 20px;
+        margin: 15px 0;
+    }
+}

@@ -16,10 +16,6 @@ class Shop extends React.Component {
         this.state = {
               "freshChallahTypes": [
                 {
-                  name: 'Original',
-                  description: "Plain Challah with No Topping"
-                },
-                {
                   name: 'Sesame',
                   description: "Plain Challah with Sesame Seed Topping"
                 },
@@ -71,9 +67,9 @@ class Shop extends React.Component {
                 {userLoggedIn ? 
                     <div>
                         {/* Form Tracker */}
-                        <FormTracker 
+                        {/* <FormTracker 
                             userProfile={userProfile} 
-                        />  
+                        />   */}
                         
                         {/* Back To Top Button */}
                         <a href="#freshOrFrozen"> 

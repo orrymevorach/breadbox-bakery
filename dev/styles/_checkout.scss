@@ -160,6 +160,9 @@ section.order-summary {
     .delivery-window {
         margin-top: 40px;
         position: relative;
+        .bold {
+            margin-bottom: 15px;
+        }
         &:before {
             content: '';
             position: absolute;
@@ -173,7 +176,7 @@ section.order-summary {
             top: -30px;
         }
         .subtext {
-            font-size: 12px;
+            font-size: 14px;
             color: darkgrey;
         }
     }
@@ -198,7 +201,6 @@ section.order-summary {
         }
     }
     .buttons-container {
-        justify-content: flex-start;
         button {
             margin: 0 20px 0 0;
         }

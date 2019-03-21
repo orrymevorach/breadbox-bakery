@@ -87,6 +87,8 @@ class OrderSummary extends React.Component {
                         <div>
                             <p className="text-left bold">Delivery Window:</p>
                             <p className="subtext">*Please make sure someone is home at this time</p>
+                            <p className="subtext">*If no one is home, the Challah will be left at the front door</p>
+                            <p className="subtext">*Breadbox Bakery is not responsible for stolen or damaged Challah</p>
                         </div>
                         <p className="text-right">{deliveryWindow}</p>
                     </div>

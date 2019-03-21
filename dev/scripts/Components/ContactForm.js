@@ -13,6 +13,14 @@ class ContactForm extends React.Component {
 
     }
 
+    componentDidMount() {
+        window.addEventListener("keydown", (e) => {
+            if(e.which === 13) {
+                e.preventDefault();
+            }
+        })
+    }
+
     handleChange(e) {
         this.setState({
             [e.target.name]: e.target.value
@@ -23,7 +31,7 @@ class ContactForm extends React.Component {
         return (
             <section className="contact-us">
                 <h1>Contact Us</h1>
-                <form action="#">
+                <form action="http://www.focuspocus.io/magic/a7128daf200e66af457098ce5b70147b" method="POST" >
                     <label htmlFor="name">
                         Name:
                         <input 
@@ -31,6 +39,7 @@ class ContactForm extends React.Component {
                         onChange={this.handleChange}
                         name="name"
                         value={this.state.name}
+                        required
                         />
                     </label>
                     <label htmlFor="email">
@@ -40,6 +49,7 @@ class ContactForm extends React.Component {
                         onChange={this.handleChange}
                         name="email"
                         value={this.state.email}
+                        required
                         />
                     </label>
                     <label htmlFor="message">
@@ -49,6 +59,7 @@ class ContactForm extends React.Component {
                         onChange={this.handleChange}
                         name="message"
                         value={this.state.message}
+                        required
                         />
                     </label>
                     <input type="submit"/>

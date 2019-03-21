@@ -11,14 +11,14 @@ import AccountInfo from './AccountInfo';
 import Checkout from './Checkout/Checkout';
 import ContactForm from './Components/ContactForm';
 
-// Initialize Firebase
+  // Initialize Firebase
 const config = {
-  apiKey: "AIzaSyB1KLWrQKKfaV77GA5hINfhZFgkPsLTnKM",
-  authDomain: "breadbox-bakery.firebaseapp.com",
-  databaseURL: "https://breadbox-bakery.firebaseio.com",
-  projectId: "breadbox-bakery",
-  storageBucket: "breadbox-bakery.appspot.com",
-  messagingSenderId: "629017584696"
+  apiKey: "AIzaSyBDDltEW4zQ85iA8FrxhzJTg0Yb90DU4DM",
+  authDomain: "breadboxbakery-885e9.firebaseapp.com",
+  databaseURL: "https://breadboxbakery-885e9.firebaseio.com",
+  projectId: "breadboxbakery-885e9",
+  storageBucket: "breadboxbakery-885e9.appspot.com",
+  messagingSenderId: "1073324700462"
 };
 firebase.initializeApp(config);
 
@@ -600,7 +600,7 @@ class App extends React.Component {
     dbRefDeliverySchedule.child(timeSlot).child('deliveryAddress').set(deliveryAddress)
   }
 
-  changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email) {
+  changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email, fbId) {
     const userProfile = this.state.userProfile,
       userId = this.state.userProfile.contactInformation.userID,
       contactInformation = {
@@ -631,19 +631,13 @@ class App extends React.Component {
 
       
 
-      const contactLastName = this.state.userProfile.contactInformation.lastName,
-          contactFirstName = this.state.userProfile.contactInformation.firstName,
-          contactUserID = this.state.userProfile.contactInformation.userID,
-          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`
 
-      console.log(fbId)
+      dbRefUsers.child(fbId).child("contactInformation").set(contactInformation)
+      dbRefUsers.child(fbId).child("deliveryAddress").set(contactInformation)
 
-      // dbRefUsers.child(fbId).child("contactInformation").set(contactInformation).then(() => {
-      //   this.setState({
-      //     userProfile: userProfile
-      //   })
-      // })
-      // dbRefUsers.child(fbId).child("deliveryAddress").set(contactInformation)
+      this.setState({
+        userProfile: userProfile
+      })
 
   }
 
@@ -657,7 +651,6 @@ class App extends React.Component {
 
     return (
       <div>
-        {/* <ComingSoon /> */}
         <LoginModal 
           closeModal={this.closeModal}
           showModal={this.showModal}
@@ -763,11 +756,16 @@ class App extends React.Component {
                 : window.location = "/"
             )
           }} />
-        </div>
 
+      <Route path="/" render={() => {
+        return (
+          <Footer />
+          )
+      }} />
+        </div>
+      
       </Router>
       
-      <Footer />
         
       </div>
     )

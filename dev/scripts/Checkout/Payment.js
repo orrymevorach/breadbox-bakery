@@ -11,7 +11,9 @@ class Payment extends React.Component {
                     </div>
                 </div>
                 <div className="main-content">
-                    <Paypal />
+                    <Paypal 
+                        showPaymentSuccess={this.props.showPaymentSuccess}
+                    />
                 </div>
             </section>
         )

@@ -8,17 +8,24 @@ header {
     margin: 0 auto;
 }
 
+.header-nav {
+    margin-top: 10px;
+}
+
 .header-nav ul {
     list-style: none;
     color: #3D3C3A;
     text-transform: uppercase;
-    width: 284px;
+    width: 285px;
     margin: 0 auto;
     li {
         float: left;
-        margin: 0 20px;
+        padding: 6px 20px;
         font-size: 15px;
         letter-spacing: 1px;
+        &:hover {
+            outline: 2px solid lightgrey;
+        }
     }
 }
 
@@ -27,7 +34,7 @@ header {
     button, a {
         color: #3D3C3A;
         padding: 5px 10px;
-        margin-top: -7px;
+        margin-top: -3px;
         background-color: white;
         border: none;
         text-decoration: none;
@@ -41,5 +48,43 @@ header {
             background-color: $darkPink;
             color: white;
         }
+    }
+}
+
+@media(max-width:780px) {
+    header {
+        height: 100vh;
+        position: relative;
+    }
+    .header-nav {
+        position: absolute;
+        bottom: 50px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .header-logo img {
+        width: 350px;
+        position: relative;
+        top: 150px;
+    }
+    .nav-right {
+        float: none;
+        margin: 0 auto;
+        padding-left: 40px;
+        padding-top: 20px;
+    }
+}
+
+@media(max-width: 550px) {
+    .nav-right a,
+    .nav-right button {
+        font-size: 13px;
+    }
+    .header-nav ul li {
+        font-size: 13px;
     }
 }

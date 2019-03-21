@@ -11,7 +11,7 @@ class Header extends React.Component {
                 showModal,
                 logout 
             } = this.props
-            
+
         return (
             <header>
     
@@ -23,9 +23,9 @@ class Header extends React.Component {
                 {/* Nav */}
                 <nav className="header-nav clearfix">
                     <ul className="nav-center">
-                        <NavLink to="/"><li>Home</li></NavLink>
-                        <NavLink to="/shop"><li>Shop</li></NavLink>
-                        <NavLink to="/contact"><li>Contact</li></NavLink>
+                        <NavLink to="/" exact activeClassName="active"><li>Home</li></NavLink>
+                        <NavLink to="/shop" activeClassName="active"><li>Shop</li></NavLink>
+                        <NavLink to="/contact" activeClassName="active"><li>Contact</li></NavLink>
                     </ul>
                     {userLoggedIn === false ? 
                         <div className="nav-right">

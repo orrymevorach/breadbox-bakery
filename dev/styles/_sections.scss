@@ -1,14 +1,29 @@
-.section-one {
-    // padding: 0 20px;
+.wrapper {
+    max-width: 1280px;
+    margin: 0 auto;
 }
 
 .section-wrapper {
-    background-color: $lightPink;
-    height: 300px;
+    min-height: 350px;
     width: 100%;
-    // margin: 0 20px;
+    position: relative;
+    overflow: hidden;
+    img {
+        width: 100%;
+        position: absolute;
+        margin: 0 auto;
+        top: -200px;
+        @media (min-width: 1000px) {
+            top: -350px;
+        }
+        @media (min-width: 1280px) {
+            top: -450px;
+        }
+        @media(min-width: 1400px) {
+            top: -550px;
+        }
+    }
 }
-
 
 p.section-text {
     color: #fff;
@@ -51,6 +66,100 @@ p.section-text:after {
         padding-right: 50px;
     }
 }
+
+.section-three {
+    .challah-box {
+        width: 380px;
+        height: 380px;
+        background-color: #FBE5EE;
+        img {
+            width: 100%;
+            height: 100%;
+            display: block;
+        
+        }
+    }
+}
+.section-four {
+    h1 {
+        margin-top: 38px;
+    }
+}
+
+.section-five {
+    margin: 150px auto 110px;
+    padding: 0 100px;
+    h1 {
+        font-size: 48px;
+    }
+    .small-text {
+        font-size: 24px;
+        margin-top: 25px;
+    }
+}
+
+@media(max-width:800px) {
+    .section-two,
+    .section-four,
+    .section-six {
+        flex-direction: column;
+        align-items: center;
+    }
+    .right p {
+        font-size: 14px;
+    }
+    .left h1 {
+        font-size: 45px;
+        text-align: center;
+    }
+    .section-six .left,
+    .section-four .left,
+    .section-two .left {
+        padding-left: 0;
+        padding-bottom: 20px;
+        width: 90%;
+    }
+    .section-six .right,
+    .section-four .right,
+    .section-two .right {
+        padding-right: 0;
+        padding-bottom: 20px;
+        width: 100%;
+        padding: 0 35px;
+    }
+    .section-five  {
+        margin: 50px 0;
+        h1 {
+            font-size: 45px;
+            padding: 0 35px;
+        }
+    }
+}
+.mobile-show {
+    display: none;
+}
+
+@media(max-width: 900px) {
+    .section-three {
+        flex-direction: column;
+        align-items: center;
+    }
+    .mobile-hide {
+        display: none;
+    }
+    .mobile-show {
+        display: block;
+        img {
+            width: 350px;
+            margin: 0 auto;
+            display: block;
+        }
+    }
+    .desktop-hide {
+        display: none;
+    }
+}
+
 
 .section-three {
     display: flex;

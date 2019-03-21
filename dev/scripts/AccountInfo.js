@@ -15,7 +15,8 @@ class AccountInfo extends React.Component {
             province: '',
             postalCode: '',
             phoneNumber: '',
-            email: ''
+            email: '',
+            fbId: ''
         }
 
         this.isEditing = this.isEditing.bind(this)
@@ -25,6 +26,7 @@ class AccountInfo extends React.Component {
 
     componentDidMount() {
         const { userProfile: {contactInformation: {
+            userID,
             firstName,
             lastName,
             address,
@@ -36,6 +38,11 @@ class AccountInfo extends React.Component {
             email
         }}} = this.props
 
+        const contactLastName = lastName,
+          contactFirstName = firstName,
+          contactUserID = userID,
+          fbId = `${contactLastName}-${contactFirstName}-${contactUserID}`
+
         this.setState({
             firstName: firstName,
             lastName: lastName,
@@ -45,7 +52,8 @@ class AccountInfo extends React.Component {
             province: province,
             postalCode: postalCode,
             phoneNumber: phoneNumber,
-            email: email
+            email: email,
+            fbId: fbId
         })
     }
 
@@ -72,10 +80,11 @@ class AccountInfo extends React.Component {
             province,
             postalCode,
             phoneNumber,
-            email
+            email,
+            fbId
     } = this.state 
     
-    this.props.changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email);
+    this.props.changeContactInformation(firstName, lastName, address, apartmentSuite, city, province, postalCode, phoneNumber, email, fbId);
         
     }
 
