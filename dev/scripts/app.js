@@ -82,7 +82,8 @@ class App extends React.Component {
           "formComplete": false,
           "totalCost": "",
           "weeklyOrMonthly": "",
-          "weeklyOrMonthlySelectionMade": false
+          "weeklyOrMonthlySelectionMade": false,
+          "orderPlaced": false
         },
         "deliveryAddress": {
           "firstNameDelivery": '',
@@ -127,6 +128,7 @@ class App extends React.Component {
     this.formComplete = this.formComplete.bind(this)
     this.selectAlternateDeliveryAddress = this.selectAlternateDeliveryAddress.bind(this)
     this.changeContactInformation = this.changeContactInformation.bind(this)
+    this.resetForm = this.resetForm.bind(this)
 
   }
 
@@ -164,18 +166,18 @@ class App extends React.Component {
     })
 
     // Update Delivery Times Schedule
-    dbRefDeliverySchedule.on('value', snapshot => {
-      const data = snapshot.val()
-      let deliverySchedule = this.state.deliverySchedule
-      for(let key in data) {
-        if(data[key].contactInformation) {
-          deliverySchedule[key] = data[key]
-        }
-      }
-      this.setState({
-        deliverySchedule: deliverySchedule
-      })
-    })
+    // dbRefDeliverySchedule.on('value', snapshot => {
+    //   const data = snapshot.val()
+    //   let deliverySchedule = this.state.deliverySchedule
+    //   for(let key in data) {
+    //     if(data[key].contactInformation) {
+    //       deliverySchedule[key] = data[key]
+    //     }
+    //   }
+    //   this.setState({
+    //     deliverySchedule: deliverySchedule
+    //   })
+    // })
   }
 
 
@@ -571,9 +573,9 @@ class App extends React.Component {
             }
           }
           dbRefDeliverySchedule.set(deliverySchedule)
-          this.setState({
-            deliverySchedule: deliverySchedule
-          })
+          // this.setState({
+          //   deliverySchedule: deliverySchedule
+          // })
         })
       })
   }
@@ -670,6 +672,54 @@ class App extends React.Component {
 
   }
 
+  resetForm() {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.deliveryTime =  ''
+    userProfile.orderInformation.deliveryTimeSelectionMade =  false
+    userProfile.orderInformation.freshChallahSelected =  false
+    userProfile.orderInformation.frozenChallahSelected =  false
+    userProfile.orderInformation.freshOrFrozenSelectionMade =  false
+    // Fresh Challahs
+    userProfile.orderInformation.numberOfWeeklyFreshChallahs =  0
+    userProfile.orderInformation.numberOfWeeklyFreshChallahsSelectionMade =  false
+    userProfile.orderInformation.firstFreshChallahType =  ''
+    userProfile.orderInformation.firstFreshChallahTypeSelectionMade =  false
+    userProfile.orderInformation.secondFreshChallahType =  ''
+    userProfile.orderInformation.secondFreshChallahTypeSelectionMade =  false
+    // Frozen Challahs
+    userProfile.orderInformation.numberOfWeeklyFrozenChallahs =  0
+    userProfile.orderInformation.numberOfWeeklyFrozenChallahsSelectionMade =  false
+    userProfile.orderInformation.firstFrozenChallahType =  ''
+    userProfile.orderInformation.firstFrozenChallahTypeSelectionMade =  false
+    userProfile.orderInformation.secondFrozenChallahType =  ''
+    userProfile.orderInformation.secondFrozenChallahTypeSelectionMade =  false
+    // Conditions for rendering
+    userProfile.orderInformation.formComplete =  false
+    userProfile.orderInformation.totalCost =  ""
+    userProfile.orderInformation.weeklyOrMonthly =  ""
+    userProfile.orderInformation.weeklyOrMonthlySelectionMade =  false
+    this.setState({
+      userProfile: userProfile
+    })
+  }
+
+  orderComplete() {
+    const userProfile = this.state.userProfile
+    userProfile.orderInformation.orderPlaced = true
+    
+    this.setState({
+      userProfile: userProfile
+    })
+
+    const lastName = contactInformation.lastName,
+          firstName = contactInformation.firstName,
+          userId = contactInformation.userID,
+          fbId = `${lastName}-${firstName}-${userId}`
+
+    // Save order to users profile in firebase
+    dbRefUsers.child(fbId).child('orderInformation').child('orderPlaced').set(true)
+  }
+
   render() {
     // Close All Modals when user logs in
     this.state.userLoggedIn === true ? this.closeModal('modal-container') : null
@@ -747,6 +797,7 @@ class App extends React.Component {
                   selectWeeklyOrMonthly={this.selectWeeklyOrMonthly}
                   confirmOrder={this.confirmOrder}
                   formComplete={this.formComplete}
+                  resetForm={this.resetForm}
                 /> 
                 : userLoggedIn && formComplete && !isEditing || userLoggedIn && !formComplete && isEditing ?
                 <Checkout 

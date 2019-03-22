@@ -9,7 +9,7 @@ class Header extends React.Component {
     render() {
         const { userLoggedIn,
                 showModal,
-                logout 
+                logout
             } = this.props
 
         return (
@@ -28,8 +28,12 @@ class Header extends React.Component {
                         <NavLink to="/contact" activeClassName="active"><li>Contact</li></NavLink>
                     </ul>
                     {userLoggedIn === false ? 
-                        <div className="nav-right">
-                            <button className="login-button" onClick={() => showModal('login-modal')}>Log In</button> 
+                        <div className="nav-right nav-with-subtext">
+                            <div className="row">
+                                <button className="create-account" onClick={() => showModal('create-account-modal')}>Create Account</button>
+                                <button className="login-button" onClick={() => showModal('login-modal')}>Log In</button> 
+                            </div>
+                            <p className="button-subtext">Create an account to place an order</p>
                         </div>
                     : userLoggedIn === true ? 
                         <div className="nav-right">

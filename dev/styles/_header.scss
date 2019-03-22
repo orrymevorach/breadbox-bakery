@@ -44,10 +44,34 @@ header {
         border: 2px solid $darkPink;
         border-radius: 2px;
         margin-right: 40px;
+        margin-bottom: 10px;
         &:hover {
             background-color: $darkPink;
             color: white;
         }
+    }
+    p.button-subtext {
+        font-size: 12px;
+        color: $darkPink;
+        font-style: italic;
+        margin-right: 40px;
+    }
+    .row {
+        display: flex;
+        margin: 0;
+    }
+    button.create-account {
+        margin-top: -10px;
+        &:hover {
+            color: $darkPink;
+        }
+    }
+}
+
+.nav-with-subtext {
+    .login-button {
+        display: block;
+        margin-left: auto;
     }
 }
 

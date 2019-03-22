@@ -29,7 +29,6 @@ class Paypal extends React.Component {
         let total = this.props.totalCost || 0
          // same as above, this is the total amount (based on currency) to be paid by using Paypal express checkout
         // Document on Paypal's currency code: https://developer.paypal.com/docs/classic/api/currency_codes/
-        console.log(total)
  
         const client = {
             sandbox:    'AZ_hLb9Ek38BvtN-PZbjLAkMj59juyzs4SDI97RLB2TzsQIgX65YXvgzIuhoc7OOFYmjCC9Puy6Q4vZn',
