@@ -83,7 +83,7 @@ class App extends React.Component {
           "totalCost": "",
           "weeklyOrMonthly": "",
           "weeklyOrMonthlySelectionMade": false,
-          "orderPlaced": false
+          // "orderPlaced": false
         },
         "deliveryAddress": {
           "firstNameDelivery": '',
@@ -703,22 +703,22 @@ class App extends React.Component {
     })
   }
 
-  orderComplete() {
-    const userProfile = this.state.userProfile
-    userProfile.orderInformation.orderPlaced = true
+  // orderComplete() {
+  //   const userProfile = this.state.userProfile
+  //   userProfile.orderInformation.orderPlaced = true
     
-    this.setState({
-      userProfile: userProfile
-    })
+  //   this.setState({
+  //     userProfile: userProfile
+  //   })
 
-    const lastName = contactInformation.lastName,
-          firstName = contactInformation.firstName,
-          userId = contactInformation.userID,
-          fbId = `${lastName}-${firstName}-${userId}`
+  //   const lastName = contactInformation.lastName,
+  //         firstName = contactInformation.firstName,
+  //         userId = contactInformation.userID,
+  //         fbId = `${lastName}-${firstName}-${userId}`
 
-    // Save order to users profile in firebase
-    dbRefUsers.child(fbId).child('orderInformation').child('orderPlaced').set(true)
-  }
+  //   // Save order to users profile in firebase
+  //   dbRefUsers.child(fbId).child('orderInformation').child('orderPlaced').set(true)
+  // }
 
   render() {
     // Close All Modals when user logs in
@@ -727,7 +727,7 @@ class App extends React.Component {
     const formComplete = this.state.userProfile.orderInformation.formComplete,
           isEditing = this.state.isEditing,
           userLoggedIn = this.state.userLoggedIn
-
+          
     return (
       <div>
         <LoginModal 

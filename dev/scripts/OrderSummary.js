@@ -41,9 +41,30 @@ class OrderSummary extends React.Component {
                 deliveryTime === "2:30PM" ? "2:30PM - 3:00PM" :
                 deliveryTime === "3:00PM" ? "3:00PM - 3:30PM" :
                 deliveryTime === "3:30PM" ? "3:30PM - 4:00PM" : null,
-            challahFirstChallah = numberOfChallahs === 1 ? "Challah" : "First Challah",
-            challahOrChallahs = numberOfChallahs === 1 ? "Challah" : "Challahs"
-        
+                challahFirstChallah = numberOfChallahs === 1 ? "Challah" : "First Challah",
+                challahOrChallahs = numberOfChallahs === 1 ? "Challah" : "Challahs",
+                oneOrFourWeeks = weeklyOrMonthly === "Weekly" ? "1 Week Only" : weeklyOrMonthly === "Monthly" ? "4 Weeks" : null
+          
+                const date = new Date(),
+                    month = date.getMonth(),
+                    day = date.getDay(),
+                    year = date.getFullYear(),
+                    monthInWords = 
+                        month === 1 ? "January"
+                        : month === 2 ? "February"
+                        : month === 3 ? "March"
+                        : month === 4 ? "April"
+                        : month === 5 ? "May"
+                        : month === 6 ? "June"
+                        : month === 7 ? "July"
+                        : month === 8 ? "August"
+                        : month === 9 ? "September"
+                        : month === 10 ? "October"
+                        : month === 11 ? "November"
+                        : month === 12 ? "December"
+                        : null,
+                    deliveryDate = `${monthInWords} ${day}, ${year}`
+
         return (
             <section className="order-summary">
                 <div className="heading-tab">
@@ -61,6 +82,7 @@ class OrderSummary extends React.Component {
                                 <p>Second Challah: <span className="bold">{secondChallah}</span></p>
                             )}
                           </div>
+                          <p>Delivery Plan: <span className="bold"> {oneOrFourWeeks}</span></p>
                       </div>  
                     )}
                  
@@ -69,7 +91,10 @@ class OrderSummary extends React.Component {
                 <div className="main-content text-container">
                     <div className="row">
                         <p className="text-left">Delivery Plan:</p>
-                        <p className="text-right">{weeklyOrMonthly}</p>
+                        <div>
+                            <p className="text-right">{oneOrFourWeeks}</p>
+                            {/* <p className="delivery-date">({deliveryDate})</p> */}
+                        </div>
                     </div>
                     <div className="row">
                         <p className="text-left">Fresh Or Frozen Challah:</p>
