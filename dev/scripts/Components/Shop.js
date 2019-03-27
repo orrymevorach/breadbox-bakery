@@ -43,10 +43,6 @@ class Shop extends React.Component {
         }
     }
 
-    // componentDidUpdate(prevProps) {
-    //     if(prevProps.userProfile.orderInformation.formComplete)
-    // }
-
     render() {
 
         const freshChallahTypes = this.state.freshChallahTypes,
@@ -80,7 +76,9 @@ class Shop extends React.Component {
 
                 {/* Back To Top Button */}
                 <div className="fixed-buttons-container">
-                    <button className="reset-form" onClick={resetForm}>Reset Form</button>
+                    {userLoggedIn && (
+                        <button className="reset-form" onClick={resetForm}>Reset Form</button>
+                    )}
                     <a href="#freshOrFrozen"> 
                         <button className="back-to-top">Top</button>
                     </a> 

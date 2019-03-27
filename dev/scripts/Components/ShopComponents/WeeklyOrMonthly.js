@@ -10,12 +10,12 @@ const WeeklyOrMonthly = (
 
     const weeklyOrMonthlyArray = [
         {
-            plan: "Weekly",
+            plan: "1 Week",
             text: "Challah delivery this Friday only",
             anchor: "#freshOrFrozen"
         },
         {
-            plan: "Monthly",
+            plan: "4 Weeks",
             text: "Challah delivery every Friday for four weeks",
             anchor: "#freshOrFrozen"
         }
@@ -33,7 +33,8 @@ const WeeklyOrMonthly = (
                 {weeklyOrMonthlyArray.map((plan, index) => {
                     return (
                         <div className="challah-container challah-type" key={index}>
-                            <h1>{plan.text}</h1>
+                            <h1>{plan.plan}</h1>
+                            <p>{plan.text}</p>
                             <a href={plan.anchor}>
                                 <button type="submit" onClick={(e) => selectWeeklyOrMonthly(plan.plan)} >Select This Plan</button>
                             </a>
@@ -55,7 +56,8 @@ const WeeklyOrMonthly = (
                 {weeklyOrMonthlyArray.map((plan, index) => {
                     return (
                         <div className="challah-container challah-type" key={index}>
-                            <h1>{plan.text}</h1>
+                            <h1>{plan.plan}</h1>
+                            <p>{plan.text}</p>
                         </div>
                     )
                 })}

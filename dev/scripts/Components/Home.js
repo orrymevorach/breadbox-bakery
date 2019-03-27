@@ -18,7 +18,7 @@ const Home = () => {
                         Ingredients</h1>
                 </div>
                 <div className="right">
-                    <p>Breadbox Bakery is a local artisan bakery. Each of our handmade challahs are crafted with love and all natural ingredients. We make each challah in small batches to ensure the quality of your bread is never compromised. Each batch of challah dough is made with: Flour, Water, Canola Oil, Eggs, Yeast, Salt, and Vanilla. Each challah is handmade and unique in its own way. Therefore, no two challahs are the same. </p>
+                    <p>Breadbox Bakery is a local artisan bakery. Each of our handmade Challahs are crafted with love and all natural ingredients. We make each Challah in small batches to ensure the quality of your bread is never compromised. Each batch of Challah dough is made with: Flour, Water, Canola Oil, Eggs, Yeast, Salt, and Vanilla. Each Challah is handmade and unique in its own way. Therefore, no two Challahs are the same.</p>
                 </div>
             </section>
             <section className="section-three wrapper">
@@ -34,7 +34,7 @@ const Home = () => {
             </h1>
                 </div>
                 <div className="right">
-                    <p>Whether you want freshly baked Challah delivered to your door every Friday for four weeks, or one Friday, Breadbox Bakery has your covered with our Monthly Subscription Delivery Service and Weekly Delivery Service. We want to fundamentally change your Shabbat experience by introducing all natural and handmade challah into your home. Each challah is carefully crafted, freshly baked, and delivered to you so that you can have an easy and delicious Shabbat Dinner.</p>
+                    <p>Whether you want freshly baked Challah delivered to your door every Friday for four weeks, or one Friday, Breadbox Bakery has your covered with our One Week Delivery Service, and our Four Week Delivery Service. We want to fundamentally change your Shabbat experience by introducing all natural and handmade Challah into your home. Each Challah is carefully crafted, freshly baked, and delivered to you so that you can have an easy and delicious Shabbat dinner.</p>
                 </div>
             </section>
             {/* <div className="mobile-show"><img src="../img/homepage/ShopPage_Sweet.jpg" alt="Challah"/></div> */}
@@ -48,9 +48,12 @@ const Home = () => {
                     <br/>
                         Breadwinner
                     </h1>
+                    <div className="image-container">
+                        <img src="../img/homepage/emily.jpg" alt="Emily"/>
+                    </div>
                 </div>
                 <div className="right">
-                    <p>Emily Turkenicz has set out to change peoples Shabbat Dinner experiences by enhancing a crucial element to every Shabbat dinner, the Challah. Emily has always loved food and naturally took a liking to cooking and baking. Eating any food that makes her taste buds sing is a challenge for her to recreate it herself. Two years ago, she decided to overcome this barrier, and she baked her first challah. Since then it became a weekly ritual to welcome the Shabbat and conclude her week. Her homemade challah brought newfound warmth to the family’s Shabbat dinner. She mastered her recipe and technique, and with every dinner she attended, there was a request for her homemade artisan challah. Friends and Family sought out her special recipe, and it was then that Emily realized that Toronto lacks an easily accessible freshly baked challah. It is Emily’s goal to bring this warmth to people’s homes in Toronto. Her Monthly and Weekly Delivery Service will allow families to experience homemade challah to enrich their Friday night dinners.</p>
+                    <p>Emily Turkenicz has set out to change peoples Shabbat dinner experiences by enhancing a crucial element to every Shabbat dinner, the Challah. Emily has always loved food and naturally took a liking to cooking and baking. Baking Challah became a weekly ritual to welcome the Shabbat and conclude her week. Her homemade Challah brought newfound warmth to the family’s Shabbat dinner. She mastered her recipe and technique, and with every dinner she attended, there was a request for her homemade artisan Challah. Friends and Family sought out her special recipe, and it was then that Emily realized that Toronto lacks an easily accessible freshly baked Challah. It is Emily’s goal to bring this warmth to people’s homes in Toronto. Her One Week Delivery Service, and Four Week Delivery Service will allow families to experience homemade Challah to enrich their Friday night dinners.</p>
                 </div>
             </section>
             {/* <div className="mobile-show"><img src="../img/homepage/ShopPage_Raisin.jpg" alt="Challah"/></div> */}

@@ -33,7 +33,7 @@ class Header extends React.Component {
                                 <button className="create-account" onClick={() => showModal('create-account-modal')}>Create Account</button>
                                 <button className="login-button" onClick={() => showModal('login-modal')}>Log In</button> 
                             </div>
-                            <p className="button-subtext">Create an account to place an order</p>
+                            <p className="button-subtext">To place an order, Create An Account</p>
                         </div>
                     : userLoggedIn === true ? 
                         <div className="nav-right">

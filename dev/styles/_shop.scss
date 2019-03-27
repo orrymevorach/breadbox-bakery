@@ -48,20 +48,16 @@
                 color: $black;
             }
         }
-        &:hover {
-            box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
-            & > button {
-                color: $darkPink;
-                background-color: white;
-            }
-        }
+        // &:hover {
+        //     box-shadow: 0 4px 15px 0 rgba(253,165,193, 1); 
+        //     & > button {
+        //         color: $darkPink;
+        //         background-color: white;
+        //     }
+        // }
         a {
             text-decoration: none;
         }
-    }
-
-    #weeklyOrMonthly .challah-container h1 {
-        font-size: 20px;
     }
 
     #firstFreshChallahType .challah-container {

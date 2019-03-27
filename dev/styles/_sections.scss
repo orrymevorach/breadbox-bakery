@@ -98,6 +98,17 @@ p.section-text:after {
     }
 }
 
+.section-six {
+    .image-container {
+        display: flex;
+        flex-direction: column;
+    }
+    img {
+        margin-top: 30px;
+        width: 85%;
+    }
+}
+
 @media(max-width:800px) {
     .section-two,
     .section-four,
