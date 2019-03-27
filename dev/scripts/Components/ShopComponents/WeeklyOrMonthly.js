@@ -10,11 +10,14 @@ const WeeklyOrMonthly = (
 
     const weeklyOrMonthlyArray = [
         {
+            // this is a poor name for the variable, but the app needs it to function. DO NOT change or remove it until you refactor this variable name in the whole site. 
+            stateVariable: "Weekly",
             plan: "1 Week",
             text: "Challah delivery this Friday only",
             anchor: "#freshOrFrozen"
         },
         {
+            stateVariable: "Monthly",
             plan: "4 Weeks",
             text: "Challah delivery every Friday for four weeks",
             anchor: "#freshOrFrozen"
@@ -36,7 +39,7 @@ const WeeklyOrMonthly = (
                             <h1>{plan.plan}</h1>
                             <p>{plan.text}</p>
                             <a href={plan.anchor}>
-                                <button type="submit" onClick={(e) => selectWeeklyOrMonthly(plan.plan)} >Select This Plan</button>
+                                <button type="submit" onClick={(e) => selectWeeklyOrMonthly(plan.stateVariable)} >Select This Plan</button>
                             </a>
                         </div>
                     )
